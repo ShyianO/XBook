@@ -9,9 +9,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 
-import { HeaderComponent } from './landing/header/header.component';
-import { FooterComponent } from './landing/footer/footer.component';
-import { MainComponent } from './landing/main/main.component';
+import { HeaderComponent } from './landing/components/header/header.component';
+import { FooterComponent } from './landing/components/footer/footer.component';
+import { MainComponent } from './landing/components/main/main.component';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, FooterComponent, MainComponent],
