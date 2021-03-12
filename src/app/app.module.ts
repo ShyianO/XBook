@@ -5,6 +5,8 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { environment } from '../environments/environment';
+import { TodoState } from './store/todo.state';
 
 import { LandingModule } from './landing/landing.module';
 import { SharedModule } from './shared/shared.module';
@@ -14,10 +16,13 @@ import { SharedModule } from './shared/shared.module';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+
     SharedModule,
     LandingModule,
 
-    NgxsModule.forRoot(),
+    NgxsModule.forRoot([TodoState], {
+      developmentMode: !environment.production
+    }),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot()
   ],

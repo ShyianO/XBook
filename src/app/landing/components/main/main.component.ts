@@ -1,4 +1,9 @@
 import { Component } from '@angular/core';
+import { Select, Store } from '@ngxs/store';
+import { ITodo, TodoState } from '../../../store/todo.state';
+import { Observable } from 'rxjs';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AddTodo, MarkDone } from '../../../store/todo.action';
 
 @Component({
   selector: 'app-main',
@@ -7,9 +12,20 @@ import { Component } from '@angular/core';
 })
 export class MainComponent {
   selected = 'option2';
-  option = '';
 
-  showSelectedOption(): void {
-    this.option = this.selected;
+  @Select(TodoState) todoList$: Observable<ITodo>;
+
+  addForm = new FormGroup({
+    title: new FormControl('', [Validators.required])
+  });
+
+  constructor(private store: Store) {}
+
+  onSubmit(form: any): void {
+    this.store.dispatch(new AddTodo(form));
+  }
+
+  markDone(id: string, isDone: boolean): void {
+    this.store.dispatch(new MarkDone(id, isDone));
   }
 }
