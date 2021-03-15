@@ -19,7 +19,7 @@
       *ngFor="let todo of (todoList$ | async)?.todoList"
       [ngClass]="{ completed: todo.isDone }"
     >
-      {{ todo }}
+      {{ todo.title }}
     </li>
   </ul>
 </main>
