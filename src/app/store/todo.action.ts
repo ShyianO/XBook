@@ -13,3 +13,8 @@ export class MarkDone {
 export class FetchAllTodos {
   static readonly type = '[Todo] Fetch All';
 }
+
+export class DeleteTodo {
+  static readonly type = '[Todo] Delete';
+  constructor(public id: number) {}
+}

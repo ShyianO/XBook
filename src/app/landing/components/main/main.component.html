@@ -1,5 +1,5 @@
 <main class="main">
-  <mat-slider min="1" max="100" step="1" value="1"></mat-slider>
+<!--  <mat-slider min="1" max="100" step="1" value="1"></mat-slider>-->
 
   <form [formGroup]="addForm" (ngSubmit)="onSubmit(addForm.value)">
     <mat-form-field appearance="fill">
@@ -11,15 +11,29 @@
         <mat-option value="option3">Option 3</mat-option>
       </mat-select>
     </mat-form-field>
-    <button>Add</button>
+    <button mat-button color="primary">Add</button>
   </form>
 
-  <ul>
-    <li
-      *ngFor="let todo of (todoList$ | async)?.todoList"
-      [ngClass]="{ completed: todo.isDone }"
-    >
-      {{ todo.title }}
-    </li>
-  </ul>
+  <pre>{{ (todoList$ | async)?.todoList | json }}</pre>
+
+  <div>
+    <ul>
+      <li
+        *ngFor="let todo of (todoList$ | async)?.todoList"
+        [ngClass]="{ completed: todo.isDone }"
+      >
+        <div>
+          <label>
+            <input
+              class="checkbox"
+              type="checkbox"
+              (click)="markDone(todo.id, todo.isDone)"
+
+              [checked]="todo.isDone" />{{ todo.title }}
+            <i class="input-helper"></i
+          ></label>
+        </div>
+      </li>
+    </ul>
+  </div>
 </main>
