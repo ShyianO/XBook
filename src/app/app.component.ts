@@ -9,9 +9,9 @@ import { BackendlessService } from './backendless.service';
 export class AppComponent implements OnInit {
   title = 'xbook';
 
-  constructor(private backendless: BackendlessService) {}
+  constructor(private backendlessService: BackendlessService) {}
 
   ngOnInit(): void {
-    this.backendless.init();
+    this.backendlessService.init();
   }
 }
