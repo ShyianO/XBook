@@ -1,3 +1,16 @@
-.link-logo {
-  display: inline-flex;
+.header {
+  justify-content: space-between;
+
+  &__link-logo {
+    display: inline-flex;
+  }
+
+  &__nav-list {
+    display: flex;
+    padding: 0;
+
+    &-item {
+      color: #fff;
+    }
+  }
 }

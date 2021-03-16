@@ -1,5 +1,19 @@
-<mat-toolbar color="primary">
-  <a href="#" class="link-logo">
-    <img src="assets/img/xbook-logo.png" alt="Logo" />
+<mat-toolbar color="primary" class="header">
+  <a href="#" class="header__link-logo">
+    <img src="assets/img/xbook-logo.png" alt="XBook" />
+  </a>
+
+  <mat-nav-list class="header__nav-list">
+    <a class="header__nav-list-item" mat-list-item href="#">Home</a>
+    <a class="header__nav-list-item" mat-list-item href="#">About</a>
+    <a class="header__nav-list-item" mat-list-item href="#">Contacts</a>
+  </mat-nav-list>
+
+  <a
+    href="https://github.com/ShyianO/XBook"
+    class="header__link-logo"
+    target="_blank"
+  >
+    <img src="assets/img/github-logo.svg" alt="Github" />
   </a>
 </mat-toolbar>
