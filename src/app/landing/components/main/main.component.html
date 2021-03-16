@@ -2,7 +2,7 @@
 <!--  <mat-slider min="1" max="100" step="1" value="1"></mat-slider>-->
 
   <form [formGroup]="addForm" (ngSubmit)="onSubmit(addForm.value)">
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" color="primary">
       <mat-label>Select an option</mat-label>
       <mat-select [(value)]="selected" formControlName="title">
         <mat-option>None</mat-option>
@@ -11,7 +11,7 @@
         <mat-option value="option3">Option 3</mat-option>
       </mat-select>
     </mat-form-field>
-    <button mat-button color="primary">Add</button>
+    <button mat-raised-button color="primary">Add</button>
   </form>
 
   <pre>{{ (todoList$ | async)?.todoList | json }}</pre>

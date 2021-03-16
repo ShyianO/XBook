@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { MatSliderModule } from '@angular/material/slider';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -18,8 +17,7 @@ const materialModules = [
 ];
 
 @NgModule({
-  declarations: [],
-  imports: [CommonModule, ...materialModules],
-  exports: [...materialModules]
+  imports: [materialModules],
+  exports: [materialModules]
 })
 export class SharedModule {}
