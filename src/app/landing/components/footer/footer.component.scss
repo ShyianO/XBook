@@ -1,5 +1,5 @@
 .footer {
-  height: auto;
+  height: 64px;
 
   &__container {
     width: 100%;
@@ -11,8 +11,13 @@
 
   &__nav {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
+
+    &-list {
+      display: flex;
+      align-items: center;
+    }
 
     &-list-item {
       color: #fff;
