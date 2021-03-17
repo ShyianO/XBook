@@ -1,9 +1,5 @@
 import { Component } from '@angular/core';
-import { Select, Store } from '@ngxs/store';
-import { ITodo, TodoState } from '../../../store/todo.state';
-import { Observable } from 'rxjs';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AddTodo, MarkDone } from '../../../store/todo.action';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-main',
@@ -11,21 +7,56 @@ import { AddTodo, MarkDone } from '../../../store/todo.action';
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent {
-  selected = 'option2';
+  hide = true;
 
-  @Select(TodoState) todoList$: Observable<ITodo>;
+  name = new FormControl('', [
+    Validators.required,
+    Validators.maxLength(30),
+    Validators.pattern('[a-zA-Z ]*')
+  ]);
+  email = new FormControl('', [Validators.required, Validators.email]);
+  password = new FormControl('', [
+    Validators.required,
+    Validators.maxLength(30),
+    Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{4,20}')
+  ]);
 
-  addForm = new FormGroup({
-    title: new FormControl('', [Validators.required])
-  });
+  getNameError(): string {
+    if (this.name.hasError('required')) {
+      return 'You must enter a value';
+    }
 
-  constructor(private store: Store) {}
+    if (this.name.hasError('pattern') || this.name.hasError('maxlength')) {
+      return 'Not a valid name';
+    }
 
-  onSubmit(form: any): void {
-    this.store.dispatch(new AddTodo(form));
+    return '';
   }
 
-  markDone(id: string, isDone: boolean): void {
-    this.store.dispatch(new MarkDone(id, isDone));
+  getEmailError(): string {
+    if (this.email.hasError('required')) {
+      return 'You must enter a value';
+    }
+
+    return this.email.hasError('email') ? 'Not a valid email' : '';
+  }
+
+  getPasswordError(): string {
+    if (this.password.hasError('required')) {
+      return 'You must enter a value';
+    }
+
+    if (
+      this.password.hasError('pattern') ||
+      this.password.hasError('maxlength')
+    ) {
+      return 'Not a valid password';
+    }
+
+    return '';
+  }
+
+  submitHandler(): void {
+    alert(`Welcome!`);
   }
 }
