@@ -1,19 +1,43 @@
-<mat-toolbar color="primary" class="header">
-  <a href="#" class="header__link-logo">
-    <img src="assets/img/xbook-logo.png" alt="XBook" />
-  </a>
+<mat-toolbar color="primary" class="mat-elevation-z6 header">
+  <div class="header__nav">
+    <a href="#" class="header__nav-logo">
+      <img src="assets/img/xbook-logo.png" alt="XBook" />
+    </a>
 
-  <mat-nav-list class="header__nav-list">
-    <a class="header__nav-list-item" mat-list-item href="#">Home</a>
-    <a class="header__nav-list-item" mat-list-item href="#">About</a>
-    <a class="header__nav-list-item" mat-list-item href="#">Contacts</a>
-  </mat-nav-list>
+    <mat-nav-list class="header__nav-list">
+      <a class="header__nav-list-item mat-body-1" mat-list-item href="#"
+        >Home</a
+      >
+      <a class="header__nav-list-item mat-body-1" mat-list-item href="#"
+        >About</a
+      >
+      <a class="header__nav-list-item mat-body-1" mat-list-item href="#"
+        >Contacts</a
+      >
+    </mat-nav-list>
+  </div>
 
-  <a
-    href="https://github.com/ShyianO/XBook"
-    class="header__link-logo"
-    target="_blank"
-  >
-    <img src="assets/img/github-logo.svg" alt="Github" />
-  </a>
+  <div class="header__controls">
+    <mat-menu #langMenu="matMenu">
+      <button mat-menu-item (click)="langValue = 'EN'">EN</button>
+      <button mat-menu-item (click)="langValue = 'UA'">UA</button>
+    </mat-menu>
+
+    <button
+      mat-button
+      [mat-menu-trigger-for]="langMenu"
+      class="header__controls-lang"
+    >
+      {{ langValue }}
+    </button>
+
+    <a
+      href="https://github.com/ShyianO/XBook"
+      class="header__controls-link"
+      target="_blank"
+    >
+      <img src="assets/img/github-logo.png" alt="Github" />
+      <span class="header__controls-link-name mat-body-1">GitHub</span>
+    </a>
+  </div>
 </mat-toolbar>

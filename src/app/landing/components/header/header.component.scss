@@ -1,16 +1,41 @@
 .header {
   justify-content: space-between;
 
-  &__link-logo {
-    display: inline-flex;
-  }
-
-  &__nav-list {
+  &__nav {
     display: flex;
-    padding: 0;
+    align-items: center;
 
-    &-item {
-      color: #fff;
+    &-logo {
+      display: inline-flex;
+      margin-right: 15px;
+    }
+
+    &-list {
+      display: flex;
+      padding: 0;
+
+      &-item {
+        color: #fff;
+      }
     }
   }
+
+  &__controls {
+    display: flex;
+
+    &-lang {
+      font-weight: 400;
+    }
+
+    &-link {
+      display: inline-flex;
+      align-items: center;
+      margin-left: 14px;
+
+      &-name {
+        margin-left: 8px;
+      }
+    }
+  }
+
 }

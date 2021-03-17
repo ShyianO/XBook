@@ -8,6 +8,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatMenuModule } from '@angular/material/menu';
+import {
+  MatButtonToggleGroup,
+  MatButtonToggleModule
+} from '@angular/material/button-toggle';
 
 const materialModules = [
   MatSliderModule,
@@ -17,7 +22,9 @@ const materialModules = [
   MatButtonModule,
   MatSelectModule,
   MatListModule,
-  MatDividerModule
+  MatDividerModule,
+  MatMenuModule,
+  MatButtonToggleModule
 ];
 
 @NgModule({
