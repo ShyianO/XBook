@@ -1,6 +1,36 @@
 .footer {
-  height: 65px;
-  padding: 0 16px;
+  height: 64px;
 
-  background-color: #f5f5f5;;
+  &__container {
+    width: 100%;
+  }
+
+  &__link-logo {
+    display: inline-flex;
+  }
+
+  &__nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &-list {
+      display: flex;
+      align-items: center;
+    }
+
+    &-list-item {
+      color: #fff;
+    }
+  }
+
+  &__mat-divider {
+    border-top-color: #fff;
+  }
+
+  &__copyright {
+    margin: 15px 0;
+
+    text-align: center;
+  }
 }

@@ -21,13 +21,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: npm install and npm run build
+      - name: npm install, lint, test and build
         run: |
           npm i
+          npm run lint:nofix
           npm run test
           npm run build
-      - name: Push Build to Releases
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "dist/angular-githubaction/*"
-          token: ${{ secrets.TOKEN }}
+

@@ -1,13 +1,56 @@
-<mat-toolbar>
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span>My App</span>
-  <span class="example-spacer"></span>
-  <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-    <mat-icon>favorite</mat-icon>
-  </button>
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-    <mat-icon>share</mat-icon>
-  </button>
+<mat-toolbar color="primary" class="header mat-elevation-z6">
+  <div class="header__nav">
+    <a href="#" class="header__nav-logo">
+      <img src="assets/img/xbook-logo.png" alt="XBook" />
+    </a>
+
+    <mat-nav-list class="header__nav-list">
+      <a class="header__nav-list-item mat-body-1" mat-list-item href="#"
+        >Home</a
+      >
+      <a class="header__nav-list-item mat-body-1" mat-list-item href="#"
+        >About</a
+      >
+      <a class="header__nav-list-item mat-body-1" mat-list-item href="#"
+        >Contacts</a
+      >
+    </mat-nav-list>
+  </div>
+
+  <div class="header__controls">
+    <mat-menu #langMenu="matMenu">
+      <button mat-menu-item (click)="langValue = 'EN'">EN</button>
+      <button mat-menu-item (click)="langValue = 'UA'">UA</button>
+    </mat-menu>
+
+    <button
+      mat-button
+      [mat-menu-trigger-for]="langMenu"
+      class="header__controls-lang"
+    >
+      {{ langValue }}
+    </button>
+
+    <a
+      href="https://github.com/ShyianO/XBook"
+      class="header__controls-link"
+      target="_blank"
+    >
+      <img src="assets/img/github-logo.png" alt="Github" />
+      <span class="header__controls-link-name mat-body-1">GitHub</span>
+    </a>
+  </div>
 </mat-toolbar>
+
+<section class="header-section">
+  <div>
+    <h1 class="header-section__heading mat-headline">XBOOK</h1>
+    <h2 class="header-section__title mat-title">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+    </h2>
+  </div>
+
+  <div class="header-section__link">
+    <a mat-raised-button href="#">Get started</a>
+  </div>
+</section>
