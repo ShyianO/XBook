@@ -24,7 +24,7 @@ jobs:
       - name: npm install, lint, test and build
         run: |
           npm i
-          nmp run lint:nofix
+          npm run lint:nofix
           npm run test
           npm run build
       - name: Push Build to Releases
