@@ -14,10 +14,12 @@ import { MainComponent } from './components/main/main.component';
 import { RegisterComponent } from './components/register/register.component';
 
 const routes: Routes = [
-  { path: 'about', component: LandingComponent },
-  { path: 'contacts', component: LandingComponent },
-  { path: '', component: MainComponent },
-  { path: '**', redirectTo: '/' }
+  {
+    path: '',
+    loadChildren: () =>
+      import('./components/main/main.module').then((m) => m.MainModule)
+  },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
@@ -40,7 +42,8 @@ const routes: Routes = [
     FooterComponent,
     MainComponent,
     RegisterComponent,
-    RouterOutlet
+    RouterOutlet,
+    RouterModule
   ]
 })
 export class LandingModule {}
