@@ -6,4 +6,11 @@ import { FormControl, Validators } from '@angular/forms';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss']
 })
-export class MainComponent {}
+export class MainComponent {
+  scrollToElement($element): void {
+    $element.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  }
+}

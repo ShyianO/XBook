@@ -2,13 +2,23 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule, Routes } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 
 import { SharedModule } from '../shared/shared.module';
 
+import { LandingComponent } from './landing.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { MainComponent } from './components/main/main.component';
 import { RegisterComponent } from './components/register/register.component';
+
+const routes: Routes = [
+  { path: 'about', component: LandingComponent },
+  { path: 'contacts', component: LandingComponent },
+  { path: '', component: MainComponent },
+  { path: '**', redirectTo: '/' }
+];
 
 @NgModule({
   declarations: [
@@ -17,8 +27,20 @@ import { RegisterComponent } from './components/register/register.component';
     MainComponent,
     RegisterComponent
   ],
-  imports: [CommonModule, SharedModule, ReactiveFormsModule, FormsModule],
+  imports: [
+    CommonModule,
+    SharedModule,
+    ReactiveFormsModule,
+    FormsModule,
+    RouterModule.forRoot(routes)
+  ],
   providers: [],
-  exports: [HeaderComponent, FooterComponent, MainComponent, RegisterComponent]
+  exports: [
+    HeaderComponent,
+    FooterComponent,
+    MainComponent,
+    RegisterComponent,
+    RouterOutlet
+  ]
 })
 export class LandingModule {}

@@ -11,9 +11,10 @@ import { TodoState } from './store/todo.state';
 
 import { LandingModule } from './landing/landing.module';
 import { SharedModule } from './shared/shared.module';
+import { LandingComponent } from './landing/landing.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, LandingComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

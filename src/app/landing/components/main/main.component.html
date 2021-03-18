@@ -8,7 +8,9 @@
     </div>
 
     <div class="main-container__link">
-      <a mat-raised-button href="#register-form">Get started</a>
+      <a mat-raised-button (click)="scrollToElement(registerForm)"
+        >Get started</a
+      >
     </div>
   </div>
 
@@ -48,3 +50,7 @@
 
   <mat-divider class="main-divider"></mat-divider>
 </main>
+
+<div #registerForm>
+  <app-register></app-register>
+</div>
