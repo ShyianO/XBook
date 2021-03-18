@@ -11,16 +11,17 @@ import { TodoState } from './store/todo.state';
 
 import { LandingModule } from './landing/landing.module';
 import { SharedModule } from './shared/shared.module';
-import { LandingComponent } from './landing/landing.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
-  declarations: [AppComponent, LandingComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
 
     SharedModule,
     LandingModule,
+    AppRoutingModule,
 
     NgxsModule.forRoot([TodoState], {
       developmentMode: !environment.production

@@ -1,0 +1,56 @@
+<main class="main">
+  <div class="main-container">
+    <div>
+      <h1 class="main-container__heading mat-headline">XBOOK</h1>
+      <h2 class="main-container__title mat-title">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+      </h2>
+    </div>
+
+    <div class="main-container__link">
+      <a mat-raised-button (click)="scrollToElement(registerForm)"
+        >Get started</a
+      >
+    </div>
+  </div>
+
+  <section class="main-section">
+    <article class="main-section__article">
+      <h3 class="main-section__article-heading">High quality</h3>
+      <p class="main-section__article-paragraph">
+        Internationalized and accessible components for everyone. Well tested to
+        ensure performance and reliability.
+      </p>
+      <p class="main-section__article-paragraph">
+        Straightforward APIs with consistent cross platform behaviour.
+      </p>
+    </article>
+
+    <article class="main-section__article">
+      <h3 class="main-section__article-heading">Versatile</h3>
+      <p class="main-section__article-paragraph">
+        Provide tools that help developers build their own custom components
+        with common interaction patterns.
+      </p>
+      <p class="main-section__article-paragraph">
+        Customizable within the bounds of the Material Design specification.
+      </p>
+    </article>
+
+    <article class="main-section__article">
+      <h3 class="main-section__article-heading">Frictionless</h3>
+      <p class="main-section__article-paragraph">
+        Built by the Angular team to integrate seamlessly with Angular.
+      </p>
+      <p class="main-section__article-paragraph">
+        Start from scratch or drop into your existing applications.
+      </p>
+    </article>
+  </section>
+
+  <mat-divider class="main-divider"></mat-divider>
+</main>
+
+<div #registerForm>
+  <app-register></app-register>
+</div>
