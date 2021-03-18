@@ -1,0 +1,13 @@
+.register-section {
+  padding: 50px 0;
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &-field {
+      width: 250px;
+    }
+  }
+}

@@ -1,0 +1,42 @@
+<section class="register-section" id="register-form">
+  <form class="register-section__form" (ngSubmit)="submitHandler()">
+    <mat-form-field class="register-section__form-field" appearance="fill">
+      <mat-label>Enter your name</mat-label>
+      <input matInput [formControl]="name" required />
+      <mat-error *ngIf="name.invalid">{{ getNameError() }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="register-section__form-field" appearance="fill">
+      <mat-label>Enter your email</mat-label>
+      <input
+        matInput
+        placeholder="pat@example.com"
+        [formControl]="email"
+        required
+      />
+      <mat-error *ngIf="email.invalid">{{ getEmailError() }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="register-section__form-field" appearance="fill">
+      <mat-label>Enter your password</mat-label>
+      <input
+        matInput
+        [formControl]="password"
+        [type]="hide ? 'password' : 'text'"
+        required
+      />
+      <mat-error *ngIf="password.invalid">{{ getPasswordError() }}</mat-error>
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hide = !hide"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide"
+      >
+        <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <button mat-raised-button>Sign Up</button>
+  </form>
+</section>
