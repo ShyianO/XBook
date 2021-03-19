@@ -32,7 +32,6 @@ import { ContactsComponent } from './components/contacts/contacts.component';
     FormsModule,
     RouterModule,
     LandingRoutingModule
-  ],
-  exports: [MainComponent]
+  ]
 })
 export class LandingModule {}
