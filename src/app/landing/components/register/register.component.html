@@ -1,9 +1,25 @@
 <section class="register-section">
-  <form class="register-section__form" (ngSubmit)="submitHandler()">
+  <form
+    class="register-section__form"
+    novalidate
+    [formGroup]="loginForm"
+    (ngSubmit)="onSubmit(loginForm)"
+  >
     <mat-form-field class="register-section__form-field" appearance="fill">
       <mat-label>Enter your name</mat-label>
-      <input matInput [formControl]="name" required />
-      <mat-error *ngIf="name.invalid">{{ getNameError() }}</mat-error>
+      <input matInput formControlName="name" required />
+
+      <mat-error *ngIf="loginForm.get('name').hasError('required')">
+        You must enter a value
+      </mat-error>
+      <mat-error
+        *ngIf="
+          loginForm.get('name').hasError('pattern') ||
+          loginForm.get('name').hasError('maxlength')
+        "
+      >
+        Not a valid name
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field class="register-section__form-field" appearance="fill">
@@ -11,21 +27,39 @@
       <input
         matInput
         placeholder="pat@example.com"
-        [formControl]="email"
+        formControlName="email"
         required
       />
-      <mat-error *ngIf="email.invalid">{{ getEmailError() }}</mat-error>
+
+      <mat-error *ngIf="loginForm.get('email').hasError('required')">
+        You must enter a value
+      </mat-error>
+      <mat-error *ngIf="loginForm.get('email').hasError('email')">
+        Not a valid name
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field class="register-section__form-field" appearance="fill">
       <mat-label>Enter your password</mat-label>
       <input
         matInput
-        [formControl]="password"
+        formControlName="password"
         [type]="hide ? 'password' : 'text'"
         required
       />
-      <mat-error *ngIf="password.invalid">{{ getPasswordError() }}</mat-error>
+
+      <mat-error *ngIf="loginForm.get('password').hasError('required')">
+        You must enter a value
+      </mat-error>
+      <mat-error
+        *ngIf="
+          loginForm.get('password').hasError('pattern') ||
+          loginForm.get('password').hasError('maxlength')
+        "
+      >
+        Not a valid name
+      </mat-error>
+
       <button
         mat-icon-button
         matSuffix
