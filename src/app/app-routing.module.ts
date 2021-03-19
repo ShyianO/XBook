@@ -5,11 +5,9 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () =>
-      import('./landing/landing-routing.module').then(
-        (m) => m.LandingRoutingModule
-      )
+      import('./landing/landing.module').then((m) => m.LandingModule)
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '/landing' }
 ];
 
 @NgModule({

@@ -5,12 +5,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { SharedModule } from '../shared/shared.module';
+import { LandingRoutingModule } from './landing-routing.module';
 
 import { MainComponent } from './components/main/main.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { RegisterComponent } from './components/register/register.component';
+import { AboutComponent } from './components/about/about.component';
+import { ContactsComponent } from './components/contacts/contacts.component';
 
 @NgModule({
   declarations: [
@@ -18,22 +21,18 @@ import { RegisterComponent } from './components/register/register.component';
     HeaderComponent,
     FooterComponent,
     HomepageComponent,
-    RegisterComponent
+    RegisterComponent,
+    AboutComponent,
+    ContactsComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
     ReactiveFormsModule,
     FormsModule,
-    RouterModule
+    RouterModule,
+    LandingRoutingModule
   ],
-  providers: [],
-  exports: [
-    MainComponent,
-    HeaderComponent,
-    FooterComponent,
-    HomepageComponent,
-    RegisterComponent
-  ]
+  exports: [MainComponent]
 })
 export class LandingModule {}
