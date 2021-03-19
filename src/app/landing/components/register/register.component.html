@@ -9,16 +9,11 @@
       <mat-label>Enter your name</mat-label>
       <input matInput type="text" formControlName="name" required />
 
-      <mat-error *ngIf="loginForm.get('name').hasError('required')">
-        You must enter a value
-      </mat-error>
-      <mat-error
-        *ngIf="
-          loginForm.get('name').hasError('pattern') ||
-          loginForm.get('name').hasError('maxlength')
-        "
-      >
-        Not a valid name
+      <mat-error *ngIf="name.invalid">
+        <div *ngIf="name.errors.required">You must enter a value</div>
+        <div *ngIf="name.errors.pattern || name.errors.maxlength">
+          Not a valid name
+        </div>
       </mat-error>
     </mat-form-field>
 
@@ -32,11 +27,9 @@
         required
       />
 
-      <mat-error *ngIf="loginForm.get('email').hasError('required')">
-        You must enter a value
-      </mat-error>
-      <mat-error *ngIf="loginForm.get('email').hasError('email')">
-        Not a valid name
+      <mat-error *ngIf="email.invalid">
+        <div *ngIf="email.errors.required">You must enter a value</div>
+        <div *ngIf="email.errors.email">Not a valid name</div>
       </mat-error>
     </mat-form-field>
 
@@ -50,16 +43,11 @@
         required
       />
 
-      <mat-error *ngIf="loginForm.get('password').hasError('required')">
-        You must enter a value
-      </mat-error>
-      <mat-error
-        *ngIf="
-          loginForm.get('password').hasError('pattern') ||
-          loginForm.get('password').hasError('maxlength')
-        "
-      >
-        Not a valid name
+      <mat-error *ngIf="password.invalid">
+        <div *ngIf="password.errors.required">You must enter a value</div>
+        <div *ngIf="password.errors.pattern || password.errors.maxlength">
+          Not a valid name
+        </div>
       </mat-error>
 
       <button
