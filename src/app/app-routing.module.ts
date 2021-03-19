@@ -5,8 +5,8 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () =>
-      import('./landing/components/homepage/homepage-routing.module').then(
-        (m) => m.HomepageRoutingModule
+      import('./landing/landing-routing.module').then(
+        (m) => m.LandingRoutingModule
       )
   },
   { path: '**', redirectTo: '' }
