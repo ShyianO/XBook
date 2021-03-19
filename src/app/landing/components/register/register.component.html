@@ -7,7 +7,7 @@
   >
     <mat-form-field class="register-section__form-field" appearance="fill">
       <mat-label>Enter your name</mat-label>
-      <input matInput formControlName="name" required />
+      <input matInput type="text" formControlName="name" required />
 
       <mat-error *ngIf="loginForm.get('name').hasError('required')">
         You must enter a value
@@ -26,6 +26,7 @@
       <mat-label>Enter your email</mat-label>
       <input
         matInput
+        type="email"
         placeholder="pat@example.com"
         formControlName="email"
         required
@@ -43,6 +44,7 @@
       <mat-label>Enter your password</mat-label>
       <input
         matInput
+        type="password"
         formControlName="password"
         [type]="hide ? 'password' : 'text'"
         required
