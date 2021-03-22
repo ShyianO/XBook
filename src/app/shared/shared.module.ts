@@ -9,10 +9,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
-import {
-  MatButtonToggleGroup,
-  MatButtonToggleModule
-} from '@angular/material/button-toggle';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 const materialModules = [
   MatSliderModule,
@@ -24,7 +23,9 @@ const materialModules = [
   MatListModule,
   MatDividerModule,
   MatMenuModule,
-  MatButtonToggleModule
+  MatButtonToggleModule,
+  MatFormFieldModule,
+  MatInputModule
 ];
 
 @NgModule({

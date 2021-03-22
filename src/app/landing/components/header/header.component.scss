@@ -1,6 +1,8 @@
 .header {
   position: fixed;
   justify-content: space-between;
+  z-index: 1;
+  margin-bottom: 64px;
 
   &__nav {
     display: flex;
@@ -40,35 +42,3 @@
   }
 }
 
-.header-section {
-  height: 420px;
-  margin-top: 64px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-
-  background-color: #3f51b5;
-
-  &__heading {
-    margin: 15px 5px;
-
-    font-size: 56px;
-    font-weight: 700;
-    line-height: 56px;
-  }
-
-  &__title {
-    margin: 15px 0 25px;
-
-    font-size: 20px;
-    font-weight: 300;
-    line-height: 28px;
-  }
-
-  &__link {
-    margin-top: 50px;
-  }
-}

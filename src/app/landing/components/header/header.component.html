@@ -1,17 +1,23 @@
 <mat-toolbar color="primary" class="header mat-elevation-z6">
   <div class="header__nav">
-    <a href="#" class="header__nav-logo">
+    <a class="header__nav-logo" routerLink="/">
       <img src="assets/img/xbook-logo.png" alt="XBook" />
     </a>
 
     <mat-nav-list class="header__nav-list">
-      <a class="header__nav-list-item mat-body-1" mat-list-item href="#"
+      <a class="header__nav-list-item mat-body-1" mat-list-item routerLink="/"
         >Home</a
       >
-      <a class="header__nav-list-item mat-body-1" mat-list-item href="#"
+      <a
+        class="header__nav-list-item mat-body-1"
+        mat-list-item
+        routerLink="/landing/about"
         >About</a
       >
-      <a class="header__nav-list-item mat-body-1" mat-list-item href="#"
+      <a
+        class="header__nav-list-item mat-body-1"
+        mat-list-item
+        routerLink="/landing/contacts"
         >Contacts</a
       >
     </mat-nav-list>
@@ -41,16 +47,3 @@
     </a>
   </div>
 </mat-toolbar>
-
-<section class="header-section">
-  <div>
-    <h1 class="header-section__heading mat-headline">XBOOK</h1>
-    <h2 class="header-section__title mat-title">
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-    </h2>
-  </div>
-
-  <div class="header-section__link">
-    <a mat-raised-button href="#">Get started</a>
-  </div>
-</section>

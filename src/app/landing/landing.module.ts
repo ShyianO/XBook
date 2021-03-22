@@ -1,16 +1,37 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
+import { SharedModule } from '../shared/shared.module';
+import { LandingRoutingModule } from './landing-routing.module';
+
+import { MainComponent } from './components/main/main.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { MainComponent } from './components/main/main.component';
-import { SharedModule } from '../shared/shared.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { HomepageComponent } from './components/homepage/homepage.component';
+import { RegisterComponent } from './components/register/register.component';
+import { AboutComponent } from './components/about/about.component';
+import { ContactsComponent } from './components/contacts/contacts.component';
 
 @NgModule({
-  declarations: [HeaderComponent, FooterComponent, MainComponent],
-  imports: [CommonModule, SharedModule, ReactiveFormsModule],
-  providers: [],
-  exports: [HeaderComponent, FooterComponent, MainComponent]
+  declarations: [
+    MainComponent,
+    HeaderComponent,
+    FooterComponent,
+    HomepageComponent,
+    RegisterComponent,
+    AboutComponent,
+    ContactsComponent
+  ],
+  imports: [
+    CommonModule,
+    SharedModule,
+    ReactiveFormsModule,
+    FormsModule,
+    RouterModule,
+    LandingRoutingModule
+  ]
 })
 export class LandingModule {}
