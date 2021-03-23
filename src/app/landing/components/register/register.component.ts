@@ -35,7 +35,8 @@ export class RegisterComponent implements OnInit {
         Validators.required,
         Validators.maxLength(30),
         Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{4,20}')
-      ])
+      ]),
+      confirmPassword: new FormControl('', [Validators.required])
     });
   }
 
@@ -51,6 +52,10 @@ export class RegisterComponent implements OnInit {
     return this.loginForm.get('password');
   }
 
+  get confirmPassword(): AbstractControl {
+    return this.loginForm.get('confirmPassword');
+  }
+
   constructor(private store: Store) {}
 
   onSubmit({
@@ -60,10 +65,11 @@ export class RegisterComponent implements OnInit {
     value: IRegisterRequest;
     valid: boolean;
   }): void {
-    if (!valid) {
-      return;
+    if (valid) {
+      this.loading = true;
+      this.store.dispatch(new RegisterUser(value));
     }
 
-    this.store.dispatch(new RegisterUser(value));
+    this.loading = false;
   }
 }
