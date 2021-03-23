@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BackendlessService } from './backendless.service';
+import { BackendlessService } from './core/services/backendless.service';
 
 @Component({
   selector: 'app-root',

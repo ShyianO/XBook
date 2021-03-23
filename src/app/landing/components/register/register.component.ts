@@ -5,8 +5,9 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
-
+import { Store } from '@ngxs/store';
 import { IRegister } from './register.interface';
+import { RegisterUser } from '../../../store/register.action';
 
 @Component({
   selector: 'app-register',
@@ -14,8 +15,9 @@ import { IRegister } from './register.interface';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  hide = true;
   loginForm: FormGroup;
+  hide = true;
+  loading = false;
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
@@ -45,9 +47,13 @@ export class RegisterComponent implements OnInit {
     return this.loginForm.get('password');
   }
 
+  constructor(private store: Store) {}
+
   onSubmit({ value, valid }: { value: IRegister; valid: boolean }): void {
-    if (valid) {
-      alert(`Welcome, ${value.name}`);
+    if (!valid) {
+      return;
     }
+
+    this.store.dispatch(new RegisterUser(value));
   }
 }
