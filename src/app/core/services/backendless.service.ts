@@ -7,6 +7,7 @@ import { environment } from '../../../environments/environment';
 })
 export class BackendlessService {
   init(): void {
+    Backendless.serverURL = 'https://eu-api.backendless.com';
     Backendless.initApp(
       environment.backendless.APP_ID,
       environment.backendless.API_KEY

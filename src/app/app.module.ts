@@ -11,7 +11,7 @@ import { environment } from '../environments/environment';
 import { LandingModule } from './landing/landing.module';
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
-import { RegisterState } from './store/register.state';
+import { LandingState } from './store/landing.state';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,7 +23,7 @@ import { RegisterState } from './store/register.state';
     LandingModule,
     AppRoutingModule,
 
-    NgxsModule.forRoot([RegisterState], {
+    NgxsModule.forRoot([LandingState], {
       developmentMode: !environment.production
     }),
     NgxsReduxDevtoolsPluginModule.forRoot(),

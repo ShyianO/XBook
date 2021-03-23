@@ -6,8 +6,9 @@ import {
   Validators
 } from '@angular/forms';
 import { Store } from '@ngxs/store';
-import { IRegister } from './register.interface';
-import { RegisterUser } from '../../../store/register.action';
+
+import { IRegisterRequest } from '../../../core/interfaces/register.interface';
+import { RegisterUser } from '../../../store/landing.action';
 
 @Component({
   selector: 'app-register',
@@ -49,7 +50,13 @@ export class RegisterComponent implements OnInit {
 
   constructor(private store: Store) {}
 
-  onSubmit({ value, valid }: { value: IRegister; valid: boolean }): void {
+  onSubmit({
+    value,
+    valid
+  }: {
+    value: IRegisterRequest;
+    valid: boolean;
+  }): void {
     if (!valid) {
       return;
     }
