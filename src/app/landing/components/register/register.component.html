@@ -61,6 +61,6 @@
       </button>
     </mat-form-field>
 
-    <button mat-raised-button>Sign Up</button>
+    <button mat-raised-button [disabled]="loginForm.invalid">Sign Up</button>
   </form>
 </section>
