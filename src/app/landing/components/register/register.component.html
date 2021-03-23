@@ -29,7 +29,7 @@
 
       <mat-error *ngIf="email.invalid">
         <div *ngIf="email.errors.required">You must enter a value</div>
-        <div *ngIf="email.errors.email">Not a valid name</div>
+        <div *ngIf="email.errors.pattern">Not a valid name</div>
       </mat-error>
     </mat-form-field>
 
