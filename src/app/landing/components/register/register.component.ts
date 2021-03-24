@@ -9,8 +9,10 @@ import { Select, Store } from '@ngxs/store';
 
 import { IRegisterRequest } from '../../../core/interfaces/register.interface';
 import { RegisterUser } from '../../../store/landing.action';
-import { IRegisterModel, LandingState } from '../../../store/landing.state';
+import { LandingState } from '../../../store/landing.state';
 import { Observable } from 'rxjs';
+import { IUser } from '../../../core/interfaces/user.interface';
+import { ILandingState } from '../../../core/interfaces/landing.interface';
 
 @Component({
   selector: 'app-register',
@@ -21,7 +23,7 @@ export class RegisterComponent implements OnInit {
   loginForm: FormGroup;
   hide = true;
 
-  @Select(LandingState) user$: Observable<IRegisterModel>;
+  @Select(LandingState) loading$: Observable<ILandingState>;
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
@@ -69,8 +71,13 @@ export class RegisterComponent implements OnInit {
     valid: boolean;
   }): void {
     if (valid) {
-      this.store.dispatch(new RegisterUser(value));
-      console.log(this.user$);
+      const user = new IUser();
+
+      user.email = value.email;
+      user.name = value.name;
+      user.password = value.password;
+
+      this.store.dispatch(new RegisterUser(user));
     }
   }
 }

@@ -92,9 +92,9 @@
       </button>
     </mat-form-field>
 
-    <mat-spinner *ngIf="(user$ | async)?.user[0]?.loading" diameter="25" color="primary"></mat-spinner>
+    <mat-spinner *ngIf="(loading$ | async)?.loading" diameter="25" color="primary"></mat-spinner>
     <button
-      *ngIf="!(user$ | async)?.user[0]?.loading"
+      *ngIf="!(loading$ | async)?.loading"
       class="register-section__submit mat-spinner"
       mat-raised-button
       color="primary"
