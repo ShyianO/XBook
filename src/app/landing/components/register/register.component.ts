@@ -5,10 +5,12 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
-import { Store } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 
 import { IRegisterRequest } from '../../../core/interfaces/register.interface';
 import { RegisterUser } from '../../../store/landing.action';
+import { IRegisterModel, LandingState } from '../../../store/landing.state';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -18,7 +20,8 @@ import { RegisterUser } from '../../../store/landing.action';
 export class RegisterComponent implements OnInit {
   loginForm: FormGroup;
   hide = true;
-  loading = false;
+
+  @Select(LandingState) user$: Observable<IRegisterModel>;
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
@@ -66,10 +69,8 @@ export class RegisterComponent implements OnInit {
     valid: boolean;
   }): void {
     if (valid) {
-      this.loading = true;
       this.store.dispatch(new RegisterUser(value));
+      console.log(this.user$);
     }
-
-    this.loading = false;
   }
 }
