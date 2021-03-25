@@ -16,7 +16,8 @@ import { ILandingState } from '../core/interfaces/landing.interface';
   defaults: {
     user: null,
     loading: false,
-    flashMessage: false
+    successMessage: false,
+    errorMessage: false
   }
 })
 @Injectable()
@@ -51,14 +52,16 @@ export class LandingState {
   ): void {
     ctx.patchState({
       user: { ...user },
-      loading: false
+      loading: false,
+      successMessage: true
     });
   }
 
   @Action(RegisterUserError)
   registerUserError(ctx: StateContext<RegisterUserError>): void {
     ctx.patchState({
-      loading: false
+      loading: false,
+      errorMessage: true
     });
   }
 }

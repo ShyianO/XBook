@@ -92,9 +92,9 @@
       </button>
     </mat-form-field>
 
-    <mat-spinner *ngIf="(loading$ | async)?.loading" diameter="25" color="primary"></mat-spinner>
+    <mat-spinner *ngIf="(loading$ | async)" diameter="25" color="primary"></mat-spinner>
     <button
-      *ngIf="!(loading$ | async)?.loading"
+      *ngIf="!(loading$ | async)"
       class="register-section__submit mat-spinner"
       mat-raised-button
       color="primary"
@@ -103,4 +103,6 @@
       Sign Ups
     </button>
   </form>
+
+
 </section>

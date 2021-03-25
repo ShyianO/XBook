@@ -1,0 +1,26 @@
+.alert {
+  width: 450px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  .material-icons {
+    margin-bottom: 10px;
+    font-size: 48px;
+  }
+
+  &__title {
+    font-weight: 500;
+    text-transform: uppercase;
+    color: #000;
+  }
+
+  .primary {
+    color: #3f51b5;
+  }
+
+  .warn {
+    color: #f44336;
+  }
+}

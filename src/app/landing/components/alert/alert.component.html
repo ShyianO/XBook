@@ -1,0 +1,12 @@
+<div class="alert">
+  <span class="material-icons {{ data.style }}"> {{ data.icon }} </span>
+  <h1 class="alert__title" mat-dialog-title>{{ data.title }}</h1>
+  <div
+    [innerHTML]="data.description"
+    class="alert__description {{ data.style }}"
+    mat-dialog-content
+  ></div>
+  <div mat-dialog-actions>
+    <button mat-button mat-dialog-close>OK</button>
+  </div>
+</div>

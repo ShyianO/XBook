@@ -15,6 +15,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { AboutComponent } from './components/about/about.component';
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { LoginComponent } from './components/login/login.component';
+import { AlertComponent } from './components/alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { LoginComponent } from './components/login/login.component';
     RegisterComponent,
     AboutComponent,
     ContactsComponent,
-    LoginComponent
+    LoginComponent,
+    AlertComponent
   ],
   imports: [
     CommonModule,

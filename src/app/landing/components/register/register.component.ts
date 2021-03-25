@@ -5,14 +5,18 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
-import { Select, Store } from '@ngxs/store';
-
-import { IRegisterRequest } from '../../../core/interfaces/register.interface';
-import { RegisterUser } from '../../../store/landing.action';
-import { LandingState } from '../../../store/landing.state';
+import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { IUser } from '../../../core/interfaces/user.interface';
+
+import {
+  RegisterUser,
+  RegisterUserError,
+  RegisterUserSuccess
+} from '../../../store/landing.action';
+import { LandingState } from '../../../store/landing.state';
 import { ILandingState } from '../../../core/interfaces/landing.interface';
+import { AlertComponent } from '../alert/alert.component';
 
 @Component({
   selector: 'app-register',
@@ -23,7 +27,8 @@ export class RegisterComponent implements OnInit {
   loginForm: FormGroup;
   hide = true;
 
-  @Select(LandingState) loading$: Observable<ILandingState>;
+  @Select((state) => state.landingState.loading)
+  loading$: Observable<ILandingState>;
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
@@ -61,7 +66,11 @@ export class RegisterComponent implements OnInit {
     return this.loginForm.get('confirmPassword');
   }
 
-  constructor(private store: Store) {}
+  constructor(
+    private store: Store,
+    public dialog: MatDialog,
+    private actions$: Actions
+  ) {}
 
   onSubmit({
     value,
@@ -78,6 +87,38 @@ export class RegisterComponent implements OnInit {
       };
 
       this.store.dispatch(new RegisterUser(userRequest));
+
+      this.actions$
+        .pipe(ofActionDispatched(RegisterUserSuccess))
+        .subscribe(() => {
+          this.dialog.open(AlertComponent, {
+            data: {
+              title: 'Registration success',
+              description: `
+                Thank you. We have sent you email to test@test.com.<br>
+                Please click the link in that message to activate your account.
+              `,
+              style: 'primary',
+              icon: 'check_circle'
+            }
+          });
+        });
+
+      this.actions$
+        .pipe(ofActionDispatched(RegisterUserError))
+        .subscribe(() => {
+          this.dialog.open(AlertComponent, {
+            data: {
+              title: 'Registration failed',
+              description: `
+                We are sorry, but something went wrong. <br>
+                Please try again.
+              `,
+              style: 'warn',
+              icon: 'error_outline'
+            }
+          });
+        });
     }
   }
 }
