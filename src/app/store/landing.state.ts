@@ -1,53 +1,64 @@
 import { Injectable } from '@angular/core';
 import Backendless from 'backendless';
-import { Action, State, StateContext } from '@ngxs/store';
+import { Action, State, StateContext, Store } from '@ngxs/store';
 import { Router } from '@angular/router';
 
-import { RegisterUser } from './landing.action';
+import {
+  RegisterUser,
+  RegisterUserError,
+  RegisterUserSuccess
+} from './landing.action';
 import { IRegisterRequest } from '../core/interfaces/register.interface';
 import { ILandingState } from '../core/interfaces/landing.interface';
 
 @State<ILandingState>({
   name: 'landingState',
   defaults: {
-    user: [],
+    user: null,
     loading: false,
     flashMessage: false
   }
 })
 @Injectable()
 export class LandingState {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private store: Store) {}
 
   @Action(RegisterUser)
-  registerUser(
-    ctx: StateContext<ILandingState>,
-    { payload }: RegisterUser
-  ): void {
-    const state = ctx.getState();
+  registerUser(ctx: StateContext<ILandingState>, { user }: RegisterUser): void {
     const patchState = ctx.patchState;
 
     patchState({
       loading: true
     });
 
-    console.log(state);
-
-    Backendless.UserService.register<IRegisterRequest>(payload)
+    Backendless.UserService.register<IRegisterRequest>(user)
       .then((result: IRegisterRequest) => {
         console.log('Registered User:', result);
 
-        patchState({
-          user: [{ ...payload }],
-          loading: false
-        });
+        this.store.dispatch(new RegisterUserSuccess(user));
       })
       .catch((error) => {
         console.error('Can not Register User:', error.message);
 
-        patchState({
-          loading: false
-        });
+        this.store.dispatch(new RegisterUserError());
       });
+  }
+
+  @Action(RegisterUserSuccess)
+  registerUserSuccess(
+    ctx: StateContext<ILandingState>,
+    { user }: RegisterUser
+  ): void {
+    ctx.patchState({
+      user: { ...user },
+      loading: false
+    });
+  }
+
+  @Action(RegisterUserError)
+  registerUserError(ctx: StateContext<RegisterUserError>): void {
+    ctx.patchState({
+      loading: false
+    });
   }
 }

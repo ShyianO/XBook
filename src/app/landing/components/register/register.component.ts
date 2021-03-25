@@ -67,17 +67,17 @@ export class RegisterComponent implements OnInit {
     value,
     valid
   }: {
-    value: IRegisterRequest;
+    value: Record<string, string>;
     valid: boolean;
   }): void {
     if (valid) {
-      const user = new IUser();
+      const userRequest = {
+        email: value.email,
+        name: value.name,
+        password: value.password
+      };
 
-      user.email = value.email;
-      user.name = value.name;
-      user.password = value.password;
-
-      this.store.dispatch(new RegisterUser(user));
+      this.store.dispatch(new RegisterUser(userRequest));
     }
   }
 }
