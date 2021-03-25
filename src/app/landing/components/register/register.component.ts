@@ -14,7 +14,6 @@ import {
   RegisterUserError,
   RegisterUserSuccess
 } from '../../../store/landing.action';
-import { LandingState } from '../../../store/landing.state';
 import { ILandingState } from '../../../core/interfaces/landing.interface';
 import { AlertComponent } from '../alert/alert.component';
 
