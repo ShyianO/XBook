@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import {
   RegisterUser,
@@ -22,9 +22,10 @@ import { AlertComponent } from '../alert/alert.component';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   hide = true;
+  registerSubscription: Subscription;
 
   @Select((state) => state.landingState.loading)
   loading$: Observable<ILandingState>;
@@ -36,16 +37,43 @@ export class RegisterComponent implements OnInit {
         Validators.maxLength(30),
         Validators.pattern('[a-zA-Z ]*')
       ]),
-      email: new FormControl('', [
-        Validators.required,
-        Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')
-      ]),
+      email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [
         Validators.required,
         Validators.maxLength(30),
         Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{4,20}')
       ]),
       confirmPassword: new FormControl('', [Validators.required])
+    });
+
+    this.registerSubscription = this.actions$
+      .pipe(ofActionDispatched(RegisterUserSuccess))
+      .subscribe(() => {
+        this.dialog.open(AlertComponent, {
+          data: {
+            title: 'Registration success',
+            description: `
+                Thank you. We have sent you email to test@test.com.<br>
+                Please click the link in that message to activate your account.
+              `,
+            style: 'primary',
+            icon: 'check_circle'
+          }
+        });
+      });
+
+    this.actions$.pipe(ofActionDispatched(RegisterUserError)).subscribe(() => {
+      this.dialog.open(AlertComponent, {
+        data: {
+          title: 'Registration failed',
+          description: `
+                We are sorry, but something went wrong. <br>
+                Please try again.
+              `,
+          style: 'warn',
+          icon: 'error_outline'
+        }
+      });
     });
   }
 
@@ -86,38 +114,13 @@ export class RegisterComponent implements OnInit {
       };
 
       this.store.dispatch(new RegisterUser(userRequest));
+    }
+  }
 
-      this.actions$
-        .pipe(ofActionDispatched(RegisterUserSuccess))
-        .subscribe(() => {
-          this.dialog.open(AlertComponent, {
-            data: {
-              title: 'Registration success',
-              description: `
-                Thank you. We have sent you email to test@test.com.<br>
-                Please click the link in that message to activate your account.
-              `,
-              style: 'primary',
-              icon: 'check_circle'
-            }
-          });
-        });
-
-      this.actions$
-        .pipe(ofActionDispatched(RegisterUserError))
-        .subscribe(() => {
-          this.dialog.open(AlertComponent, {
-            data: {
-              title: 'Registration failed',
-              description: `
-                We are sorry, but something went wrong. <br>
-                Please try again.
-              `,
-              style: 'warn',
-              icon: 'error_outline'
-            }
-          });
-        });
+  ngOnDestroy(): void {
+    if (this.registerSubscription) {
+      this.registerSubscription.unsubscribe();
+      this.registerSubscription = null;
     }
   }
 }
