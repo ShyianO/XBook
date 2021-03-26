@@ -3,4 +3,5 @@ export interface IAlert {
   description: string;
   style: string;
   icon: string;
+  redirectTo: string;
 }

@@ -16,6 +16,7 @@ import {
 } from '../../../store/landing.action';
 import { ILandingState } from '../../../core/interfaces/landing.interface';
 import { AlertComponent } from '../alert/alert.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -54,11 +55,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
           data: {
             title: 'Registration success',
             description: `
-                Thank you. We have sent you email to test@test.com.<br>
-                Please click the link in that message to activate your account.
+                Thank you for registration<br>
+                You will be redirected to login page
               `,
             style: 'primary',
-            icon: 'check_circle'
+            icon: 'check_circle',
+            redirectTo: '/landing/login'
           }
         });
       });
@@ -70,8 +72,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
           data: {
             title: 'Registration failed',
             description: `
-                We are sorry, but something went wrong. <br>
-                Please try again.
+                We are sorry, but something went wrong <br>
+                Please try again
               `,
             style: 'warn',
             icon: 'error_outline'
@@ -99,7 +101,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store,
     public dialog: MatDialog,
-    private actions$: Actions
+    private actions$: Actions,
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   onSubmit({
