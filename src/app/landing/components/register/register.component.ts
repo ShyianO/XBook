@@ -25,7 +25,8 @@ import { AlertComponent } from '../alert/alert.component';
 export class RegisterComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   hide = true;
-  registerSubscription: Subscription;
+  registerSuccessSubscription: Subscription;
+  registerErrorSubscription: Subscription;
 
   @Select((state) => state.landingState.loading)
   loading$: Observable<ILandingState>;
@@ -46,7 +47,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       confirmPassword: new FormControl('', [Validators.required])
     });
 
-    this.registerSubscription = this.actions$
+    this.registerSuccessSubscription = this.actions$
       .pipe(ofActionDispatched(RegisterUserSuccess))
       .subscribe(() => {
         this.dialog.open(AlertComponent, {
@@ -62,19 +63,21 @@ export class RegisterComponent implements OnInit, OnDestroy {
         });
       });
 
-    this.actions$.pipe(ofActionDispatched(RegisterUserError)).subscribe(() => {
-      this.dialog.open(AlertComponent, {
-        data: {
-          title: 'Registration failed',
-          description: `
+    this.registerErrorSubscription = this.actions$
+      .pipe(ofActionDispatched(RegisterUserError))
+      .subscribe(() => {
+        this.dialog.open(AlertComponent, {
+          data: {
+            title: 'Registration failed',
+            description: `
                 We are sorry, but something went wrong. <br>
                 Please try again.
               `,
-          style: 'warn',
-          icon: 'error_outline'
-        }
+            style: 'warn',
+            icon: 'error_outline'
+          }
+        });
       });
-    });
   }
 
   get name(): AbstractControl {
@@ -118,9 +121,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.registerSubscription) {
-      this.registerSubscription.unsubscribe();
-      this.registerSubscription = null;
+    if (this.registerSuccessSubscription) {
+      this.registerSuccessSubscription.unsubscribe();
+      this.registerSuccessSubscription = null;
+    }
+
+    if (this.registerErrorSubscription) {
+      this.registerErrorSubscription.unsubscribe();
+      this.registerErrorSubscription = null;
     }
   }
 }
