@@ -46,7 +46,7 @@
       <mat-error *ngIf="password.invalid">
         <div *ngIf="password.errors.required">You must enter a value</div>
         <div *ngIf="password.errors.pattern || password.errors.maxlength">
-          Not a valid name
+          Not a valid password
         </div>
       </mat-error>
 
@@ -97,10 +97,10 @@
       *ngIf="!(loading$ | async)"
       class="register-section__submit mat-spinner"
       mat-raised-button
-      color="primary"
+      color="accent"
       [disabled]="loginForm.invalid"
     >
-      Sign Ups
+      Register
     </button>
   </form>
 
