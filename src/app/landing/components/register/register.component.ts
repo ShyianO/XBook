@@ -12,11 +12,11 @@ import { Observable, Subscription } from 'rxjs';
 import {
   RegisterUser,
   RegisterUserError,
-  RegisterUserSuccess
+  RegisterUserSuccess,
+  UserExists
 } from '../../../store/landing.action';
 import { ILandingState } from '../../../core/interfaces/landing.interface';
 import { AlertComponent } from '../alert/alert.component';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -32,9 +32,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
   @Select((state) => state.landingState.loading)
   loading$: Observable<ILandingState>;
 
+  @Select((state) => state.landingState.userExists)
+  userExists$: Observable<ILandingState>;
+
   ngOnInit(): void {
     this.loginForm = new FormGroup({
-      name: new FormControl('', [
+      username: new FormControl('', [
         Validators.required,
         Validators.maxLength(30),
         Validators.pattern('[a-zA-Z ]*')
@@ -82,8 +85,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
       });
   }
 
-  get name(): AbstractControl {
-    return this.loginForm.get('name');
+  get username(): AbstractControl {
+    return this.loginForm.get('username');
   }
 
   get email(): AbstractControl {
@@ -101,10 +104,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store,
     public dialog: MatDialog,
-    private actions$: Actions,
-    private router: Router,
-    private route: ActivatedRoute
+    private actions$: Actions
   ) {}
+
+  onChange(username): void {
+    this.store.dispatch(new UserExists(username));
+  }
 
   onSubmit({
     value,
@@ -116,7 +121,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     if (valid) {
       const userRequest = {
         email: value.email,
-        name: value.name,
+        username: value.username,
         password: value.password
       };
 

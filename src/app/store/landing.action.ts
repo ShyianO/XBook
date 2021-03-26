@@ -13,3 +13,8 @@ export class RegisterUserSuccess {
 export class RegisterUserError {
   static readonly type = '[User] RegisterError';
 }
+
+export class UserExists {
+  static readonly type = '[User] Exist';
+  constructor(public username: string) {}
+}

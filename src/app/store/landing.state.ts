@@ -6,18 +6,19 @@ import { Router } from '@angular/router';
 import {
   RegisterUser,
   RegisterUserError,
-  RegisterUserSuccess
+  RegisterUserSuccess,
+  UserExists
 } from './landing.action';
 import { IRegisterRequest } from '../core/interfaces/register.interface';
 import { ILandingState } from '../core/interfaces/landing.interface';
+import { delay } from 'rxjs/operators';
 
 @State<ILandingState>({
   name: 'landingState',
   defaults: {
     user: null,
     loading: false,
-    successMessage: false,
-    errorMessage: false
+    userExists: false
   }
 })
 @Injectable()
@@ -52,16 +53,60 @@ export class LandingState {
   ): void {
     ctx.patchState({
       user: { ...user },
-      loading: false,
-      successMessage: true
+      loading: false
     });
   }
 
   @Action(RegisterUserError)
-  registerUserError(ctx: StateContext<RegisterUserError>): void {
+  registerUserError(ctx: StateContext<ILandingState>): void {
     ctx.patchState({
-      loading: false,
-      errorMessage: true
+      loading: false
     });
+  }
+
+  @Action(UserExists)
+  userExists(ctx: StateContext<ILandingState>, { username }: UserExists): void {
+    ctx.patchState({
+      userExists: false
+    });
+
+    const PAGE_SIZE = 100;
+
+    const fetchAllObjects = async (tableName) => {
+      let offset = 0;
+      let totalCount = 0;
+      let lastPageSize = 0;
+      const itemsCollection = [];
+
+      do {
+        const pageQuery = Backendless.DataQueryBuilder.create();
+
+        pageQuery.setPageSize(PAGE_SIZE);
+        pageQuery.setOffset(offset);
+
+        const items = await Backendless.Data.of(tableName).find(pageQuery);
+
+        lastPageSize = items.length;
+
+        itemsCollection.push(...items);
+
+        offset += PAGE_SIZE;
+        totalCount += lastPageSize;
+      } while (lastPageSize >= PAGE_SIZE);
+
+      itemsCollection.forEach((user) => {
+        if (user.username === username) {
+          ctx.patchState({
+            userExists: true
+          });
+        }
+      });
+
+      console.log(ctx.getState());
+    };
+
+    setTimeout(() => {
+      Promise.resolve().then(() => fetchAllObjects('Users'));
+    }, 1000);
   }
 }
