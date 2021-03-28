@@ -28,6 +28,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   hide = true;
   registerSuccessSubscription: Subscription;
   registerErrorSubscription: Subscription;
+  dispatchDelay: number;
 
   @Select((state) => state.landingState.loading)
   loading$: Observable<ILandingState>;
@@ -108,7 +109,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
   ) {}
 
   onChange(username): void {
-    this.store.dispatch(new UserExists(username));
+    clearTimeout(this.dispatchDelay);
+    this.dispatchDelay = setTimeout(() => {
+      this.store.dispatch(new UserExists(username));
+    }, 500);
   }
 
   onSubmit({

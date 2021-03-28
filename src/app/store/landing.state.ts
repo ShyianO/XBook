@@ -105,8 +105,6 @@ export class LandingState {
       console.log(ctx.getState());
     };
 
-    setTimeout(() => {
-      Promise.resolve().then(() => fetchAllObjects('Users'));
-    }, 1000);
+    Promise.resolve().then(() => fetchAllObjects('Users'));
   }
 }
