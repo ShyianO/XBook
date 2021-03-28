@@ -42,6 +42,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.maxLength(30),
         Validators.pattern('[a-zA-Z ]*')
+        // Validators.requiredTrue
       ]),
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [

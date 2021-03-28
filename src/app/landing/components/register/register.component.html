@@ -14,21 +14,15 @@
         (ngModelChange)="onChange($event)"
         required
       />
-      <div>{{userExists$ | async | json}}</div>
+
       <mat-error *ngIf="username.invalid">
         <div *ngIf="username.errors.required">You must enter a value</div>
         <div *ngIf="username.errors.pattern || username.errors.maxlength">
           Not a valid username
         </div>
-        <div *ngIf="userExists$ | async">
-          This username already exists
-        </div>
       </mat-error>
 
-      <div *ngIf="userExists$ | async">
-        This username already exists
-      </div>
-
+      <div *ngIf="userExists$ | async">This username already exists</div>
     </mat-form-field>
 
     <mat-form-field class="register-section__form-field" appearance="fill">
