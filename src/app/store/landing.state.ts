@@ -66,45 +66,25 @@ export class LandingState {
 
   @Action(UserExists)
   userExists(ctx: StateContext<ILandingState>, { username }: UserExists): void {
-    ctx.patchState({
-      userExists: false
-    });
+    const query = Backendless.DataQueryBuilder.create().setWhereClause(
+      `username = '${username}'`
+    );
 
-    const PAGE_SIZE = 100;
-
-    const fetchAllObjects = async (tableName) => {
-      let offset = 0;
-      let totalCount = 0;
-      let lastPageSize = 0;
-      const itemsCollection = [];
-
-      do {
-        const pageQuery = Backendless.DataQueryBuilder.create();
-
-        pageQuery.setPageSize(PAGE_SIZE);
-        pageQuery.setOffset(offset);
-
-        const items = await Backendless.Data.of(tableName).find(pageQuery);
-
-        lastPageSize = items.length;
-
-        itemsCollection.push(...items);
-
-        offset += PAGE_SIZE;
-        totalCount += lastPageSize;
-      } while (lastPageSize >= PAGE_SIZE);
-
-      itemsCollection.forEach((user) => {
-        if (user.username === username) {
+    Backendless.Data.of('Users')
+      .find(query)
+      .then((foundContacts) => {
+        if (foundContacts.length > 0) {
           ctx.patchState({
             userExists: true
           });
+        } else {
+          ctx.patchState({
+            userExists: false
+          });
         }
+      })
+      .catch((fault) => {
+        console.log(fault);
       });
-
-      console.log(ctx.getState());
-    };
-
-    Promise.resolve().then(() => fetchAllObjects('Users'));
   }
 }
