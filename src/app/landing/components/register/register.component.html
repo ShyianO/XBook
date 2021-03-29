@@ -11,8 +11,8 @@
         matInput
         type="text"
         formControlName="username"
-        (ngModelChange)="onChange($event)"
         required
+        #usernameInput
       />
 
       <mat-error *ngIf="username.invalid">

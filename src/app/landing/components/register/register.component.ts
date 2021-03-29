@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -7,7 +13,8 @@ import {
 } from '@angular/forms';
 import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable, Subscription } from 'rxjs';
+import { fromEvent, Observable, Subscription } from 'rxjs';
+import { debounceTime, map } from 'rxjs/operators';
 
 import {
   RegisterUser,
@@ -28,7 +35,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
   hide = true;
   registerSuccessSubscription: Subscription;
   registerErrorSubscription: Subscription;
-  dispatchDelay: number;
+
+  @ViewChild('usernameInput', { static: true }) usernameInput: ElementRef;
 
   @Select((state) => state.landingState.loading)
   loading$: Observable<ILandingState>;
@@ -84,6 +92,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
           }
         });
       });
+
+    fromEvent(this.usernameInput.nativeElement, 'keyup')
+      .pipe(
+        map((event: any) => {
+          return event.target.value;
+        }),
+        debounceTime(500)
+      )
+      .subscribe((username) => {
+        this.store.dispatch(new UserExists(username));
+      });
   }
 
   get username(): AbstractControl {
@@ -107,13 +126,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private actions$: Actions
   ) {}
-
-  onChange(username): void {
-    clearTimeout(this.dispatchDelay);
-    this.dispatchDelay = setTimeout(() => {
-      this.store.dispatch(new UserExists(username));
-    }, 500);
-  }
 
   onSubmit({
     value,
