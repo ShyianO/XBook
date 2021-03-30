@@ -26,6 +26,12 @@
         </div>
         <div *ngIf="userExists">This username already exists</div>
       </mat-error>
+      <span
+        *ngIf="!username.invalid"
+        class="material-icons register-section__form-suffix"
+        matSuffix
+        >check_circle</span
+      >
     </mat-form-field>
 
     <mat-form-field class="register-section__form-field" appearance="outline">
