@@ -20,9 +20,8 @@
         <div *ngIf="username.errors.pattern || username.errors.maxlength">
           Not a valid username
         </div>
+        <div *ngIf="userExists">This username already exists</div>
       </mat-error>
-
-      <div *ngIf="userExists$ | async">This username already exists</div>
     </mat-form-field>
 
     <mat-form-field class="register-section__form-field" appearance="fill">
@@ -37,7 +36,7 @@
 
       <mat-error *ngIf="email.invalid">
         <div *ngIf="email.errors.required">You must enter a value</div>
-        <div *ngIf="email.errors.pattern">Not a valid name</div>
+        <div *ngIf="email.errors.email">Not a valid email</div>
       </mat-error>
     </mat-form-field>
 

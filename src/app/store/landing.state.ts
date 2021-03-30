@@ -11,7 +11,6 @@ import {
 } from './landing.action';
 import { IRegisterRequest } from '../core/interfaces/register.interface';
 import { ILandingState } from '../core/interfaces/landing.interface';
-import { delay } from 'rxjs/operators';
 
 @State<ILandingState>({
   name: 'landingState',

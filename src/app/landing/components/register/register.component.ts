@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   OnDestroy,
@@ -9,12 +10,13 @@ import {
   AbstractControl,
   FormControl,
   FormGroup,
+  ValidationErrors,
   Validators
 } from '@angular/forms';
 import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
 import { MatDialog } from '@angular/material/dialog';
-import { fromEvent, Observable, Subscription } from 'rxjs';
-import { debounceTime, map } from 'rxjs/operators';
+import { fromEvent, Observable, Subject, Subscription } from 'rxjs';
+import { debounceTime, map, takeUntil } from 'rxjs/operators';
 
 import {
   RegisterUser,
@@ -22,7 +24,6 @@ import {
   RegisterUserSuccess,
   UserExists
 } from '../../../store/landing.action';
-import { ILandingState } from '../../../core/interfaces/landing.interface';
 import { AlertComponent } from '../alert/alert.component';
 
 @Component({
@@ -33,23 +34,24 @@ import { AlertComponent } from '../alert/alert.component';
 export class RegisterComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   hide = true;
-  registerSuccessSubscription: Subscription;
-  registerErrorSubscription: Subscription;
+  subject = new Subject();
+  userExists: boolean;
 
   @ViewChild('usernameInput', { static: true }) usernameInput: ElementRef;
 
   @Select((state) => state.landingState.loading)
-  loading$: Observable<ILandingState>;
+  loading$: Observable<boolean>;
 
   @Select((state) => state.landingState.userExists)
-  userExists$: Observable<ILandingState>;
+  userExists$: Observable<boolean>;
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
       username: new FormControl('', [
         Validators.required,
         Validators.maxLength(30),
-        Validators.pattern('[a-zA-Z ]*')
+        Validators.pattern('[a-zA-Z ]*'),
+        () => this.validateUsername()
       ]),
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [
@@ -60,8 +62,15 @@ export class RegisterComponent implements OnInit, OnDestroy {
       confirmPassword: new FormControl('', [Validators.required])
     });
 
-    this.registerSuccessSubscription = this.actions$
-      .pipe(ofActionDispatched(RegisterUserSuccess))
+    this.userExists$
+      .pipe(takeUntil(this.subject))
+      .subscribe((value: boolean) => {
+        this.userExists = value;
+        this.username.updateValueAndValidity();
+      });
+
+    this.actions$
+      .pipe(ofActionDispatched(RegisterUserSuccess), takeUntil(this.subject))
       .subscribe(() => {
         this.dialog.open(AlertComponent, {
           data: {
@@ -77,8 +86,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
         });
       });
 
-    this.registerErrorSubscription = this.actions$
-      .pipe(ofActionDispatched(RegisterUserError))
+    this.actions$
+      .pipe(ofActionDispatched(RegisterUserError), takeUntil(this.subject))
       .subscribe(() => {
         this.dialog.open(AlertComponent, {
           data: {
@@ -98,7 +107,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
         map((event: any) => {
           return event.target.value;
         }),
-        debounceTime(500)
+        debounceTime(500),
+        takeUntil(this.subject)
       )
       .subscribe((username) => {
         this.store.dispatch(new UserExists(username));
@@ -145,15 +155,18 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    if (this.registerSuccessSubscription) {
-      this.registerSuccessSubscription.unsubscribe();
-      this.registerSuccessSubscription = null;
-    }
+  validateUsername(): ValidationErrors {
+    return this.userExists
+      ? {
+          validateUsername: {
+            valid: false
+          }
+        }
+      : null;
+  }
 
-    if (this.registerErrorSubscription) {
-      this.registerErrorSubscription.unsubscribe();
-      this.registerErrorSubscription = null;
-    }
+  ngOnDestroy(): void {
+    this.subject.next();
+    this.subject.complete();
   }
 }
