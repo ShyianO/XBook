@@ -60,7 +60,7 @@
       color="primary"
     ></mat-spinner>
     <button
-      *ngIf="!(loading$ | async)"
+      *ngIf="(loading$ | async) === false"
       class="contacts__submit mat-spinner"
       mat-raised-button
       color="accent"
