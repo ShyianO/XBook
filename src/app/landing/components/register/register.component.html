@@ -1,52 +1,76 @@
 <section class="register-section">
+  <h2 class="register-section__heading mat-h2">Registration form</h2>
+
   <form
     class="register-section__form"
     novalidate
     [formGroup]="loginForm"
     (ngSubmit)="onSubmit(loginForm)"
   >
-    <mat-form-field class="register-section__form-field" appearance="fill">
-      <mat-label>Enter your name</mat-label>
-      <input matInput type="text" formControlName="name" required />
+    <mat-form-field class="register-section__form-field" appearance="outline">
+      <mat-label>Username</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="username"
+        required
+        autocomplete="off"
+        #usernameInput
+      />
+      <mat-hint>Username must be unique</mat-hint>
 
-      <mat-error *ngIf="name.invalid">
-        <div *ngIf="name.errors.required">You must enter a value</div>
-        <div *ngIf="name.errors.pattern || name.errors.maxlength">
-          Not a valid name
+      <mat-error *ngIf="username.invalid">
+        <div *ngIf="username.errors.required">You must enter a value</div>
+        <div *ngIf="username.errors.pattern || username.errors.maxlength">
+          Not a valid username
         </div>
+        <div *ngIf="userExists">This username already exists</div>
       </mat-error>
+      <span
+        *ngIf="!username.invalid"
+        class="material-icons register-section__form-suffix"
+        matSuffix
+        >check_circle</span
+      >
     </mat-form-field>
 
-    <mat-form-field class="register-section__form-field" appearance="fill">
-      <mat-label>Enter your email</mat-label>
+    <mat-form-field class="register-section__form-field" appearance="outline">
+      <mat-label>Email</mat-label>
       <input
         matInput
         type="email"
         placeholder="pat@example.com"
         formControlName="email"
+        autocomplete="off"
         required
       />
+      <mat-hint>Enter your email address</mat-hint>
 
       <mat-error *ngIf="email.invalid">
         <div *ngIf="email.errors.required">You must enter a value</div>
-        <div *ngIf="email.errors.email">Not a valid name</div>
+        <div *ngIf="email.errors.email">Not a valid email</div>
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field class="register-section__form-field" appearance="fill">
-      <mat-label>Enter your password</mat-label>
+    <mat-form-field class="register-section__form-field" appearance="outline">
+      <mat-label>Password</mat-label>
       <input
         matInput
         type="password"
         formControlName="password"
         [type]="hide ? 'password' : 'text'"
+        autocomplete="off"
         required
       />
+      <mat-hint
+        >Password requirements: at least 4 characters, at least 1 letter, at
+        least 1 number
+      </mat-hint>
 
       <mat-error *ngIf="password.invalid">
         <div *ngIf="password.errors.required">You must enter a value</div>
         <div *ngIf="password.errors.pattern || password.errors.maxlength">
-          Not a valid name
+          Not a valid password
         </div>
       </mat-error>
 
@@ -61,6 +85,52 @@
       </button>
     </mat-form-field>
 
-    <button mat-raised-button>Sign Up</button>
+    <mat-form-field class="register-section__form-field" appearance="outline">
+      <mat-label>Confirm password</mat-label>
+      <input
+        matInput
+        type="password"
+        formControlName="confirmPassword"
+        [type]="hide ? 'password' : 'text'"
+        pattern="{{ password.value }}"
+        autocomplete="off"
+        required
+      />
+      <mat-hint>Enter your password again</mat-hint>
+
+      <mat-error *ngIf="confirmPassword.invalid">
+        <div *ngIf="confirmPassword.errors.required">
+          You must enter a value
+        </div>
+        <div *ngIf="confirmPassword.errors.pattern">
+          Please make sure your passwords match
+        </div>
+      </mat-error>
+
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hide = !hide"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide"
+      >
+        <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <mat-spinner
+      *ngIf="loading$ | async"
+      diameter="25"
+      color="primary"
+    ></mat-spinner>
+    <button
+      *ngIf="!(loading$ | async)"
+      class="register-section__submit mat-spinner"
+      mat-raised-button
+      color="accent"
+      [disabled]="loginForm.invalid"
+    >
+      Register
+    </button>
   </form>
 </section>

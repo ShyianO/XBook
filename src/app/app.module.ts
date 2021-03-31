@@ -7,11 +7,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
-import { TodoState } from './store/todo.state';
 
 import { LandingModule } from './landing/landing.module';
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
+import { LandingState } from './store/landing.state';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,7 +23,7 @@ import { AppRoutingModule } from './app-routing.module';
     LandingModule,
     AppRoutingModule,
 
-    NgxsModule.forRoot([TodoState], {
+    NgxsModule.forRoot([LandingState], {
       developmentMode: !environment.production
     }),
     NgxsReduxDevtoolsPluginModule.forRoot(),
