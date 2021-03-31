@@ -1,1 +1,72 @@
-<p>contacts works!</p>
+<section class="contacts">
+  <div class="contacts__nav">
+    <h1 class="contacts__nav-heading">Contact us</h1>
+  </div>
+
+  <form
+    class="contacts__form"
+    [formGroup]="contactsForm"
+    (ngSubmit)="onSubmit(contactsForm)"
+  >
+    <mat-form-field class="contacts__form-field" appearance="outline">
+      <mat-label>Name</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="name"
+        required
+        autocomplete="off"
+      />
+      <mat-hint>Enter your name</mat-hint>
+
+      <mat-error *ngIf="name.invalid">
+        <div *ngIf="name.errors.required">You must enter your name</div>
+        <div *ngIf="name.errors.maxlength">Not a valid name</div>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="contacts__form-field" appearance="outline">
+      <mat-label>Email</mat-label>
+      <input
+        matInput
+        type="email"
+        placeholder="pat@example.com"
+        formControlName="email"
+        autocomplete="off"
+        required
+      />
+      <mat-hint>Enter your email address</mat-hint>
+
+      <mat-error *ngIf="email.invalid">
+        <div *ngIf="email.errors.required">You must enter your email</div>
+        <div *ngIf="email.errors.email">Not a valid email</div>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="contacts__form-field" appearance="outline">
+      <mat-label>Message</mat-label>
+      <textarea matInput formControlName="message" required></textarea>
+      <mat-hint>Enter your message</mat-hint>
+
+      <mat-error *ngIf="message.invalid">
+        <div *ngIf="message.errors.required">You must enter your message</div>
+        <div *ngIf="message.errors.maxlength">This message is too long</div>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-spinner
+      *ngIf="loading$ | async"
+      diameter="25"
+      color="primary"
+    ></mat-spinner>
+    <button
+      *ngIf="!(loading$ | async)"
+      class="contacts__submit mat-spinner"
+      mat-raised-button
+      color="accent"
+      [disabled]="contactsForm.invalid"
+    >
+      Send
+    </button>
+  </form>
+</section>
