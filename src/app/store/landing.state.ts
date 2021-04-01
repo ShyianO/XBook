@@ -108,6 +108,8 @@ export class LandingState {
       })
       .catch((error) => {
         console.log(error);
+
+        this.store.dispatch(new SendMessageError());
       });
   }
 
