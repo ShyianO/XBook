@@ -7,6 +7,9 @@ import {
   RegisterUser,
   RegisterUserError,
   RegisterUserSuccess,
+  SendMessage,
+  SendMessageError,
+  SendMessageSuccess,
   UserExists
 } from './landing.action';
 import { IRegisterRequest } from '../core/interfaces/register.interface';
@@ -85,5 +88,42 @@ export class LandingState {
       .catch((fault) => {
         console.log(fault);
       });
+  }
+
+  @Action(SendMessage)
+  sendMessage(
+    ctx: StateContext<ILandingState>,
+    { message }: SendMessage
+  ): void {
+    ctx.patchState({
+      loading: true
+    });
+
+    Backendless.Data.of('Contacts')
+      .save(message)
+      .then((success) => {
+        console.log(success);
+
+        this.store.dispatch(new SendMessageSuccess());
+      })
+      .catch((error) => {
+        console.log(error);
+
+        this.store.dispatch(new SendMessageError());
+      });
+  }
+
+  @Action(SendMessageSuccess)
+  sendMessageSuccess(ctx: StateContext<ILandingState>): void {
+    ctx.patchState({
+      loading: false
+    });
+  }
+
+  @Action(SendMessageError)
+  sendMessageError(ctx: StateContext<ILandingState>): void {
+    ctx.patchState({
+      loading: false
+    });
   }
 }

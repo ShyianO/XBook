@@ -1,0 +1,37 @@
+.contacts {
+  &__nav {
+    padding: 0 20px;
+    background: #3f51b5;
+
+    &-heading {
+      font-weight: 400;
+      margin: 0;
+      padding: 28px 8px;
+      font-size: 24px;
+    }
+  }
+
+  &__form {
+    margin: 50px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &-field {
+      width: 250px;
+      margin-bottom: 10px;
+
+      &:nth-child(3) {
+        margin-bottom: 20px;
+      }
+
+      &-textarea {
+        min-height: 120px;
+      }
+    }
+  }
+
+  &__submit {
+    font-size: 20px;
+  }
+}
