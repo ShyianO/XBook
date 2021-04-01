@@ -9,10 +9,25 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
+      "i18n": {
+        "sourceLocale": "en-US",
+        "locales": {
+          "en": {
+            "translation": "src/locale/messages.en.xlf",
+            "baseHref": "en"
+          },
+          "uk": {
+            "translation": "src/locale/messages.uk.xlf",
+            "baseHref": "uk"
+          }
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "localize": true,
+            "i18nMissingTranslation": "error",
             "outputPath": "dist/xbook",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -53,6 +68,16 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "uk": {
+              "localize": [
+                "uk"
+              ]
+            },
+            "en": {
+              "localize": [
+                "en"
+              ]
             }
           }
         },
@@ -64,6 +89,12 @@
           "configurations": {
             "production": {
               "browserTarget": "xbook:build:production"
+            },
+            "uk": {
+              "browserTarget": "xbook:build:uk"
+            },
+            "en": {
+              "browserTarget": "xbook:build:en"
             }
           }
         },

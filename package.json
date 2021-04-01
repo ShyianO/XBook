@@ -8,7 +8,11 @@
     "test": "ng test",
     "lint": "tsc --noEmit && eslint . --ext js,ts,json --quiet --fix",
     "lint:nofix": "tsc --noEmit && eslint . --ext js,ts,json",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "extract": "ng extract-i18n --output-path=locale",
+    "build-locale:en": "ng build --configuration=en",
+    "build-locale:uk": "ng build --configuration=uk",
+    "build-locale": "npm run build-locale:en && npm run build-locale:uk"
   },
   "private": true,
   "dependencies": {
@@ -35,6 +39,7 @@
     "@angular-devkit/build-angular": "~0.1102.3",
     "@angular/cli": "~11.2.3",
     "@angular/compiler-cli": "~11.2.4",
+    "@angular/localize": "^11.2.4",
     "@types/jasmine": "~3.6.0",
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "^4.17.0",
