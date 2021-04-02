@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { SharedModule } from '../shared/shared.module';
@@ -16,6 +15,7 @@ import { AboutComponent } from './components/about/about.component';
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { LoginComponent } from './components/login/login.component';
 import { AlertComponent } from './components/alert/alert.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -35,7 +35,8 @@ import { AlertComponent } from './components/alert/alert.component';
     ReactiveFormsModule,
     FormsModule,
     RouterModule,
-    LandingRoutingModule
+    LandingRoutingModule,
+    TranslateModule
   ]
 })
 export class LandingModule {}
