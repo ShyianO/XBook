@@ -5,20 +5,23 @@
     </a>
 
     <mat-nav-list class="header__nav-list">
-      <a class="header__nav-list-item mat-body-1" mat-list-item routerLink="/"
-        >{{"HEADER.NAV.HOME" | translate}}</a
+      <a
+        class="header__nav-list-item mat-body-1"
+        mat-list-item
+        routerLink="/"
+        >{{ 'HEADER.NAV.HOME' | translate }}</a
       >
       <a
         class="header__nav-list-item mat-body-1"
         mat-list-item
         routerLink="/landing/about"
-        >{{"HEADER.NAV.ABOUT" | translate}}</a
+        >{{ 'HEADER.NAV.ABOUT' | translate }}</a
       >
       <a
         class="header__nav-list-item mat-body-1"
         mat-list-item
         routerLink="/landing/contacts"
-        >{{"HEADER.NAV.CONTACTS" | translate}}</a
+        >{{ 'HEADER.NAV.CONTACTS' | translate }}</a
       >
     </mat-nav-list>
   </div>
@@ -27,11 +30,10 @@
     <mat-menu #langMenu class="header__controls-select">
       <button
         class="header__controls-option"
-
         mat-menu-item
         *ngFor="let lang of translate.getLangs()"
         [value]="lang"
-        (click)="translate.use(lang)"
+        (click)="onSelect(lang)"
       >
         {{ lang }}
       </button>

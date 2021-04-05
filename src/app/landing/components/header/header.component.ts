@@ -1,19 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { TranslationService } from '../../../core/services/translation.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
-  constructor(public translate: TranslateService) {}
+export class HeaderComponent {
+  constructor(
+    public translate: TranslateService,
+    public translationService: TranslationService
+  ) {}
 
-  ngOnInit(): void {
-    this.translate.addLangs(['en', 'uk']);
-    this.translate.setDefaultLang('en');
-
-    const browserLang = this.translate.getBrowserLang();
-    this.translate.use(browserLang.match(/en|uk/) ? browserLang : 'en');
+  onSelect(lang): void {
+    this.translationService.selectLanguage(lang);
   }
 }

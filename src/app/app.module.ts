@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
@@ -6,16 +6,15 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-
-import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
 
+import { AppComponent } from './app.component';
+import { HttpLoaderFactory } from './core/services/translation.service';
+import { initializeApp, StartupService } from './core/services/startup.service';
 import { LandingModule } from './landing/landing.module';
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { LandingState } from './store/landing.state';
-import { HttpLoaderFactory } from './core/services/translation.service';
-import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,7 +25,6 @@ import { FormsModule } from '@angular/forms';
     SharedModule,
     LandingModule,
     AppRoutingModule,
-    FormsModule,
 
     HttpClientModule,
     TranslateModule.forRoot({
@@ -43,7 +41,15 @@ import { FormsModule } from '@angular/forms';
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    StartupService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      deps: [StartupService],
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -11,11 +11,20 @@ export function HttpLoaderFactory(httpClient: HttpClient): any {
   providedIn: 'root'
 })
 export class TranslationService {
-  constructor(public translate: TranslateService) {
-    translate.addLangs(['en', 'uk']);
-    translate.setDefaultLang('en');
+  constructor(public translate: TranslateService) {}
 
-    const browserLang = translate.getBrowserLang();
-    translate.use(browserLang.match(/en|uk/) ? browserLang : 'en');
+  init(): void {
+    this.translate.addLangs(['en', 'uk']);
+    this.translate.setDefaultLang('en');
+
+    const browserLang = this.translate.getBrowserLang();
+    const storageLang = localStorage.getItem('language');
+
+    this.translate.use(storageLang ? storageLang : browserLang);
+  }
+
+  selectLanguage(lang): void {
+    this.translate.use(lang);
+    localStorage.setItem('language', lang);
   }
 }
