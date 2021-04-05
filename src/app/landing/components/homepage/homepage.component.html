@@ -3,47 +3,51 @@
     <div>
       <h1 class="homepage-container__heading mat-headline">XBOOK</h1>
       <h2 class="homepage-container__title mat-title">
-        Welcome to our new website!
+        {{ 'HOMEPAGE.CONTAINER.TITLE' | translate }}
       </h2>
     </div>
 
     <div class="homepage-container__link">
-      <a mat-raised-button (click)="scrollToElement(registerForm)"
-        >Get started</a
-      >
+      <a mat-raised-button (click)="scrollToElement(registerForm)">{{
+        'HOMEPAGE.CONTAINER.LINK' | translate
+      }}</a>
     </div>
   </div>
 
   <section class="homepage-section">
     <article class="homepage-section__article">
-      <h3 class="homepage-section__article-heading">High quality</h3>
+      <h3 class="homepage-section__article-heading">
+        {{ 'HOMEPAGE.SECTION.ARTICLE1.H3' | translate }}
+      </h3>
       <p class="homepage-section__article-paragraph">
-        Internationalized and accessible components for everyone. Well tested to
-        ensure performance and reliability.
+        {{ 'HOMEPAGE.SECTION.ARTICLE1.P1' | translate }}
       </p>
       <p class="homepage-section__article-paragraph">
-        Straightforward APIs with consistent cross platform behaviour.
-      </p>
-    </article>
-
-    <article class="homepage-section__article">
-      <h3 class="homepage-section__article-heading">Versatile</h3>
-      <p class="homepage-section__article-paragraph">
-        Provide tools that help developers build their own custom components
-        with common interaction patterns.
-      </p>
-      <p class="homepage-section__article-paragraph">
-        Customizable within the bounds of the Material Design specification.
+        {{ 'HOMEPAGE.SECTION.ARTICLE1.P2' | translate }}
       </p>
     </article>
 
     <article class="homepage-section__article">
-      <h3 class="homepage-section__article-heading">Frictionless</h3>
+      <h3 class="homepage-section__article-heading">
+        {{ 'HOMEPAGE.SECTION.ARTICLE2.H3' | translate }}
+      </h3>
       <p class="homepage-section__article-paragraph">
-        Built by the Angular team to integrate seamlessly with Angular.
+        {{ 'HOMEPAGE.SECTION.ARTICLE2.P1' | translate }}
       </p>
       <p class="homepage-section__article-paragraph">
-        Start from scratch or drop into your existing applications.
+        {{ 'HOMEPAGE.SECTION.ARTICLE2.P2' | translate }}
+      </p>
+    </article>
+
+    <article class="homepage-section__article">
+      <h3 class="homepage-section__article-heading">
+        {{ 'HOMEPAGE.SECTION.ARTICLE3.H3' | translate }}
+      </h3>
+      <p class="homepage-section__article-paragraph">
+        {{ 'HOMEPAGE.SECTION.ARTICLE3.P1' | translate }}
+      </p>
+      <p class="homepage-section__article-paragraph">
+        {{ 'HOMEPAGE.SECTION.ARTICLE3.P2' | translate }}
       </p>
     </article>
   </section>

@@ -28,5 +28,44 @@
         "P2": "Start from scratch or drop into your existing applications."
       }
     }
+  },
+  "REGISTER": {
+    "TITLE": "Registration form",
+    "FORM": {
+      "USERNAMEFIELD": {
+        "LABEL": "Username",
+        "HINT": "Username must be unique",
+        "ERROR": {
+          "REQUIRED": "You must enter a value",
+          "PATTERN": "Not a valid username",
+          "USEREXISTS": "This username already exists"
+        }
+      },
+      "EMAILFIELD": {
+        "LABEL": "Email",
+        "HINT": "Enter your email address",
+        "ERROR": {
+          "REQUIRED": "You must enter a value",
+          "PATTERN": "Not a valid email"
+        }
+      },
+      "PASSWORDFIELD": {
+        "LABEL": "Password",
+        "HINT": "Password requirements: at least 4 characters, at least 1 letter, at least 1 number",
+        "ERROR": {
+          "REQUIRED": "You must enter a value",
+          "PATTERN": "Not a valid password"
+        }
+      },
+      "CONFIRMFIELD": {
+        "LABEL": "Confirm password",
+        "HINT": "Enter your password again",
+        "ERROR": {
+          "REQUIRED": "You must enter a value",
+          "PATTERN": "Please make sure your passwords match"
+        }
+      }
+    },
+    "SUBMIT": "Register"
   }
 }
