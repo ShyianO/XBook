@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component,
   DoCheck,
   ElementRef,
@@ -16,8 +15,9 @@ import {
 } from '@angular/forms';
 import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
 import { MatDialog } from '@angular/material/dialog';
-import { fromEvent, Observable, Subject, Subscription } from 'rxjs';
+import { fromEvent, Observable, Subject } from 'rxjs';
 import { debounceTime, map, takeUntil } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
 
 import {
   RegisterUser,
@@ -26,7 +26,6 @@ import {
   UserExists
 } from '../../../store/landing.action';
 import { AlertComponent } from '../alert/alert.component';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-register',
@@ -117,7 +116,7 @@ export class RegisterComponent implements OnInit, OnDestroy, DoCheck {
 
   ngDoCheck(): void {
     this.translate
-      .get('ALERT.SUCCESS')
+      .get('ALERT.REGISTER.SUCCESS')
       .pipe(takeUntil(this.subject))
       .subscribe((translated) => {
         this.successTitle = translated.TITLE;
@@ -125,7 +124,7 @@ export class RegisterComponent implements OnInit, OnDestroy, DoCheck {
       });
 
     this.translate
-      .get('ALERT.ERROR')
+      .get('ALERT.REGISTER.ERROR')
       .pipe(takeUntil(this.subject))
       .subscribe((translated) => {
         this.errorTitle = translated.TITLE;

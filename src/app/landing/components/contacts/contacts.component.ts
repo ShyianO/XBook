@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -15,15 +15,20 @@ import {
 } from '../../../store/landing.action';
 import { takeUntil } from 'rxjs/operators';
 import { AlertComponent } from '../alert/alert.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-contacts',
   templateUrl: './contacts.component.html',
   styleUrls: ['./contacts.component.scss']
 })
-export class ContactsComponent implements OnInit, OnDestroy {
+export class ContactsComponent implements OnInit, OnDestroy, DoCheck {
   contactsForm: FormGroup;
   subject = new Subject();
+  successTitle: string;
+  successDescription: string;
+  errorTitle: string;
+  errorDescription: string;
 
   @Select((state) => state.landingState.loading)
   loading$: Observable<boolean>;
@@ -46,8 +51,8 @@ export class ContactsComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.dialog.open(AlertComponent, {
           data: {
-            title: 'Success',
-            description: 'Your message was sent',
+            title: this.successTitle,
+            description: this.successDescription,
             style: 'primary',
             icon: 'check_circle'
           }
@@ -59,12 +64,30 @@ export class ContactsComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.dialog.open(AlertComponent, {
           data: {
-            title: 'Error',
-            description: 'There was an error sending your data',
+            title: this.errorTitle,
+            description: this.errorDescription,
             style: 'warn',
             icon: 'error_outline'
           }
         });
+      });
+  }
+
+  ngDoCheck(): void {
+    this.translate
+      .get('ALERT.CONTACTS.SUCCESS')
+      .pipe(takeUntil(this.subject))
+      .subscribe((translated) => {
+        this.successTitle = translated.TITLE;
+        this.successDescription = translated.DESCRIPTION;
+      });
+
+    this.translate
+      .get('ALERT.CONTACTS.ERROR')
+      .pipe(takeUntil(this.subject))
+      .subscribe((translated) => {
+        this.errorTitle = translated.TITLE;
+        this.errorDescription = translated.DESCRIPTION;
       });
   }
 
@@ -83,7 +106,8 @@ export class ContactsComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store,
     public dialog: MatDialog,
-    private actions$: Actions
+    private actions$: Actions,
+    public translate: TranslateService
   ) {}
 
   onSubmit({ value }: { value: Record<string, string> }): void {

@@ -36,7 +36,7 @@
         "LABEL": "Username",
         "HINT": "Username must be unique",
         "ERROR": {
-          "REQUIRED": "You must enter a value",
+          "REQUIRED": "You must enter your name",
           "PATTERN": "Not a valid username",
           "USEREXISTS": "This username already exists"
         }
@@ -45,7 +45,7 @@
         "LABEL": "Email",
         "HINT": "Enter your email address",
         "ERROR": {
-          "REQUIRED": "You must enter a value",
+          "REQUIRED": "You must enter your email",
           "PATTERN": "Not a valid email"
         }
       },
@@ -53,7 +53,7 @@
         "LABEL": "Password",
         "HINT": "Password requirements: at least 4 characters, at least 1 letter, at least 1 number",
         "ERROR": {
-          "REQUIRED": "You must enter a value",
+          "REQUIRED": "You must enter your password",
           "PATTERN": "Not a valid password"
         }
       },
@@ -61,7 +61,7 @@
         "LABEL": "Confirm password",
         "HINT": "Enter your password again",
         "ERROR": {
-          "REQUIRED": "You must enter a value",
+          "REQUIRED": "You must enter your password",
           "PATTERN": "Please make sure your passwords match"
         }
       },
@@ -69,13 +69,55 @@
     }
   },
   "ALERT": {
-    "SUCCESS": {
-      "TITLE": "Registration success",
-      "DESCRIPTION": "Thank you for registration<br>You will be redirected to login page"
+    "REGISTER": {
+      "SUCCESS": {
+        "TITLE": "Registration success",
+        "DESCRIPTION": "Thank you for registration<br>You will be redirected to login page"
+      },
+      "ERROR": {
+        "TITLE": "Registration failed",
+        "DESCRIPTION": "We are sorry, but something went wrong<br>Please try again"
+      }
     },
-    "ERROR": {
-      "TITLE": "Registration failed",
-      "DESCRIPTION": "We are sorry, but something went wrong<br>Please try again"
+    "CONTACTS": {
+      "SUCCESS": {
+        "TITLE": "Success",
+        "DESCRIPTION": "Your message was sent"
+      },
+      "ERROR": {
+        "TITLE": "Error",
+        "DESCRIPTION": "There was an error sending your data"
+      }
+    }
+  },
+  "CONTACTS": {
+    "TITLE": "Contact us",
+    "FORM": {
+      "NAMEFIELD": {
+        "LABEL": "Name",
+        "HINT": "Enter your name",
+        "ERROR": {
+          "REQUIRED": "You must enter your name",
+          "PATTERN": "Not a valid name"
+        }
+      },
+      "EMAILFIELD": {
+        "LABEL": "Email",
+        "HINT": "Enter your email address",
+        "ERROR": {
+          "REQUIRED": "You must enter your email",
+          "PATTERN": "Not a valid email"
+        }
+      },
+      "MESSAGEFIELD": {
+        "LABEL": "Message",
+        "HINT": "Enter your message",
+        "ERROR": {
+          "REQUIRED": "You must enter your message",
+          "PATTERN": "This message is too long"
+        }
+      },
+      "SUBMIT": "Send"
     }
   }
 }
