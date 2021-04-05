@@ -64,8 +64,18 @@
           "REQUIRED": "You must enter a value",
           "PATTERN": "Please make sure your passwords match"
         }
-      }
+      },
+      "SUBMIT": "Register"
+    }
+  },
+  "ALERT": {
+    "SUCCESS": {
+      "TITLE": "Registration success",
+      "DESCRIPTION": "Thank you for registration<br>You will be redirected to login page"
     },
-    "SUBMIT": "Register"
+    "ERROR": {
+      "TITLE": "Registration failed",
+      "DESCRIPTION": "We are sorry, but something went wrong<br>Please try again"
+    }
   }
 }
