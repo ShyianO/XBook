@@ -8,7 +8,8 @@
     "test": "ng test",
     "lint": "tsc --noEmit && eslint . --ext js,ts,json --quiet --fix",
     "lint:nofix": "tsc --noEmit && eslint . --ext js,ts,json",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "deploy": "node deploy.js"
   },
   "private": true,
   "dependencies": {
@@ -44,6 +45,7 @@
     "eslint": "^7.21.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",
+    "execa": "latest",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~6.1.0",

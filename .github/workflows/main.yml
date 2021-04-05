@@ -27,4 +27,11 @@ jobs:
           npm run lint:nofix
           npm run test
           npm run build
-
+      - name: Checkout branch
+        uses: actions/checkout@v2
+      - name: Clean install dependencies
+        run: npm ci
+      - name: Run deploy script
+        run: |
+          git config user.name "ShyianO" && git config user.email "ol.shyian@gmail.com"
+          npm run deploy
