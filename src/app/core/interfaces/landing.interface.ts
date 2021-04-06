@@ -6,4 +6,5 @@ export interface ILandingState {
   userExists: boolean;
   isLoggedIn: boolean;
   username: string;
+  isUserDataIncorrect: boolean;
 }

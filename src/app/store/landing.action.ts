@@ -41,15 +41,11 @@ export class LoginUser {
 
 export class LoginUserSuccess {
   static readonly type = '[User] LoginSuccess';
-  constructor(public user: any) {}
+  constructor(public user: Backendless.User) {}
 }
 
 export class LoginUserError {
   static readonly type = '[User] LoginError';
-}
-
-export class LogoutUser {
-  static readonly type = '[User] Logout';
 }
 
 export class UserLoggedIn {
@@ -58,5 +54,9 @@ export class UserLoggedIn {
 
 export class UserLoggedInSuccess {
   static readonly type = '[User] LoggedInSuccess';
-  constructor(public user: any) {}
+  constructor(public user: Backendless.User) {}
+}
+
+export class LogoutUser {
+  static readonly type = '[User] Logout';
 }

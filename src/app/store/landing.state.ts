@@ -28,7 +28,8 @@ import { ILandingState } from '../core/interfaces/landing.interface';
     loading: false,
     userExists: false,
     isLoggedIn: false,
-    username: ''
+    username: '',
+    isUserDataIncorrect: false
   }
 })
 @Injectable()
@@ -146,13 +147,14 @@ export class LandingState {
     ctx.patchState({
       loading: false,
       isLoggedIn: true,
+      isUserDataIncorrect: false,
       username: user.username
     });
   }
 
   @Action(LoginUserError)
   loginUserError(ctx: StateContext<ILandingState>): void {
-    ctx.patchState({ loading: false });
+    ctx.patchState({ loading: false, isUserDataIncorrect: true });
   }
 
   @Action(UserLoggedIn)
@@ -177,8 +179,8 @@ export class LandingState {
   @Action(LogoutUser)
   logOut(ctx: StateContext<ILandingState>): void {
     Backendless.UserService.logout()
-      .then((success) => {
-        console.log(success);
+      .then(() => {
+        ctx.patchState({ isLoggedIn: false });
       })
       .catch((error) => {
         console.log(error);

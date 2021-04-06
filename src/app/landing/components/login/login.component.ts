@@ -1,22 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DoCheck, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
   FormGroup,
   Validators
 } from '@angular/forms';
-import { Select, Store } from '@ngxs/store';
-import { Observable } from 'rxjs';
-import { LoginUser, LogoutUser } from '../../../store/landing.action';
+import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
+import { Observable, Subject } from 'rxjs';
+import {
+  LoginUser,
+  LoginUserSuccess,
+  LogoutUser,
+  RegisterUserSuccess
+} from '../../../store/landing.action';
+import { MatDialog } from '@angular/material/dialog';
+import { takeUntil } from 'rxjs/operators';
+import { AlertComponent } from '../alert/alert.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, DoCheck {
   loginForm: FormGroup;
   hide = true;
+  subject = new Subject();
+  userExists: boolean;
+  successTitle: string;
+  successDescription: string;
 
   @Select((state) => state.landingState.loading)
   loading$: Observable<boolean>;
@@ -26,6 +39,9 @@ export class LoginComponent implements OnInit {
 
   @Select((state) => state.landingState.username)
   username$: Observable<boolean>;
+
+  @Select((state) => state.landingState.isUserDataIncorrect)
+  isUserDataIncorrect$: Observable<boolean>;
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
@@ -38,6 +54,30 @@ export class LoginComponent implements OnInit {
         Validators.maxLength(30)
       ])
     });
+
+    this.actions$
+      .pipe(ofActionDispatched(LoginUserSuccess), takeUntil(this.subject))
+      .subscribe(() => {
+        this.dialog.open(AlertComponent, {
+          data: {
+            title: this.successTitle,
+            description: this.successDescription,
+            style: 'primary',
+            icon: 'check_circle',
+            redirectTo: '/landing'
+          }
+        });
+      });
+  }
+
+  ngDoCheck(): void {
+    this.translate
+      .get('ALERT.LOGIN.SUCCESS')
+      .pipe(takeUntil(this.subject))
+      .subscribe((translated) => {
+        this.successTitle = translated.TITLE;
+        this.successDescription = translated.DESCRIPTION;
+      });
   }
 
   get username(): AbstractControl {
@@ -48,7 +88,12 @@ export class LoginComponent implements OnInit {
     return this.loginForm.get('password');
   }
 
-  constructor(private store: Store) {}
+  constructor(
+    private store: Store,
+    private actions$: Actions,
+    public dialog: MatDialog,
+    public translate: TranslateService
+  ) {}
 
   onSubmit({
     value,

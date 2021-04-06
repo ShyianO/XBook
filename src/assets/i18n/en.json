@@ -102,6 +102,12 @@
         "DESCRIPTION": "We are sorry, but something went wrong<br>Please try again"
       }
     },
+    "LOGIN": {
+      "SUCCESS": {
+        "TITLE": "Login successful",
+        "DESCRIPTION": "You will be redirected to login page"
+      }
+    },
     "CONTACTS": {
       "SUCCESS": {
         "TITLE": "Success",

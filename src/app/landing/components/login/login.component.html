@@ -67,6 +67,10 @@
       </button>
     </mat-form-field>
 
+    <mat-error class="login__form-error" *ngIf="isUserDataIncorrect$ | async">
+      <div>The username or password is incorrect</div>
+    </mat-error>
+
     <mat-spinner
       *ngIf="loading$ | async"
       diameter="25"
@@ -84,6 +88,6 @@
   </form>
 
   <div class="login__profile" *ngIf="isLoggedIn$ | async">
-    <h2 class="login__profile-title">Hello, {{username$ | async}}</h2>
+    <h2 class="login__profile-title">Hello, {{ username$ | async }}</h2>
   </div>
 </section>
