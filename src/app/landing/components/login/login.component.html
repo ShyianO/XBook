@@ -8,7 +8,7 @@
   </div>
 
   <form
-    *ngIf="!(isLoggedIn$ | async)"
+    *ngIf="(isLoggedIn$ | async) === false"
     class="login__form"
     novalidate
     [formGroup]="loginForm"
