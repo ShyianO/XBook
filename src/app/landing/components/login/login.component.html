@@ -1,1 +1,80 @@
-<h1>Hello</h1>
+<section class="login">
+  <div class="login__nav">
+    <h1 class="login__nav-title">{{ 'LOGIN.TITLE' | translate }}</h1>
+  </div>
+
+  <form
+    class="login__form"
+    novalidate
+    [formGroup]="loginForm"
+    (ngSubmit)="onSubmit(loginForm)"
+  >
+    <mat-form-field class="login__form-field" appearance="outline">
+      <mat-label>{{ 'LOGIN.FORM.USERNAMEFIELD.LABEL' | translate }}</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="username"
+        required
+        autocomplete="off"
+      />
+      <mat-hint>{{ 'LOGIN.FORM.USERNAMEFIELD.HINT' | translate }}</mat-hint>
+
+      <mat-error *ngIf="username.invalid">
+        <div *ngIf="username.errors.required">
+          {{ 'LOGIN.FORM.USERNAMEFIELD.ERROR.REQUIRED' | translate }}
+        </div>
+        <div *ngIf="username.errors.pattern || username.errors.maxlength">
+          {{ 'LOGIN.FORM.USERNAMEFIELD.ERROR.PATTERN' | translate }}
+        </div>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="login__form-field" appearance="outline">
+      <mat-label>{{ 'LOGIN.FORM.PASSWORDFIELD.LABEL' | translate }}</mat-label>
+      <input
+        matInput
+        type="password"
+        formControlName="password"
+        [type]="hide ? 'password' : 'text'"
+        autocomplete="off"
+        required
+      />
+      <mat-hint>{{ 'LOGIN.FORM.PASSWORDFIELD.HINT' | translate }} </mat-hint>
+
+      <mat-error *ngIf="password.invalid">
+        <div *ngIf="password.errors.required">
+          {{ 'LOGIN.FORM.PASSWORDFIELD.ERROR.REQUIRED' | translate }}
+        </div>
+        <div *ngIf="password.errors.maxlength">
+          {{ 'LOGIN.FORM.PASSWORDFIELD.ERROR.PATTERN' | translate }}
+        </div>
+      </mat-error>
+
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hide = !hide"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide"
+      >
+        <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <mat-spinner
+      *ngIf="loading$ | async"
+      diameter="25"
+      color="primary"
+    ></mat-spinner>
+    <button
+      *ngIf="(loading$ | async) === false"
+      class="login__form-submit mat-spinner"
+      mat-raised-button
+      color="accent"
+      [disabled]="loginForm.invalid"
+    >
+      {{ 'LOGIN.FORM.SUBMIT' | translate }}
+    </button>
+  </form>
+</section>

@@ -4,6 +4,7 @@ import { Action, State, StateContext, Store } from '@ngxs/store';
 import { Router } from '@angular/router';
 
 import {
+  LoginUser,
   RegisterUser,
   RegisterUserError,
   RegisterUserSuccess,
@@ -125,5 +126,16 @@ export class LandingState {
     ctx.patchState({
       loading: false
     });
+  }
+
+  @Action(LoginUser)
+  loginUser(ctx: StateContext<ILandingState>, { user }: LoginUser): void {
+    Backendless.UserService.login(user.username, user.password)
+      .then((loggedInUser) => {
+        console.log(loggedInUser);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 }
