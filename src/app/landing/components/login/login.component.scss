@@ -1,6 +1,10 @@
 .login {
   &__nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 0 20px;
+
     background: #3f51b5;
 
     &-title {
@@ -8,6 +12,14 @@
       margin: 0;
       padding: 28px 8px;
       font-size: 24px;
+    }
+
+    &-logout {
+      padding: 10px;
+
+      color: #fff;
+      font-weight: 400;
+      font-size: 20px;
     }
   }
 
@@ -20,11 +32,26 @@
     &-field {
       width: 250px;
       margin-bottom: 10px;
+
+      &:nth-child(2) {
+        margin-bottom: 20px;
+      }
     }
 
     &-submit {
-      margin-top: 20px;
       font-size: 20px;
+    }
+  }
+
+  &__profile {
+    display: flex;
+    justify-content: center;
+
+    &-title {
+      margin-top: 200px;
+
+      color: #3f51b5;
+      font-size: 60px;
     }
   }
 }

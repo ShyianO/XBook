@@ -41,8 +41,22 @@ export class LoginUser {
 
 export class LoginUserSuccess {
   static readonly type = '[User] LoginSuccess';
+  constructor(public user: any) {}
 }
 
 export class LoginUserError {
   static readonly type = '[User] LoginError';
+}
+
+export class LogoutUser {
+  static readonly type = '[User] Logout';
+}
+
+export class UserLoggedIn {
+  static readonly type = '[User] LoggedIn';
+}
+
+export class UserLoggedInSuccess {
+  static readonly type = '[User] LoggedInSuccess';
+  constructor(public user: any) {}
 }

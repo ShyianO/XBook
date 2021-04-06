@@ -5,9 +5,9 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
-import { Actions, Select, Store } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { LoginUser, RegisterUser } from '../../../store/landing.action';
+import { LoginUser, LogoutUser } from '../../../store/landing.action';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +20,12 @@ export class LoginComponent implements OnInit {
 
   @Select((state) => state.landingState.loading)
   loading$: Observable<boolean>;
+
+  @Select((state) => state.landingState.isLoggedIn)
+  isLoggedIn$: Observable<boolean>;
+
+  @Select((state) => state.landingState.username)
+  username$: Observable<boolean>;
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
@@ -59,5 +65,9 @@ export class LoginComponent implements OnInit {
 
       this.store.dispatch(new LoginUser(loginRequest));
     }
+  }
+
+  onLogout(): void {
+    this.store.dispatch(new LogoutUser());
   }
 }
