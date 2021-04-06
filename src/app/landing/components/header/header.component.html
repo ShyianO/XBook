@@ -5,36 +5,46 @@
     </a>
 
     <mat-nav-list class="header__nav-list">
-      <a class="header__nav-list-item mat-body-1" mat-list-item routerLink="/"
-        >Home</a
+      <a
+        class="header__nav-list-item mat-body-1"
+        mat-list-item
+        routerLink="/"
+        >{{ 'HEADER.NAV.HOME' | translate }}</a
       >
       <a
         class="header__nav-list-item mat-body-1"
         mat-list-item
         routerLink="/landing/about"
-        >About</a
+        >{{ 'HEADER.NAV.ABOUT' | translate }}</a
       >
       <a
         class="header__nav-list-item mat-body-1"
         mat-list-item
         routerLink="/landing/contacts"
-        >Contacts</a
+        >{{ 'HEADER.NAV.CONTACTS' | translate }}</a
       >
     </mat-nav-list>
   </div>
 
   <div class="header__controls">
-    <mat-menu #langMenu="matMenu">
-      <button mat-menu-item (click)="langValue = 'EN'">EN</button>
-      <button mat-menu-item (click)="langValue = 'UA'">UA</button>
+    <mat-menu #langMenu class="header__controls-select">
+      <button
+        class="header__controls-option"
+        mat-menu-item
+        *ngFor="let lang of translate.getLangs()"
+        [value]="lang"
+        (click)="onSelect(lang)"
+      >
+        {{ lang }}
+      </button>
     </mat-menu>
 
     <button
+      class="header__controls-lang"
       mat-button
       [mat-menu-trigger-for]="langMenu"
-      class="header__controls-lang"
     >
-      {{ langValue }}
+      {{ translate.store.currentLang }}
     </button>
 
     <a

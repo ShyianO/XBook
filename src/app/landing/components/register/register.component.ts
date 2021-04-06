@@ -1,6 +1,6 @@
 import {
-  AfterViewInit,
   Component,
+  DoCheck,
   ElementRef,
   OnDestroy,
   OnInit,
@@ -15,8 +15,9 @@ import {
 } from '@angular/forms';
 import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
 import { MatDialog } from '@angular/material/dialog';
-import { fromEvent, Observable, Subject, Subscription } from 'rxjs';
+import { fromEvent, Observable, Subject } from 'rxjs';
 import { debounceTime, map, takeUntil } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
 
 import {
   RegisterUser,
@@ -31,11 +32,15 @@ import { AlertComponent } from '../alert/alert.component';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit, OnDestroy {
+export class RegisterComponent implements OnInit, OnDestroy, DoCheck {
   loginForm: FormGroup;
   hide = true;
   subject = new Subject();
   userExists: boolean;
+  successTitle: string;
+  successDescription: string;
+  errorTitle: string;
+  errorDescription: string;
 
   @ViewChild('usernameInput', { static: true }) usernameInput: ElementRef;
 
@@ -74,11 +79,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.dialog.open(AlertComponent, {
           data: {
-            title: 'Registration success',
-            description: `
-                Thank you for registration<br>
-                You will be redirected to login page
-              `,
+            title: this.successTitle,
+            description: this.successDescription,
             style: 'primary',
             icon: 'check_circle',
             redirectTo: '/landing/login'
@@ -91,11 +93,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.dialog.open(AlertComponent, {
           data: {
-            title: 'Registration failed',
-            description: `
-                We are sorry, but something went wrong <br>
-                Please try again
-              `,
+            title: this.errorTitle,
+            description: this.errorDescription,
             style: 'warn',
             icon: 'error_outline'
           }
@@ -112,6 +111,24 @@ export class RegisterComponent implements OnInit, OnDestroy {
       )
       .subscribe((username) => {
         this.store.dispatch(new UserExists(username));
+      });
+  }
+
+  ngDoCheck(): void {
+    this.translate
+      .get('ALERT.REGISTER.SUCCESS')
+      .pipe(takeUntil(this.subject))
+      .subscribe((translated) => {
+        this.successTitle = translated.TITLE;
+        this.successDescription = translated.DESCRIPTION;
+      });
+
+    this.translate
+      .get('ALERT.REGISTER.ERROR')
+      .pipe(takeUntil(this.subject))
+      .subscribe((translated) => {
+        this.errorTitle = translated.TITLE;
+        this.errorDescription = translated.DESCRIPTION;
       });
   }
 
@@ -134,7 +151,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store,
     public dialog: MatDialog,
-    private actions$: Actions
+    private actions$: Actions,
+    public translate: TranslateService
   ) {}
 
   onSubmit({

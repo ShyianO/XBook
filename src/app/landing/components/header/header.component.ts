@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { TranslationService } from '../../../core/services/translation.service';
 
 @Component({
   selector: 'app-header',
@@ -6,5 +8,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  langValue = 'EN';
+  constructor(
+    public translate: TranslateService,
+    public translationService: TranslationService
+  ) {}
+
+  onSelect(lang): void {
+    this.translationService.selectLanguage(lang);
+  }
 }

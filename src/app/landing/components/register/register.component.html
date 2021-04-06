@@ -1,5 +1,7 @@
 <section class="register-section">
-  <h2 class="register-section__heading mat-h2">Registration form</h2>
+  <h2 class="register-section__heading mat-h2">
+    {{ 'REGISTER.TITLE' | translate }}
+  </h2>
 
   <form
     class="register-section__form"
@@ -8,7 +10,9 @@
     (ngSubmit)="onSubmit(loginForm)"
   >
     <mat-form-field class="register-section__form-field" appearance="outline">
-      <mat-label>Username</mat-label>
+      <mat-label>{{
+        'REGISTER.FORM.USERNAMEFIELD.LABEL' | translate
+      }}</mat-label>
       <input
         matInput
         type="text"
@@ -17,14 +21,18 @@
         autocomplete="off"
         #usernameInput
       />
-      <mat-hint>Username must be unique</mat-hint>
+      <mat-hint>{{ 'REGISTER.FORM.USERNAMEFIELD.HINT' | translate }}</mat-hint>
 
       <mat-error *ngIf="username.invalid">
-        <div *ngIf="username.errors.required">You must enter a value</div>
-        <div *ngIf="username.errors.pattern || username.errors.maxlength">
-          Not a valid username
+        <div *ngIf="username.errors.required">
+          {{ 'REGISTER.FORM.USERNAMEFIELD.ERROR.REQUIRED' | translate }}
         </div>
-        <div *ngIf="userExists">This username already exists</div>
+        <div *ngIf="username.errors.pattern || username.errors.maxlength">
+          {{ 'REGISTER.FORM.USERNAMEFIELD.ERROR.PATTERN' | translate }}
+        </div>
+        <div *ngIf="userExists">
+          {{ 'REGISTER.FORM.USERNAMEFIELD.ERROR.USEREXISTS' | translate }}
+        </div>
       </mat-error>
       <span
         *ngIf="!username.invalid"
@@ -35,7 +43,7 @@
     </mat-form-field>
 
     <mat-form-field class="register-section__form-field" appearance="outline">
-      <mat-label>Email</mat-label>
+      <mat-label>{{ 'REGISTER.FORM.EMAILFIELD.LABEL' | translate }}</mat-label>
       <input
         matInput
         type="email"
@@ -44,16 +52,22 @@
         autocomplete="off"
         required
       />
-      <mat-hint>Enter your email address</mat-hint>
+      <mat-hint>{{ 'REGISTER.FORM.EMAILFIELD.HINT' | translate }}</mat-hint>
 
       <mat-error *ngIf="email.invalid">
-        <div *ngIf="email.errors.required">You must enter a value</div>
-        <div *ngIf="email.errors.email">Not a valid email</div>
+        <div *ngIf="email.errors.required">
+          {{ 'REGISTER.FORM.EMAILFIELD.ERROR.REQUIRED' | translate }}
+        </div>
+        <div *ngIf="email.errors.email">
+          {{ 'REGISTER.FORM.EMAILFIELD.ERROR.PATTERN' | translate }}
+        </div>
       </mat-error>
     </mat-form-field>
 
     <mat-form-field class="register-section__form-field" appearance="outline">
-      <mat-label>Password</mat-label>
+      <mat-label>{{
+        'REGISTER.FORM.PASSWORDFIELD.LABEL' | translate
+      }}</mat-label>
       <input
         matInput
         type="password"
@@ -62,15 +76,14 @@
         autocomplete="off"
         required
       />
-      <mat-hint
-        >Password requirements: at least 4 characters, at least 1 letter, at
-        least 1 number
-      </mat-hint>
+      <mat-hint>{{ 'REGISTER.FORM.PASSWORDFIELD.HINT' | translate }} </mat-hint>
 
       <mat-error *ngIf="password.invalid">
-        <div *ngIf="password.errors.required">You must enter a value</div>
+        <div *ngIf="password.errors.required">
+          {{ 'REGISTER.FORM.PASSWORDFIELD.ERROR.REQUIRED' | translate }}
+        </div>
         <div *ngIf="password.errors.pattern || password.errors.maxlength">
-          Not a valid password
+          {{ 'REGISTER.FORM.PASSWORDFIELD.ERROR.PATTERN' | translate }}
         </div>
       </mat-error>
 
@@ -86,7 +99,9 @@
     </mat-form-field>
 
     <mat-form-field class="register-section__form-field" appearance="outline">
-      <mat-label>Confirm password</mat-label>
+      <mat-label>{{
+        'REGISTER.FORM.CONFIRMFIELD.LABEL' | translate
+      }}</mat-label>
       <input
         matInput
         type="password"
@@ -96,14 +111,14 @@
         autocomplete="off"
         required
       />
-      <mat-hint>Enter your password again</mat-hint>
+      <mat-hint>{{ 'REGISTER.FORM.CONFIRMFIELD.HINT' | translate }}</mat-hint>
 
       <mat-error *ngIf="confirmPassword.invalid">
         <div *ngIf="confirmPassword.errors.required">
-          You must enter a value
+          {{ 'REGISTER.FORM.CONFIRMFIELD.ERROR.REQUIRED' | translate }}
         </div>
         <div *ngIf="confirmPassword.errors.pattern">
-          Please make sure your passwords match
+          {{ 'REGISTER.FORM.CONFIRMFIELD.ERROR.PATTERN' | translate }}
         </div>
       </mat-error>
 
@@ -130,7 +145,7 @@
       color="accent"
       [disabled]="loginForm.invalid"
     >
-      Register
+      {{ 'REGISTER.FORM.SUBMIT' | translate }}
     </button>
   </form>
 </section>

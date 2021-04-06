@@ -1,6 +1,6 @@
 <section class="contacts">
   <div class="contacts__nav">
-    <h1 class="contacts__nav-heading">Contact us</h1>
+    <h1 class="contacts__nav-heading">{{ 'CONTACTS.TITLE' | translate }}</h1>
   </div>
 
   <form
@@ -9,7 +9,7 @@
     (ngSubmit)="onSubmit(contactsForm)"
   >
     <mat-form-field class="contacts__form-field" appearance="outline">
-      <mat-label>Name</mat-label>
+      <mat-label>{{ 'CONTACTS.FORM.NAMEFIELD.LABEL' | translate }}</mat-label>
       <input
         matInput
         type="text"
@@ -17,16 +17,20 @@
         required
         autocomplete="off"
       />
-      <mat-hint>Enter your name</mat-hint>
+      <mat-hint>{{ 'CONTACTS.FORM.NAMEFIELD.HINT' | translate }}</mat-hint>
 
       <mat-error *ngIf="name.invalid">
-        <div *ngIf="name.errors.required">You must enter your name</div>
-        <div *ngIf="name.errors.maxlength">Not a valid name</div>
+        <div *ngIf="name.errors.required">
+          {{ 'CONTACTS.FORM.NAMEFIELD.ERROR.REQUIRED' | translate }}
+        </div>
+        <div *ngIf="name.errors.maxlength">
+          {{ 'CONTACTS.FORM.NAMEFIELD.ERROR.PATTERN' | translate }}
+        </div>
       </mat-error>
     </mat-form-field>
 
     <mat-form-field class="contacts__form-field" appearance="outline">
-      <mat-label>Email</mat-label>
+      <mat-label>{{ 'CONTACTS.FORM.EMAILFIELD.LABEL' | translate }}</mat-label>
       <input
         matInput
         type="email"
@@ -35,27 +39,37 @@
         autocomplete="off"
         required
       />
-      <mat-hint>Enter your email address</mat-hint>
+      <mat-hint>{{ 'CONTACTS.FORM.EMAILFIELD.HINT' | translate }}</mat-hint>
 
       <mat-error *ngIf="email.invalid">
-        <div *ngIf="email.errors.required">You must enter your email</div>
-        <div *ngIf="email.errors.email">Not a valid email</div>
+        <div *ngIf="email.errors.required">
+          {{ 'CONTACTS.FORM.EMAILFIELD.ERROR.REQUIRED' | translate }}
+        </div>
+        <div *ngIf="email.errors.email">
+          {{ 'CONTACTS.FORM.EMAILFIELD.ERROR.PATTERN' | translate }}
+        </div>
       </mat-error>
     </mat-form-field>
 
     <mat-form-field class="contacts__form-field" appearance="outline">
-      <mat-label>Message</mat-label>
+      <mat-label>{{
+        'CONTACTS.FORM.MESSAGEFIELD.LABEL' | translate
+      }}</mat-label>
       <textarea
         class="contacts__form-field-textarea"
         matInput
         formControlName="message"
         required
       ></textarea>
-      <mat-hint>Enter your message</mat-hint>
+      <mat-hint>{{ 'CONTACTS.FORM.MESSAGEFIELD.HINT' | translate }}</mat-hint>
 
       <mat-error *ngIf="message.invalid">
-        <div *ngIf="message.errors.required">You must enter your message</div>
-        <div *ngIf="message.errors.maxlength">This message is too long</div>
+        <div *ngIf="message.errors.required">
+          {{ 'CONTACTS.FORM.MESSAGEFIELD.ERROR.REQUIRED' | translate }}
+        </div>
+        <div *ngIf="message.errors.maxlength">
+          {{ 'CONTACTS.FORM.MESSAGEFIELD.ERROR.PATTERN' | translate }}
+        </div>
       </mat-error>
     </mat-form-field>
 
@@ -71,7 +85,7 @@
       color="accent"
       [disabled]="contactsForm.invalid"
     >
-      Send
+      {{ 'CONTACTS.FORM.SUBMIT' | translate }}
     </button>
   </form>
 </section>
