@@ -148,5 +148,18 @@
       },
       "SUBMIT": "Send"
     }
+  },
+  "ADMIN": {
+    "HEADER": {
+      "MENU": {
+        "NAV": "Menu",
+        "DASHBOARD": "Dashboard",
+        "CONFIGURATION": "Configuration",
+        "BOOKINGS": "Bookings",
+        "PROFILE": "Profile",
+        "STATISTIC": "Statistic",
+        "LOGOUT": "Logout"
+      }
+    }
   }
 }

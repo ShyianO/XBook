@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import Backendless from 'backendless';
 import { environment } from '../../../environments/environment';
 import { Store } from '@ngxs/store';
-import { UserLoggedIn } from '../../store/landing.action';
+import { UserLoggedIn, UserLoggedInFalse } from '../../store/landing.action';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +22,8 @@ export class BackendlessService {
       .then((success) => {
         if (success) {
           this.store.dispatch(new UserLoggedIn());
+        } else {
+          this.store.dispatch(new UserLoggedInFalse());
         }
       })
       .catch((error) => {

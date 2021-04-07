@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit, DoCheck {
             description: this.successDescription,
             style: 'primary',
             icon: 'check_circle',
-            redirectTo: '/landing'
+            redirectTo: '/admin'
           }
         });
       });

@@ -1,0 +1,36 @@
+<mat-toolbar color="primary" class="header mat-elevation-z6">
+  <div class="header__nav">
+    <a class="header__nav-logo" routerLink="/admin">
+      <img src="assets/img/xbook-logo.png" alt="XBook" />
+    </a>
+
+    <mat-menu #navMenu class="header__nav-select">
+      <button class="header__controls-option" mat-menu-item routerLink="/admin/dashboard">
+        {{ 'ADMIN.HEADER.MENU.DASHBOARD' | translate }}
+      </button>
+      <button class="header__controls-option" mat-menu-item routerLink="/admin/configuration">
+        {{ 'ADMIN.HEADER.MENU.CONFIGURATION' | translate }}
+      </button>
+      <button class="header__controls-option" mat-menu-item routerLink="/admin/bookings">
+        {{ 'ADMIN.HEADER.MENU.BOOKINGS' | translate }}
+      </button>
+      <button class="header__controls-option" mat-menu-item routerLink="/admin/profile">
+        {{ 'ADMIN.HEADER.MENU.PROFILE' | translate }}
+      </button>
+      <button class="header__controls-option" mat-menu-item routerLink="/admin/statistic">
+        {{ 'ADMIN.HEADER.MENU.STATISTIC' | translate }}
+      </button>
+      <button class="header__controls-option" mat-menu-item routerLink="/landing/login">
+        {{ 'ADMIN.HEADER.MENU.LOGOUT' | translate }}
+      </button>
+    </mat-menu>
+
+    <button
+      class="header__controls-lang"
+      mat-button
+      [mat-menu-trigger-for]="navMenu"
+    >
+      {{ 'ADMIN.HEADER.MENU.NAV' | translate }}
+    </button>
+  </div>
+</mat-toolbar>

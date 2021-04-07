@@ -16,7 +16,8 @@ import {
   SendMessageSuccess,
   UserExists,
   UserLoggedIn,
-  UserLoggedInSuccess
+  UserLoggedInSuccess,
+  UserLoggedInFalse
 } from './landing.action';
 import { IRegisterRequest } from '../core/interfaces/register.interface';
 import { ILandingState } from '../core/interfaces/landing.interface';
@@ -174,6 +175,11 @@ export class LandingState {
     { user }: UserLoggedInSuccess
   ): void {
     ctx.patchState({ isLoggedIn: true, username: user.username });
+  }
+
+  @Action(UserLoggedInFalse)
+  userLoggedInFalse(ctx: StateContext<ILandingState>): void {
+    ctx.patchState({ isLoggedIn: false, username: '' });
   }
 
   @Action(LogoutUser)
