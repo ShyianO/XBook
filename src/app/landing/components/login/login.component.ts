@@ -10,8 +10,7 @@ import { Observable, Subject } from 'rxjs';
 import {
   LoginUser,
   LoginUserSuccess,
-  LogoutUser,
-  RegisterUserSuccess
+  LogoutUser
 } from '../../../store/landing.action';
 import { MatDialog } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
@@ -37,18 +36,12 @@ export class LoginComponent implements OnInit, DoCheck {
   @Select((state) => state.landingState.isLoggedIn)
   isLoggedIn$: Observable<boolean>;
 
-  @Select((state) => state.landingState.username)
-  username$: Observable<boolean>;
-
   @Select((state) => state.landingState.isUserDataIncorrect)
   isUserDataIncorrect$: Observable<boolean>;
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
-      username: new FormControl('', [
-        Validators.required,
-        Validators.maxLength(30)
-      ]),
+      email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [
         Validators.required,
         Validators.maxLength(30)
@@ -80,8 +73,8 @@ export class LoginComponent implements OnInit, DoCheck {
       });
   }
 
-  get username(): AbstractControl {
-    return this.loginForm.get('username');
+  get email(): AbstractControl {
+    return this.loginForm.get('email');
   }
 
   get password(): AbstractControl {
@@ -104,7 +97,7 @@ export class LoginComponent implements OnInit, DoCheck {
   }): void {
     if (valid) {
       const loginRequest = {
-        username: value.username,
+        email: value.email,
         password: value.password
       };
 

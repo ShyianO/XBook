@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import Backendless from 'backendless';
 import { environment } from '../../../environments/environment';
 import { Store } from '@ngxs/store';
+
 import { UserLoggedIn, UserLoggedInFalse } from '../../store/landing.action';
 
 @Injectable({
@@ -19,7 +20,7 @@ export class BackendlessService {
 
   isValidLogin(): void {
     Backendless.UserService.isValidLogin()
-      .then((success) => {
+      .then((success: boolean) => {
         if (success) {
           this.store.dispatch(new UserLoggedIn());
         } else {

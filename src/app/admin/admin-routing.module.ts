@@ -9,7 +9,7 @@ import { ConfigurationComponent } from './components/configuration/configuration
 import { BookingsComponent } from './components/bookings/bookings.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { StatisticComponent } from './components/statistic/statistic.component';
-import { RoutingService } from '../core/services/routing.service';
+import { AdminGuard } from './admin.guard';
 
 const routes: Routes = [
   {
@@ -21,7 +21,8 @@ const routes: Routes = [
       },
       {
         path: 'dashboard',
-        component: DashboardComponent
+        component: DashboardComponent,
+        canActivate: [AdminGuard]
       },
       {
         path: 'configuration',
@@ -40,8 +41,7 @@ const routes: Routes = [
         component: StatisticComponent
       }
     ],
-    component: MainComponent,
-    canActivate: [RoutingService]
+    component: MainComponent
   }
 ];
 

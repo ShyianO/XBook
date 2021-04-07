@@ -127,7 +127,7 @@ export class LandingState {
   loginUser(ctx: StateContext<ILandingState>, { user }: LoginUser): void {
     ctx.patchState({ loading: true });
 
-    Backendless.UserService.login(user.username, user.password, true)
+    Backendless.UserService.login(user.email, user.password, true)
       .then((loggedInUser) => {
         console.log(loggedInUser);
 
@@ -141,15 +141,11 @@ export class LandingState {
   }
 
   @Action(LoginUserSuccess)
-  loginUserSuccess(
-    ctx: StateContext<ILandingState>,
-    { user }: LoginUser
-  ): void {
+  loginUserSuccess(ctx: StateContext<ILandingState>): void {
     ctx.patchState({
       loading: false,
       isLoggedIn: true,
-      isUserDataIncorrect: false,
-      username: user.username
+      isUserDataIncorrect: false
     });
   }
 
