@@ -22,6 +22,7 @@ export class StartupService {
     return new Promise<void>((resolve) => {
       this.translateService.init();
       this.backendlessService.init();
+      this.backendlessService.isValidLogin();
       resolve();
     });
   }

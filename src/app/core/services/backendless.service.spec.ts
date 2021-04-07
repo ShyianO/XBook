@@ -9,8 +9,4 @@ describe('BackendlessService', () => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(BackendlessService);
   });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
 });

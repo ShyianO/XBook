@@ -4,7 +4,8 @@
       "HOME": "Home",
       "ABOUT": "About",
       "CONTACTS": "Contacts"
-    }
+    },
+    "LOGIN": "Login"
   },
   "HOMEPAGE": {
     "CONTAINER": {
@@ -68,6 +69,28 @@
       "SUBMIT": "Register"
     }
   },
+  "LOGIN": {
+    "TITLE": "Login",
+    "FORM": {
+      "USERNAMEFIELD": {
+        "LABEL": "Username",
+        "HINT": "Enter your name",
+        "ERROR": {
+          "REQUIRED": "You must enter your name",
+          "PATTERN": "Not a valid username"
+        }
+      },
+      "PASSWORDFIELD": {
+        "LABEL": "Password",
+        "HINT": "Enter your password",
+        "ERROR": {
+          "REQUIRED": "You must enter your password",
+          "PATTERN": "Not a valid password"
+        }
+      },
+      "SUBMIT": "Login"
+    }
+  },
   "ALERT": {
     "REGISTER": {
       "SUCCESS": {
@@ -77,6 +100,12 @@
       "ERROR": {
         "TITLE": "Registration failed",
         "DESCRIPTION": "We are sorry, but something went wrong<br>Please try again"
+      }
+    },
+    "LOGIN": {
+      "SUCCESS": {
+        "TITLE": "Login successful",
+        "DESCRIPTION": "You will be redirected to login page"
       }
     },
     "CONTACTS": {
