@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule, Router, NavigationStart } from '@angular/router';
-import { BackendlessService } from '../core/services/backendless.service';
+import { Routes, RouterModule } from '@angular/router';
 
 import { MainComponent } from './components/main/main.component';
 import { HomepageComponent } from './components/homepage/homepage.component';

@@ -7,15 +7,12 @@ import {
 } from '@angular/forms';
 import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
 import { Observable, Subject } from 'rxjs';
-import {
-  LoginUser,
-  LoginUserSuccess,
-  LogoutUser
-} from '../../../store/landing.action';
+import { LoginUser, LoginUserSuccess } from '../../../store/admin.action';
 import { MatDialog } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
 import { AlertComponent } from '../alert/alert.component';
 import { TranslateService } from '@ngx-translate/core';
+import { LogoutUser } from '../../../store/admin.action';
 
 @Component({
   selector: 'app-login',
@@ -30,13 +27,13 @@ export class LoginComponent implements OnInit, DoCheck {
   successTitle: string;
   successDescription: string;
 
-  @Select((state) => state.landingState.loading)
+  @Select((state) => state.adminState.loading)
   loading$: Observable<boolean>;
 
-  @Select((state) => state.landingState.isLoggedIn)
+  @Select((state) => state.adminState.isLoggedIn)
   isLoggedIn$: Observable<boolean>;
 
-  @Select((state) => state.landingState.isUserDataIncorrect)
+  @Select((state) => state.adminState.isUserDataIncorrect)
   isUserDataIncorrect$: Observable<boolean>;
 
   ngOnInit(): void {

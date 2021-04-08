@@ -3,9 +3,8 @@ import Backendless from 'backendless';
 import { environment } from '../../../environments/environment';
 import { Store } from '@ngxs/store';
 
-import { UserLoggedIn, UserNotLoggedIn } from '../../store/landing.action';
+import { UserLoggedIn, UserNotLoggedIn } from '../../store/admin.action';
 import { defer, from, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +24,7 @@ export class BackendlessService {
       from(
         Backendless.UserService.isValidLogin()
           .then((success: boolean) => {
+            console.log(success);
             if (success) {
               this.store.dispatch(new UserLoggedIn());
             } else {
