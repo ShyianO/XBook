@@ -17,7 +17,7 @@ import {
   UserExists,
   UserLoggedIn,
   UserLoggedInSuccess,
-  UserLoggedInFalse
+  UserNotLoggedIn
 } from './landing.action';
 import { IRegisterRequest } from '../core/interfaces/register.interface';
 import { ILandingState } from '../core/interfaces/landing.interface';
@@ -160,8 +160,8 @@ export class LandingState {
       .then((user) => {
         this.store.dispatch(new UserLoggedInSuccess(user));
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
+        this.store.dispatch(new UserNotLoggedIn());
       });
   }
 
@@ -173,8 +173,8 @@ export class LandingState {
     ctx.patchState({ isLoggedIn: true, username: user.username });
   }
 
-  @Action(UserLoggedInFalse)
-  userLoggedInFalse(ctx: StateContext<ILandingState>): void {
+  @Action(UserNotLoggedIn)
+  userNotLoggedIn(ctx: StateContext<ILandingState>): void {
     ctx.patchState({ isLoggedIn: false, username: '' });
   }
 

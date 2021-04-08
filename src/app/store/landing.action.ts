@@ -57,8 +57,8 @@ export class UserLoggedInSuccess {
   constructor(public user: Backendless.User) {}
 }
 
-export class UserLoggedInFalse {
-  static readonly type = '[User] LoggedInFalse';
+export class UserNotLoggedIn {
+  static readonly type = '[User] NotLoggedIn';
 }
 
 export class LogoutUser {

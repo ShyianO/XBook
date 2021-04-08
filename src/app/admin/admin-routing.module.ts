@@ -21,8 +21,7 @@ const routes: Routes = [
       },
       {
         path: 'dashboard',
-        component: DashboardComponent,
-        canActivate: [AdminGuard]
+        component: DashboardComponent
       },
       {
         path: 'configuration',
@@ -41,7 +40,8 @@ const routes: Routes = [
         component: StatisticComponent
       }
     ],
-    component: MainComponent
+    component: MainComponent,
+    canActivate: [AdminGuard]
   }
 ];
 

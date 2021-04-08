@@ -6,10 +6,10 @@ import {
   RouterStateSnapshot
 } from '@angular/router';
 import { Select } from '@ngxs/store';
-import { Observable, of } from 'rxjs';
+import { iif, Observable, of } from 'rxjs';
 
 import { BackendlessService } from '../core/services/backendless.service';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, mergeMap, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -28,16 +28,10 @@ export class AdminGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean> {
     return this.isLoggedIn$.pipe(
-      map((e) => {
-        if (e) {
-          console.log(e);
-          return true;
-        }
-
-        this.router.navigate(['/admin']);
-
-        return false;
-      }),
+      take(1),
+      mergeMap((value) =>
+        iif(() => value, of(true), this.backendlessService.isValidLogin())
+      ),
       catchError((err) => {
         return of(false);
       })
