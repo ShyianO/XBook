@@ -4,7 +4,7 @@ import { environment } from '../../../environments/environment';
 import { Store } from '@ngxs/store';
 
 import { UserLoggedIn, UserNotLoggedIn } from '../../store/landing.action';
-import { from, Observable } from 'rxjs';
+import { defer, from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -21,20 +21,22 @@ export class BackendlessService {
   }
 
   isValidLogin(): Observable<boolean> {
-    return from(
-      Backendless.UserService.isValidLogin()
-        .then((success: boolean) => {
-          if (success) {
-            this.store.dispatch(new UserLoggedIn());
-          } else {
-            this.store.dispatch(new UserNotLoggedIn());
-          }
+    return defer(() =>
+      from(
+        Backendless.UserService.isValidLogin()
+          .then((success: boolean) => {
+            if (success) {
+              this.store.dispatch(new UserLoggedIn());
+            } else {
+              this.store.dispatch(new UserNotLoggedIn());
+            }
 
-          return success;
-        })
-        .catch(() => {
-          return false;
-        })
+            return success;
+          })
+          .catch(() => {
+            return false;
+          })
+      )
     );
   }
 }

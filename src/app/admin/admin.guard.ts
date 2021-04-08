@@ -33,6 +33,7 @@ export class AdminGuard implements CanActivate {
         iif(() => value, of(true), this.backendlessService.isValidLogin())
       ),
       catchError((err) => {
+        this.router.navigate(['/landing/login']);
         return of(false);
       })
     );
