@@ -35,10 +35,6 @@ export class BackendlessService {
         .catch(() => {
           return false;
         })
-    ).pipe(
-      map((value) => {
-        return value;
-      })
     );
   }
 }
