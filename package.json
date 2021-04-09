@@ -7,7 +7,7 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "eslint ./src/app --ext js,ts,html --fix",
-    "lint:nofix": "eslint . --ext js,ts,json",
+    "lint:nofix": "eslint ./src/app --ext js,ts,html",
     "e2e": "ng e2e"
   },
   "private": true,
