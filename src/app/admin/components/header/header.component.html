@@ -1,6 +1,6 @@
 <mat-toolbar color="primary" class="header mat-elevation-z6">
   <div class="header__nav">
-    <a class="header__nav-logo" routerLink="/admin">
+    <a class="header__nav-logo" routerLink="/landing">
       <img src="assets/img/xbook-logo.png" alt="XBook" />
     </a>
 
@@ -43,6 +43,7 @@
       <button
         class="header__controls-option"
         mat-menu-item
+        (click)="onLogout()"
         routerLink="/landing/login"
       >
         {{ 'ADMIN.HEADER.MENU.LOGOUT' | translate }}

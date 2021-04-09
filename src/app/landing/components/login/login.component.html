@@ -1,14 +1,9 @@
 <section class="login">
   <div class="login__nav">
     <h1 class="login__nav-title">{{ 'LOGIN.TITLE' | translate }}</h1>
-
-    <button class="login__nav-logout" mat-button (click)="onLogout()">
-      Logout
-    </button>
   </div>
 
   <form
-    *ngIf="(isLoggedIn$ | async) === false"
     class="login__form"
     novalidate
     [formGroup]="loginForm"
@@ -86,8 +81,4 @@
       {{ 'LOGIN.FORM.SUBMIT' | translate }}
     </button>
   </form>
-
-  <div class="login__profile" *ngIf="isLoggedIn$ | async">
-    <h2 class="login__profile-title">Hello</h2>
-  </div>
 </section>

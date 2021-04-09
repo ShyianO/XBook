@@ -18,7 +18,6 @@ import { ILandingState } from '../core/interfaces/landing.interface';
 @State<ILandingState>({
   name: 'landingState',
   defaults: {
-    user: null,
     loading: false,
     userExists: false
   }
@@ -34,9 +33,7 @@ export class LandingState {
     patchState({ loading: true });
 
     Backendless.UserService.register<IRegisterRequest>(user)
-      .then((result: IRegisterRequest) => {
-        console.log('Registered User:', result);
-
+      .then(() => {
         this.store.dispatch(new RegisterUserSuccess(user));
       })
       .catch((error) => {
@@ -47,12 +44,8 @@ export class LandingState {
   }
 
   @Action(RegisterUserSuccess)
-  registerUserSuccess(
-    ctx: StateContext<ILandingState>,
-    { user }: RegisterUser
-  ): void {
+  registerUserSuccess(ctx: StateContext<ILandingState>): void {
     ctx.patchState({
-      user: { ...user },
       loading: false
     });
   }
@@ -91,9 +84,7 @@ export class LandingState {
 
     Backendless.Data.of('Contacts')
       .save(message)
-      .then((success) => {
-        console.log(success);
-
+      .then(() => {
         this.store.dispatch(new SendMessageSuccess());
       })
       .catch((error) => {

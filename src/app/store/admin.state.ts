@@ -17,6 +17,7 @@ import { IAdminState } from '../core/interfaces/admin.interface';
 @State<IAdminState>({
   name: 'adminState',
   defaults: {
+    currentUser: null,
     isLoggedIn: false,
     loading: false,
     isUserDataIncorrect: false
@@ -32,8 +33,6 @@ export class AdminState {
 
     Backendless.UserService.login(user.email, user.password, true)
       .then((loggedInUser) => {
-        console.log(loggedInUser);
-
         this.store.dispatch(new LoginUserSuccess(loggedInUser));
       })
       .catch((error) => {
@@ -44,8 +43,12 @@ export class AdminState {
   }
 
   @Action(LoginUserSuccess)
-  loginUserSuccess(ctx: StateContext<IAdminState>): void {
+  loginUserSuccess(
+    ctx: StateContext<IAdminState>,
+    { user }: LoginUserSuccess
+  ): void {
     ctx.patchState({
+      currentUser: { ...user },
       loading: false,
       isLoggedIn: true,
       isUserDataIncorrect: false
@@ -69,20 +72,24 @@ export class AdminState {
   }
 
   @Action(UserLoggedInSuccess)
-  userLoggedInSuccess(ctx: StateContext<IAdminState>): void {
-    ctx.patchState({ isLoggedIn: true });
+  userLoggedInSuccess(
+    ctx: StateContext<IAdminState>,
+    { user }: UserLoggedInSuccess
+  ): void {
+    ctx.patchState({ currentUser: { ...user }, isLoggedIn: true });
   }
 
   @Action(UserNotLoggedIn)
   userNotLoggedIn(ctx: StateContext<IAdminState>): void {
-    ctx.patchState({ isLoggedIn: false });
+    ctx.patchState({ currentUser: null, isLoggedIn: false });
   }
 
   @Action(LogoutUser)
   logOut(ctx: StateContext<IAdminState>): void {
     Backendless.UserService.logout()
       .then(() => {
-        ctx.patchState({ isLoggedIn: false });
+        ctx.patchState({ currentUser: null, isLoggedIn: false });
+        console.log(ctx.getState());
       })
       .catch((error) => {
         console.log(error);

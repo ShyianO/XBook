@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { MainComponent } from './components/main/main.component';
-import { HomepageComponent } from './components/homepage/homepage.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ConfigurationComponent } from './components/configuration/configuration.component';
 import { BookingsComponent } from './components/bookings/bookings.component';
@@ -14,10 +13,6 @@ const routes: Routes = [
   {
     path: '',
     children: [
-      {
-        path: '',
-        component: HomepageComponent
-      },
       {
         path: 'dashboard',
         component: DashboardComponent
@@ -37,7 +32,8 @@ const routes: Routes = [
       {
         path: 'statistic',
         component: StatisticComponent
-      }
+      },
+      { path: '**', redirectTo: 'dashboard', pathMatch: 'full' }
     ],
     component: MainComponent,
     canActivate: [AdminGuard]

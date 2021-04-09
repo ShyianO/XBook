@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateService } from '@ngx-translate/core';
 
-export function HttpLoaderFactory(httpClient: HttpClient): any {
+export function HttpLoaderFactory(httpClient: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(httpClient);
 }
 
@@ -23,7 +23,7 @@ export class TranslationService {
     this.translate.use(storageLang ? storageLang : browserLang);
   }
 
-  selectLanguage(lang): void {
+  selectLanguage(lang: string): void {
     this.translate.use(lang);
     localStorage.setItem('language', lang);
   }

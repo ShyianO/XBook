@@ -9,7 +9,6 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { MainComponent } from './components/main/main.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { HomepageComponent } from './components/homepage/homepage.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ConfigurationComponent } from './components/configuration/configuration.component';
 import { BookingsComponent } from './components/bookings/bookings.component';
@@ -21,7 +20,6 @@ import { StatisticComponent } from './components/statistic/statistic.component';
     MainComponent,
     HeaderComponent,
     FooterComponent,
-    HomepageComponent,
     DashboardComponent,
     ConfigurationComponent,
     BookingsComponent,

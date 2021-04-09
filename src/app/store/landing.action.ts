@@ -1,6 +1,5 @@
 import { IRegisterRequest } from '../core/interfaces/register.interface';
 import { IMessageRequest } from '../core/interfaces/message.interface';
-import { ILoginRequest } from '../core/interfaces/login.interface';
 
 export class RegisterUser {
   static readonly type = '[User] Register';

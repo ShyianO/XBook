@@ -1,4 +1,4 @@
-import { Component, DoCheck, OnInit } from '@angular/core';
+import { Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -7,19 +7,19 @@ import {
 } from '@angular/forms';
 import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
 import { Observable, Subject } from 'rxjs';
-import { LoginUser, LoginUserSuccess } from '../../../store/admin.action';
 import { MatDialog } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
-import { AlertComponent } from '../alert/alert.component';
 import { TranslateService } from '@ngx-translate/core';
-import { LogoutUser } from '../../../store/admin.action';
+
+import { LoginUser, LoginUserSuccess } from '../../../store/admin.action';
+import { AlertComponent } from '../alert/alert.component';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit, DoCheck {
+export class LoginComponent implements OnInit, DoCheck, OnDestroy {
   loginForm: FormGroup;
   hide = true;
   subject = new Subject();
@@ -29,9 +29,6 @@ export class LoginComponent implements OnInit, DoCheck {
 
   @Select((state) => state.adminState.loading)
   loading$: Observable<boolean>;
-
-  @Select((state) => state.adminState.isLoggedIn)
-  isLoggedIn$: Observable<boolean>;
 
   @Select((state) => state.adminState.isUserDataIncorrect)
   isUserDataIncorrect$: Observable<boolean>;
@@ -102,7 +99,8 @@ export class LoginComponent implements OnInit, DoCheck {
     }
   }
 
-  onLogout(): void {
-    this.store.dispatch(new LogoutUser());
+  ngOnDestroy(): void {
+    this.subject.next();
+    this.subject.complete();
   }
 }

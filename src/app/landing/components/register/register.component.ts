@@ -103,7 +103,7 @@ export class RegisterComponent implements OnInit, OnDestroy, DoCheck {
 
     fromEvent(this.usernameInput.nativeElement, 'keyup')
       .pipe(
-        map((event: any) => {
+        map((event: { target: HTMLInputElement }) => {
           return event.target.value;
         }),
         debounceTime(500),

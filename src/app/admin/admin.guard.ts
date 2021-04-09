@@ -1,21 +1,16 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  Router,
-  RouterStateSnapshot
-} from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { iif, Observable, of } from 'rxjs';
 
 import { BackendlessService } from '../core/services/backendless.service';
-import { catchError, map, mergeMap, take } from 'rxjs/operators';
+import { catchError, mergeMap, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminGuard implements CanActivate {
-  @Select((state) => state.landingState.isLoggedIn)
+  @Select((state) => state.adminState.isLoggedIn)
   isLoggedIn$: Observable<boolean>;
 
   constructor(
@@ -23,16 +18,13 @@ export class AdminGuard implements CanActivate {
     private backendlessService: BackendlessService
   ) {}
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<boolean> {
+  canActivate(): Observable<boolean> {
     return this.isLoggedIn$.pipe(
       take(1),
       mergeMap((value) =>
         iif(() => value, of(true), this.backendlessService.isValidLogin())
       ),
-      catchError((err) => {
+      catchError(() => {
         this.router.navigate(['/landing/login']);
         return of(false);
       })

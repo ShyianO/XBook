@@ -2,15 +2,17 @@ import { Injectable } from '@angular/core';
 import Backendless from 'backendless';
 import { environment } from '../../../environments/environment';
 import { Store } from '@ngxs/store';
+import { defer, from, Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 import { UserLoggedIn, UserNotLoggedIn } from '../../store/admin.action';
-import { defer, from, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BackendlessService {
-  constructor(private store: Store) {}
+  constructor(private store: Store, private router: Router) {}
+
   init(): void {
     Backendless.serverURL = 'https://eu-api.backendless.com';
     Backendless.initApp(
@@ -28,6 +30,7 @@ export class BackendlessService {
             if (success) {
               this.store.dispatch(new UserLoggedIn());
             } else {
+              this.router.navigate(['/landing/login']);
               this.store.dispatch(new UserNotLoggedIn());
             }
 
