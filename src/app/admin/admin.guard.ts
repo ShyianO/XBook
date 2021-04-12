@@ -4,7 +4,7 @@ import { Select } from '@ngxs/store';
 import { iif, Observable, of } from 'rxjs';
 
 import { BackendlessService } from '../core/services/backendless.service';
-import { catchError, mergeMap, take } from 'rxjs/operators';
+import { catchError, mergeMap, take, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -25,8 +25,12 @@ export class AdminGuard implements CanActivate {
         iif(() => value, of(true), this.backendlessService.isValidLogin())
       ),
       catchError(() => {
-        this.router.navigate(['/landing/login']);
         return of(false);
+      }),
+      tap((value) => {
+        if (!value) {
+          this.router.navigate(['/landing/login']);
+        }
       })
     );
   }

@@ -3,7 +3,6 @@ import Backendless from 'backendless';
 import { environment } from '../../../environments/environment';
 import { Store } from '@ngxs/store';
 import { defer, from, Observable } from 'rxjs';
-import { Router } from '@angular/router';
 
 import { UserLoggedIn, UserNotLoggedIn } from '../../store/admin.action';
 
@@ -11,7 +10,7 @@ import { UserLoggedIn, UserNotLoggedIn } from '../../store/admin.action';
   providedIn: 'root'
 })
 export class BackendlessService {
-  constructor(private store: Store, private router: Router) {}
+  constructor(private store: Store) {}
 
   init(): void {
     Backendless.serverURL = 'https://eu-api.backendless.com';
@@ -26,17 +25,16 @@ export class BackendlessService {
       from(
         Backendless.UserService.isValidLogin()
           .then((success: boolean) => {
-            console.log(success);
             if (success) {
               this.store.dispatch(new UserLoggedIn());
             } else {
-              this.router.navigate(['/landing/login']);
               this.store.dispatch(new UserNotLoggedIn());
             }
 
             return success;
           })
-          .catch(() => {
+          .catch((error) => {
+            console.log(error);
             return false;
           })
       )
