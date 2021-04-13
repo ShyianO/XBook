@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   backendless: {
-    APP_ID: '2FA3E688-ADE5-556D-FFA2-2F42B5F5FB00',
-    API_KEY: 'CB2A4850-B144-4F23-9C45-5C4D2BC2FF04'
+    APP_ID: '96FB9625-D188-0F5C-FF1F-D2B1F1B4D200',
+    API_KEY: '0A88E8D4-C725-4FF0-8406-CA54FD9583A6'
   }
 };
 

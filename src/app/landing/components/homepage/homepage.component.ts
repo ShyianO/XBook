@@ -6,10 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./homepage.component.scss']
 })
 export class HomepageComponent {
-  scrollToElement($element): void {
-    $element.scrollIntoView({
+  scrollToElement(element: HTMLElement): void {
+    element.scrollIntoView({
       behavior: 'smooth',
-      block: 'start'
+      block: 'center'
     });
   }
 }

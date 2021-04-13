@@ -13,7 +13,7 @@ export class HeaderComponent {
     public translationService: TranslationService
   ) {}
 
-  onSelect(lang): void {
+  onSelect(lang: string): void {
     this.translationService.selectLanguage(lang);
   }
 }

@@ -72,12 +72,12 @@
   "LOGIN": {
     "TITLE": "Login",
     "FORM": {
-      "USERNAMEFIELD": {
-        "LABEL": "Username",
-        "HINT": "Enter your name",
+      "EMAILFIELD": {
+        "LABEL": "Email",
+        "HINT": "Enter your email",
         "ERROR": {
-          "REQUIRED": "You must enter your name",
-          "PATTERN": "Not a valid username"
+          "REQUIRED": "You must enter your email",
+          "PATTERN": "Not a valid email"
         }
       },
       "PASSWORDFIELD": {
@@ -147,6 +147,19 @@
         }
       },
       "SUBMIT": "Send"
+    }
+  },
+  "ADMIN": {
+    "HEADER": {
+      "MENU": {
+        "NAV": "Menu",
+        "DASHBOARD": "Dashboard",
+        "CONFIGURATION": "Configuration",
+        "BOOKINGS": "Bookings",
+        "PROFILE": "Profile",
+        "STATISTIC": "Statistic",
+        "LOGOUT": "Logout"
+      }
     }
   }
 }

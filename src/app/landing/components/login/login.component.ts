@@ -1,4 +1,4 @@
-import { Component, DoCheck, OnInit } from '@angular/core';
+import { Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -7,23 +7,19 @@ import {
 } from '@angular/forms';
 import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
 import { Observable, Subject } from 'rxjs';
-import {
-  LoginUser,
-  LoginUserSuccess,
-  LogoutUser,
-  RegisterUserSuccess
-} from '../../../store/landing.action';
 import { MatDialog } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
-import { AlertComponent } from '../alert/alert.component';
 import { TranslateService } from '@ngx-translate/core';
+
+import { LoginUser, LoginUserSuccess } from '../../../store/admin.action';
+import { AlertComponent } from '../alert/alert.component';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit, DoCheck {
+export class LoginComponent implements OnInit, DoCheck, OnDestroy {
   loginForm: FormGroup;
   hide = true;
   subject = new Subject();
@@ -31,24 +27,15 @@ export class LoginComponent implements OnInit, DoCheck {
   successTitle: string;
   successDescription: string;
 
-  @Select((state) => state.landingState.loading)
+  @Select((state) => state.adminState.loading)
   loading$: Observable<boolean>;
 
-  @Select((state) => state.landingState.isLoggedIn)
-  isLoggedIn$: Observable<boolean>;
-
-  @Select((state) => state.landingState.username)
-  username$: Observable<boolean>;
-
-  @Select((state) => state.landingState.isUserDataIncorrect)
+  @Select((state) => state.adminState.isUserDataIncorrect)
   isUserDataIncorrect$: Observable<boolean>;
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
-      username: new FormControl('', [
-        Validators.required,
-        Validators.maxLength(30)
-      ]),
+      email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [
         Validators.required,
         Validators.maxLength(30)
@@ -64,7 +51,7 @@ export class LoginComponent implements OnInit, DoCheck {
             description: this.successDescription,
             style: 'primary',
             icon: 'check_circle',
-            redirectTo: '/landing'
+            redirectTo: '/admin'
           }
         });
       });
@@ -80,8 +67,8 @@ export class LoginComponent implements OnInit, DoCheck {
       });
   }
 
-  get username(): AbstractControl {
-    return this.loginForm.get('username');
+  get email(): AbstractControl {
+    return this.loginForm.get('email');
   }
 
   get password(): AbstractControl {
@@ -104,7 +91,7 @@ export class LoginComponent implements OnInit, DoCheck {
   }): void {
     if (valid) {
       const loginRequest = {
-        username: value.username,
+        email: value.email,
         password: value.password
       };
 
@@ -112,7 +99,8 @@ export class LoginComponent implements OnInit, DoCheck {
     }
   }
 
-  onLogout(): void {
-    this.store.dispatch(new LogoutUser());
+  ngOnDestroy(): void {
+    this.subject.next();
+    this.subject.complete();
   }
 }
