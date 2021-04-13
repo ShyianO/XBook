@@ -1,1 +1,182 @@
-<p>profile works!</p>
+<section class="profile">
+  <div class="profile__nav">
+    <h1 class="profile__nav-title">Profile</h1>
+  </div>
+
+  <form
+    class="profile__form"
+    novalidate
+    [formGroup]="profileForm"
+    (ngSubmit)="onSave(profileForm)"
+  >
+    <mat-form-field class="profile__form-field" appearance="outline">
+      <mat-label>Email</mat-label>
+      <input
+        matInput
+        type="email"
+        placeholder="pat@example.com"
+        formControlName="email"
+        autocomplete="off"
+        required
+      />
+      <mat-hint>Email</mat-hint>
+
+      <mat-error *ngIf="email.invalid">
+        <div *ngIf="email.errors.required">required</div>
+        <div *ngIf="email.errors.email">pattern</div>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="profile__form-field" appearance="outline">
+      <mat-label>First name</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="firstName"
+        required
+        autocomplete="off"
+        #usernameInput
+      />
+      <mat-hint>First name</mat-hint>
+
+      <mat-error *ngIf="firstName.invalid">
+        <div *ngIf="firstName.errors.required">required</div>
+        <div *ngIf="firstName.errors.pattern || firstName.errors.maxlength">
+          pattern
+        </div>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="profile__form-field" appearance="outline">
+      <mat-label>Last name</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="lastName"
+        required
+        autocomplete="off"
+        #usernameInput
+      />
+      <mat-hint>Last name</mat-hint>
+
+      <mat-error *ngIf="lastName.invalid">
+        <div *ngIf="lastName.errors.required">required</div>
+        <div *ngIf="lastName.errors.pattern || lastName.errors.maxlength">
+          pattern
+        </div>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="profile__form-field" appearance="outline">
+      <mat-label>Phone</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="phone"
+        required
+        autocomplete="off"
+        #usernameInput
+      />
+      <mat-hint>phone</mat-hint>
+
+      <mat-error *ngIf="phone.invalid">
+        <div *ngIf="phone.errors.required">required</div>
+        <div *ngIf="phone.errors.pattern">pattern</div>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="profile__form-field" appearance="outline">
+      <mat-label>Address</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="address"
+        required
+        autocomplete="off"
+        #usernameInput
+      />
+      <mat-hint>Last name</mat-hint>
+
+      <mat-error *ngIf="address.invalid">
+        <div *ngIf="address.errors.required">required</div>
+        <div *ngIf="address.errors.pattern || address.errors.maxlength">
+          pattern
+        </div>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="profile__form-field" appearance="outline">
+      <mat-label> password </mat-label>
+      <input
+        matInput
+        type="password"
+        formControlName="password"
+        [type]="hide ? 'password' : 'text'"
+        autocomplete="off"
+        required
+      />
+      <mat-hint>password</mat-hint>
+
+      <mat-error *ngIf="password.invalid">
+        <div *ngIf="password.errors.required">required</div>
+        <div *ngIf="password.errors.pattern || password.errors.maxlength">
+          pattern
+        </div>
+      </mat-error>
+
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hide = !hide"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide"
+      >
+        <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <mat-form-field class="profile__form-field" appearance="outline">
+      <mat-label>confirmPassword</mat-label>
+      <input
+        matInput
+        type="password"
+        formControlName="confirmPassword"
+        [type]="hide ? 'password' : 'text'"
+        pattern="{{ password.value }}"
+        autocomplete="off"
+        required
+      />
+      <mat-hint>confirmPassword</mat-hint>
+
+      <mat-error *ngIf="confirmPassword.invalid">
+        <div *ngIf="confirmPassword.errors.required">required</div>
+        <div *ngIf="confirmPassword.errors.pattern">pattern</div>
+      </mat-error>
+
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hide = !hide"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide"
+      >
+        <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <mat-spinner
+      *ngIf="loading$ | async"
+      diameter="25"
+      color="primary"
+    ></mat-spinner>
+    <button
+      *ngIf="(loading$ | async) === false"
+      class="profile__submit mat-spinner"
+      mat-raised-button
+      color="accent"
+      [disabled]="profileForm.invalid"
+    >
+      Save
+    </button>
+  </form>
+</section>
