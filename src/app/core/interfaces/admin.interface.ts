@@ -1,6 +1,9 @@
+import { IUser } from './user.interface';
+
 export interface IAdminState {
-  currentUser: Backendless.User;
+  currentUser: IUser;
   isLoggedIn: boolean;
   loading: boolean;
   isUserDataIncorrect: boolean;
+  isUserDataCompleted: boolean;
 }

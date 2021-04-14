@@ -10,9 +10,15 @@ import {
   UserLoggedIn,
   UserLoggedInSuccess,
   UserNotLoggedIn,
-  LogoutUser
+  LogoutUser,
+  UpdateUser,
+  UpdateUserSuccess,
+  UpdateUserError,
+  IsUserUpdated
 } from './admin.action';
 import { IAdminState } from '../core/interfaces/admin.interface';
+import { IUser } from '../core/interfaces/user.interface';
+import currentUser = Backendless.UserService.currentUser;
 
 @State<IAdminState>({
   name: 'adminState',
@@ -20,7 +26,8 @@ import { IAdminState } from '../core/interfaces/admin.interface';
     currentUser: null,
     isLoggedIn: false,
     loading: false,
-    isUserDataIncorrect: false
+    isUserDataIncorrect: false,
+    isUserDataCompleted: false
   }
 })
 @Injectable()
@@ -51,7 +58,8 @@ export class AdminState {
       currentUser: { ...user },
       loading: false,
       isLoggedIn: true,
-      isUserDataIncorrect: false
+      isUserDataIncorrect: false,
+      isUserDataCompleted: false
     });
   }
 
@@ -77,6 +85,8 @@ export class AdminState {
     { user }: UserLoggedInSuccess
   ): void {
     ctx.patchState({ currentUser: { ...user }, isLoggedIn: true });
+
+    this.store.dispatch(new IsUserUpdated());
   }
 
   @Action(UserNotLoggedIn)
@@ -89,10 +99,63 @@ export class AdminState {
     Backendless.UserService.logout()
       .then(() => {
         ctx.patchState({ currentUser: null, isLoggedIn: false });
-        console.log(ctx.getState());
       })
       .catch((error) => {
         console.log(error);
       });
+  }
+
+  @Action(UpdateUser)
+  updateUser(
+    ctx: StateContext<IAdminState>,
+    { updatedUser }: UpdateUser
+  ): void {
+    ctx.patchState({ loading: true });
+
+    updatedUser.objectId = ctx.getState().currentUser.objectId;
+
+    if (updatedUser.password.length === 0) {
+      updatedUser.password = null;
+    }
+
+    console.log(updatedUser);
+
+    Backendless.UserService.update(updatedUser)
+      .then((updatedCurrentUser) => {
+        this.store.dispatch(new UpdateUserSuccess(updatedCurrentUser));
+      })
+      .catch((error) => {
+        console.log(error);
+
+        this.store.dispatch(new UpdateUserError());
+      });
+  }
+
+  @Action(UpdateUserSuccess)
+  updateUserSuccess(
+    ctx: StateContext<IAdminState>,
+    { updatedCurrentUser }: UpdateUserSuccess
+  ): void {
+    console.log(updatedCurrentUser);
+
+    ctx.patchState({
+      loading: false,
+      isUserDataCompleted: true
+    });
+  }
+
+  @Action(UpdateUserError)
+  updateUserError(ctx: StateContext<IAdminState>): void {
+    ctx.patchState({ loading: false });
+  }
+
+  @Action(IsUserUpdated)
+  isUserUpdated(ctx: StateContext<IAdminState>): void {
+    const {
+      firstName,
+      lastName,
+      phoneNumber,
+      address
+    }: IUser = ctx.getState().currentUser;
   }
 }

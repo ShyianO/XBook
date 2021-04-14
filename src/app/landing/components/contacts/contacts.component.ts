@@ -8,14 +8,15 @@ import {
 import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
 import { Observable, Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
+import { takeUntil } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
+
+import { AlertComponent } from '../alert/alert.component';
 import {
   SendMessage,
   SendMessageError,
   SendMessageSuccess
 } from '../../../store/landing.action';
-import { takeUntil } from 'rxjs/operators';
-import { AlertComponent } from '../alert/alert.component';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-contacts',

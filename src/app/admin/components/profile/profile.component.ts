@@ -1,26 +1,32 @@
-import { Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
   FormGroup,
   Validators
 } from '@angular/forms';
-import { Actions, ofActionDispatched, Select } from '@ngxs/store';
+import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
 import { Observable, Subject } from 'rxjs';
+import {
+  UpdateUser,
+  UpdateUserError,
+  UpdateUserSuccess
+} from '../../../store/admin.action';
+
 import { takeUntil } from 'rxjs/operators';
-import { UserLoggedInSuccess } from 'src/app/store/admin.action';
+import { AlertComponent } from '../../../landing/components/alert/alert.component';
+import { MatDialog } from '@angular/material/dialog';
+import { IUser } from '../../../core/interfaces/user.interface';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit, OnDestroy, DoCheck {
+export class ProfileComponent implements OnInit, OnDestroy {
   profileForm: FormGroup;
   hide = true;
   subject = new Subject();
-  user: Backendless.User;
-  userEmail: string;
 
   @Select((state) => state.adminState.loading)
   loading$: Observable<boolean>;
@@ -28,49 +34,76 @@ export class ProfileComponent implements OnInit, OnDestroy, DoCheck {
   @Select((state) => state.adminState.currentUser)
   currentUser$: Observable<Backendless.User>;
 
-  constructor(private actions$: Actions) {}
+  constructor(
+    private store: Store,
+    private actions$: Actions,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
-    this.actions$
-      .pipe(ofActionDispatched(UserLoggedInSuccess), takeUntil(this.subject))
-      .subscribe((value) => {
-        this.user = value.user;
-        this.userEmail = value.user.email;
-      });
-  }
+    this.currentUser$.subscribe((user: IUser) => {
+      if (user) {
+        const { email, firstName, lastName, phoneNumber, address } = user;
 
-  ngDoCheck(): void {
-    this.profileForm = new FormGroup({
-      email: new FormControl(this.userEmail, [
-        Validators.required,
-        Validators.email
-      ]),
-      firstName: new FormControl('', [
-        Validators.required,
-        Validators.maxLength(30),
-        Validators.pattern('[a-zA-Z ]*')
-      ]),
-      lastName: new FormControl('', [
-        Validators.required,
-        Validators.maxLength(30),
-        Validators.pattern('[a-zA-Z ]*')
-      ]),
-      phone: new FormControl('', [
-        Validators.required,
-        Validators.maxLength(30),
-        Validators.pattern('[a-zA-Z ]*')
-      ]),
-      address: new FormControl('', [
-        Validators.required,
-        Validators.maxLength(30),
-        Validators.pattern('[a-zA-Z ]*')
-      ]),
-      password: new FormControl('', [
-        Validators.maxLength(30),
-        Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{4,20}')
-      ]),
-      confirmPassword: new FormControl('', [Validators.required])
+        this.profileForm = new FormGroup(
+          {
+            email: new FormControl(email, [
+              Validators.required,
+              Validators.email
+            ]),
+            firstName: new FormControl(firstName, [
+              Validators.required,
+              Validators.pattern('[a-zA-Z ]*')
+            ]),
+            lastName: new FormControl(lastName, [
+              Validators.required,
+              Validators.pattern('[a-zA-Z ]*')
+            ]),
+            phoneNumber: new FormControl(phoneNumber, [
+              Validators.required,
+              Validators.minLength(10),
+              Validators.maxLength(12)
+            ]),
+            address: new FormControl(address, [
+              Validators.required,
+              Validators.pattern('[a-zA-Z ]*')
+            ]),
+            password: new FormControl('', [
+              Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{4,20}')
+            ]),
+            confirmPassword: new FormControl('')
+          },
+          { validators: this.passwordMatchValidator }
+        );
+      }
     });
+
+    this.actions$
+      .pipe(ofActionDispatched(UpdateUserSuccess), takeUntil(this.subject))
+      .subscribe(() => {
+        this.dialog.open(AlertComponent, {
+          data: {
+            title: 'Update successful',
+            description: 'Thank you for updating your data',
+            style: 'primary',
+            icon: 'check_circle',
+            redirectTo: '/admin/dashboard'
+          }
+        });
+      });
+
+    this.actions$
+      .pipe(ofActionDispatched(UpdateUserError), takeUntil(this.subject))
+      .subscribe(() => {
+        this.dialog.open(AlertComponent, {
+          data: {
+            title: 'Update failed',
+            description: 'Something went wrong',
+            style: 'warn',
+            icon: 'error_outline'
+          }
+        });
+      });
   }
 
   get email(): AbstractControl {
@@ -85,8 +118,8 @@ export class ProfileComponent implements OnInit, OnDestroy, DoCheck {
     return this.profileForm.get('lastName');
   }
 
-  get phone(): AbstractControl {
-    return this.profileForm.get('phone');
+  get phoneNumber(): AbstractControl {
+    return this.profileForm.get('phoneNumber');
   }
 
   get address(): AbstractControl {
@@ -101,8 +134,24 @@ export class ProfileComponent implements OnInit, OnDestroy, DoCheck {
     return this.profileForm.get('confirmPassword');
   }
 
-  onSave(form): void {
-    console.log(form);
+  passwordMatchValidator(frm: FormGroup): { [s: string]: boolean } {
+    return frm.controls.password.value === frm.controls.confirmPassword.value
+      ? null
+      : { mismatch: true };
+  }
+
+  onSave({ value }: { value: Record<string, string> }): void {
+    const updateUserRequest = {
+      email: value.email,
+      firstName: value.firstName,
+      lastName: value.lastName,
+      phoneNumber: value.phoneNumber,
+      address: value.address,
+      password: value.password,
+      objectId: ''
+    };
+
+    this.store.dispatch(new UpdateUser(updateUserRequest));
   }
 
   ngOnDestroy(): void {

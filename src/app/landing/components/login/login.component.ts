@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit, DoCheck, OnDestroy {
             description: this.successDescription,
             style: 'primary',
             icon: 'check_circle',
-            redirectTo: '/admin'
+            redirectTo: '/admin/profile'
           }
         });
       });
