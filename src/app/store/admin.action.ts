@@ -1,6 +1,5 @@
 import { ILoginRequest } from '../core/interfaces/login.interface';
 import { IUpdateRequest } from '../core/interfaces/update.interface';
-import { IUser } from '../core/interfaces/user.interface';
 
 export class LoginUser {
   static readonly type = '[User] Login';
@@ -45,8 +44,4 @@ export class UpdateUserSuccess {
 
 export class UpdateUserError {
   static readonly type = '[User] UpdateError';
-}
-
-export class IsUserUpdated {
-  static readonly type = '[User] IsUpdated';
 }

@@ -12,7 +12,7 @@ import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 
 import { LoginUser, LoginUserSuccess } from '../../../store/admin.action';
-import { AlertComponent } from '../alert/alert.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -44,17 +44,7 @@ export class LoginComponent implements OnInit, DoCheck, OnDestroy {
 
     this.actions$
       .pipe(ofActionDispatched(LoginUserSuccess), takeUntil(this.subject))
-      .subscribe(() => {
-        this.dialog.open(AlertComponent, {
-          data: {
-            title: this.successTitle,
-            description: this.successDescription,
-            style: 'primary',
-            icon: 'check_circle',
-            redirectTo: '/admin/profile'
-          }
-        });
-      });
+      .subscribe(() => this.router.navigate(['/admin/profile']));
   }
 
   ngDoCheck(): void {
@@ -79,7 +69,8 @@ export class LoginComponent implements OnInit, DoCheck, OnDestroy {
     private store: Store,
     private actions$: Actions,
     public dialog: MatDialog,
-    public translate: TranslateService
+    public translate: TranslateService,
+    private router: Router
   ) {}
 
   onSubmit({

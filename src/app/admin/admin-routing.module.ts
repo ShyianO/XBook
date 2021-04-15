@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { AdminGuard } from './admin.guard';
+import { ProfileResolver } from './profile.resolver';
 import { MainComponent } from './components/main/main.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ConfigurationComponent } from './components/configuration/configuration.component';
 import { BookingsComponent } from './components/bookings/bookings.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { StatisticComponent } from './components/statistic/statistic.component';
-import { AdminGuard } from './admin.guard';
 
 const routes: Routes = [
   {
@@ -15,15 +16,18 @@ const routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        component: DashboardComponent
+        component: DashboardComponent,
+        resolve: { data: ProfileResolver }
       },
       {
         path: 'configuration',
-        component: ConfigurationComponent
+        component: ConfigurationComponent,
+        resolve: { data: ProfileResolver }
       },
       {
         path: 'bookings',
-        component: BookingsComponent
+        component: BookingsComponent,
+        resolve: { data: ProfileResolver }
       },
       {
         path: 'profile',
@@ -31,7 +35,8 @@ const routes: Routes = [
       },
       {
         path: 'statistic',
-        component: StatisticComponent
+        component: StatisticComponent,
+        resolve: { data: ProfileResolver }
       },
       { path: '**', redirectTo: 'dashboard', pathMatch: 'full' }
     ],

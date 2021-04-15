@@ -7,16 +7,16 @@ import {
 } from '@angular/forms';
 import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
 import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import { IUser } from '../../../core/interfaces/user.interface';
 import {
   UpdateUser,
   UpdateUserError,
   UpdateUserSuccess
 } from '../../../store/admin.action';
-
-import { takeUntil } from 'rxjs/operators';
 import { AlertComponent } from '../../../landing/components/alert/alert.component';
 import { MatDialog } from '@angular/material/dialog';
-import { IUser } from '../../../core/interfaces/user.interface';
 
 @Component({
   selector: 'app-profile',

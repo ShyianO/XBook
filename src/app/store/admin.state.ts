@@ -13,12 +13,9 @@ import {
   LogoutUser,
   UpdateUser,
   UpdateUserSuccess,
-  UpdateUserError,
-  IsUserUpdated
+  UpdateUserError
 } from './admin.action';
 import { IAdminState } from '../core/interfaces/admin.interface';
-import { IUser } from '../core/interfaces/user.interface';
-import currentUser = Backendless.UserService.currentUser;
 
 @State<IAdminState>({
   name: 'adminState',
@@ -26,8 +23,7 @@ import currentUser = Backendless.UserService.currentUser;
     currentUser: null,
     isLoggedIn: false,
     loading: false,
-    isUserDataIncorrect: false,
-    isUserDataCompleted: false
+    isUserDataIncorrect: false
   }
 })
 @Injectable()
@@ -58,8 +54,7 @@ export class AdminState {
       currentUser: { ...user },
       loading: false,
       isLoggedIn: true,
-      isUserDataIncorrect: false,
-      isUserDataCompleted: false
+      isUserDataIncorrect: false
     });
   }
 
@@ -85,8 +80,6 @@ export class AdminState {
     { user }: UserLoggedInSuccess
   ): void {
     ctx.patchState({ currentUser: { ...user }, isLoggedIn: true });
-
-    this.store.dispatch(new IsUserUpdated());
   }
 
   @Action(UserNotLoggedIn)
@@ -137,25 +130,16 @@ export class AdminState {
     { updatedCurrentUser }: UpdateUserSuccess
   ): void {
     console.log(updatedCurrentUser);
+    const state = ctx.getState();
 
     ctx.patchState({
-      loading: false,
-      isUserDataCompleted: true
+      currentUser: { ...state.currentUser, ...updatedCurrentUser },
+      loading: false
     });
   }
 
   @Action(UpdateUserError)
   updateUserError(ctx: StateContext<IAdminState>): void {
     ctx.patchState({ loading: false });
-  }
-
-  @Action(IsUserUpdated)
-  isUserUpdated(ctx: StateContext<IAdminState>): void {
-    const {
-      firstName,
-      lastName,
-      phoneNumber,
-      address
-    }: IUser = ctx.getState().currentUser;
   }
 }
