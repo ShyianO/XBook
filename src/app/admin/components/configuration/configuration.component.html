@@ -1,1 +1,119 @@
-<p>configuration works!</p>
+<section class="configuration">
+  <div class="configuration__nav">
+    <h1 class="configuration__nav-title">Configuration</h1>
+  </div>
+
+  <form
+    class="configuration__form"
+    novalidate
+    [formGroup]="configurationForm"
+    *ngIf="configurationForm"
+  >
+    <div>
+      <mat-form-field class="configuration__form-field" appearance="outline">
+        <mat-label>Title</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="title"
+          required
+          autocomplete="off"
+        />
+        <mat-hint>Title</mat-hint>
+
+        <mat-error *ngIf="title.invalid">
+          <div *ngIf="title.errors.required">Required</div>
+          <div *ngIf="title.errors.pattern">Pattern</div>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="configuration__form-field" appearance="outline">
+        <mat-label>Phone number</mat-label>
+        <input
+          matInput
+          type="number"
+          formControlName="phoneNumber"
+          required
+          autocomplete="off"
+        />
+        <mat-hint>Phone number</mat-hint>
+
+        <mat-error *ngIf="phoneNumber.invalid">
+          <div *ngIf="phoneNumber.errors.required">Required</div>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field
+      class="configuration__form-field configuration__form-field--lg"
+      appearance="outline"
+    >
+      <mat-label>Address</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="address"
+        required
+        autocomplete="off"
+      />
+      <mat-hint>Address</mat-hint>
+
+      <mat-error *ngIf="address.invalid">
+        <div *ngIf="address.errors.required">Required</div>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field
+      class="configuration__form-field configuration__form-field--lg"
+      appearance="outline"
+    >
+      <mat-label>Description (html)</mat-label>
+      <textarea
+        class="configuration__form-field-textarea"
+        matInput
+        formControlName="description"
+      ></textarea>
+      <mat-hint>Description (html)</mat-hint>
+    </mat-form-field>
+
+    <!--    <mat-error class="configuration__form-error">-->
+    <!--      <div>Something is wrong</div>-->
+    <!--    </mat-error>-->
+
+    <mat-spinner
+      *ngIf="loading$ | async"
+      diameter="25"
+      color="primary"
+    ></mat-spinner>
+
+    <div
+      class="configuration__form-buttons"
+      *ngIf="(loading$ | async) === false"
+    >
+      <button
+        class="configuration__form-submit mat-spinner"
+        mat-raised-button
+        color="accent"
+        (click)="onSave(configurationForm)"
+      >
+        Save
+      </button>
+
+      <button
+        class="configuration__form-submit mat-spinner"
+        mat-raised-button
+        color="accent"
+      >
+        Publish
+      </button>
+
+      <button
+        class="configuration__form-submit mat-spinner"
+        mat-raised-button
+        color="accent"
+      >
+        Reset
+      </button>
+    </div>
+  </form>
+</section>

@@ -1,5 +1,6 @@
 import { ILoginRequest } from '../core/interfaces/login.interface';
 import { IUpdateRequest } from '../core/interfaces/update.interface';
+import { IConfiguration } from '../core/interfaces/configuration.interface';
 
 export class LoginUser {
   static readonly type = '[User] Login';
@@ -44,4 +45,9 @@ export class UpdateUserSuccess {
 
 export class UpdateUserError {
   static readonly type = '[User] UpdateError';
+}
+
+export class SaveConfiguration {
+  static readonly type = '[Configuration] Save';
+  constructor(public configuration: IConfiguration) {}
 }

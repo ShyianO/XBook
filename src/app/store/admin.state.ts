@@ -13,9 +13,11 @@ import {
   LogoutUser,
   UpdateUser,
   UpdateUserSuccess,
-  UpdateUserError
+  UpdateUserError,
+  SaveConfiguration
 } from './admin.action';
 import { IAdminState } from '../core/interfaces/admin.interface';
+import { IConfiguration } from '../core/interfaces/configuration.interface';
 
 @State<IAdminState>({
   name: 'adminState',
@@ -23,7 +25,8 @@ import { IAdminState } from '../core/interfaces/admin.interface';
     currentUser: null,
     isLoggedIn: false,
     loading: false,
-    isUserDataIncorrect: false
+    isUserDataIncorrect: false,
+    configuration: null
   }
 })
 @Injectable()
@@ -80,6 +83,19 @@ export class AdminState {
     { user }: UserLoggedInSuccess
   ): void {
     ctx.patchState({ currentUser: { ...user }, isLoggedIn: true });
+
+    const dataQuery = Backendless.DataQueryBuilder.create().setWhereClause(
+      `ownerId = '${ctx.getState().currentUser.objectId}'`
+    );
+
+    Backendless.Data.of('Websites')
+      .find(dataQuery)
+      .then((success: IConfiguration[]) => {
+        ctx.patchState({ configuration: success[0] });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   @Action(UserNotLoggedIn)
@@ -141,5 +157,20 @@ export class AdminState {
   @Action(UpdateUserError)
   updateUserError(ctx: StateContext<IAdminState>): void {
     ctx.patchState({ loading: false });
+  }
+
+  @Action(SaveConfiguration)
+  saveConfiguration(
+    ctx: StateContext<IAdminState>,
+    { configuration }: SaveConfiguration
+  ): void {
+    Backendless.Data.of('Websites')
+      .save(configuration)
+      .then((success) => {
+        console.log(success);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 }

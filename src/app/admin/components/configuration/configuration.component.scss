@@ -1,0 +1,63 @@
+.configuration {
+  &__nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+
+    background: #3f51b5;
+
+    &-title {
+      font-weight: 400;
+      margin: 0;
+      padding: 28px 8px;
+      font-size: 24px;
+    }
+  }
+
+  &__form {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &-field {
+      width: 250px;
+      margin: 0 10px;
+
+      &--lg {
+        width: 510px;
+
+        &:nth-child(3) {
+          margin-bottom: 10px;
+        }
+      }
+    }
+
+    &-error {
+      margin-bottom: 10px;
+    }
+
+    &-submit {
+      font-size: 20px;
+    }
+
+    &-buttons {
+      width: 350px;
+      display: flex;
+      justify-content: space-evenly;
+    }
+  }
+
+  &__profile {
+    display: flex;
+    justify-content: center;
+
+    &-title {
+      margin-top: 200px;
+
+      color: #3f51b5;
+      font-size: 60px;
+    }
+  }
+}
