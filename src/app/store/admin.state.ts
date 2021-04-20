@@ -10,7 +10,10 @@ import {
   UserLoggedIn,
   UserLoggedInSuccess,
   UserNotLoggedIn,
-  LogoutUser
+  LogoutUser,
+  UpdateUser,
+  UpdateUserSuccess,
+  UpdateUserError
 } from './admin.action';
 import { IAdminState } from '../core/interfaces/admin.interface';
 
@@ -89,10 +92,54 @@ export class AdminState {
     Backendless.UserService.logout()
       .then(() => {
         ctx.patchState({ currentUser: null, isLoggedIn: false });
-        console.log(ctx.getState());
       })
       .catch((error) => {
         console.log(error);
       });
+  }
+
+  @Action(UpdateUser)
+  updateUser(
+    ctx: StateContext<IAdminState>,
+    { updatedUser }: UpdateUser
+  ): void {
+    ctx.patchState({ loading: true });
+
+    updatedUser.objectId = ctx.getState().currentUser.objectId;
+
+    if (updatedUser.password.length === 0) {
+      updatedUser.password = null;
+    }
+
+    console.log(updatedUser);
+
+    Backendless.UserService.update(updatedUser)
+      .then((updatedCurrentUser) => {
+        this.store.dispatch(new UpdateUserSuccess(updatedCurrentUser));
+      })
+      .catch((error) => {
+        console.log(error);
+
+        this.store.dispatch(new UpdateUserError());
+      });
+  }
+
+  @Action(UpdateUserSuccess)
+  updateUserSuccess(
+    ctx: StateContext<IAdminState>,
+    { updatedCurrentUser }: UpdateUserSuccess
+  ): void {
+    console.log(updatedCurrentUser);
+    const state = ctx.getState();
+
+    ctx.patchState({
+      currentUser: { ...state.currentUser, ...updatedCurrentUser },
+      loading: false
+    });
+  }
+
+  @Action(UpdateUserError)
+  updateUserError(ctx: StateContext<IAdminState>): void {
+    ctx.patchState({ loading: false });
   }
 }

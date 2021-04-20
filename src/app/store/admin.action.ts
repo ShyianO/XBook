@@ -1,4 +1,5 @@
 import { ILoginRequest } from '../core/interfaces/login.interface';
+import { IUpdateRequest } from '../core/interfaces/update.interface';
 
 export class LoginUser {
   static readonly type = '[User] Login';
@@ -29,4 +30,18 @@ export class UserNotLoggedIn {
 
 export class LogoutUser {
   static readonly type = '[User] Logout';
+}
+
+export class UpdateUser {
+  static readonly type = '[User] Update';
+  constructor(public updatedUser: IUpdateRequest) {}
+}
+
+export class UpdateUserSuccess {
+  static readonly type = '[User] UpdateSuccess';
+  constructor(public updatedCurrentUser: IUpdateRequest) {}
+}
+
+export class UpdateUserError {
+  static readonly type = '[User] UpdateError';
 }
