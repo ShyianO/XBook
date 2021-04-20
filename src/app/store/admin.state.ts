@@ -70,7 +70,18 @@ export class AdminState {
   userLoggedIn(): void {
     Backendless.UserService.getCurrentUser()
       .then((user) => {
-        this.store.dispatch(new UserLoggedInSuccess(user));
+        const dataQuery = Backendless.DataQueryBuilder.create().setWhereClause(
+          `ownerId = '${user.objectId}'`
+        );
+
+        Backendless.Data.of('Websites')
+          .find(dataQuery)
+          .then((website: IConfiguration[]) => {
+            this.store.dispatch(new UserLoggedInSuccess(user, website[0]));
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch(() => {
         this.store.dispatch(new UserNotLoggedIn());
@@ -80,22 +91,13 @@ export class AdminState {
   @Action(UserLoggedInSuccess)
   userLoggedInSuccess(
     ctx: StateContext<IAdminState>,
-    { user }: UserLoggedInSuccess
+    { user, website }: UserLoggedInSuccess
   ): void {
-    ctx.patchState({ currentUser: { ...user }, isLoggedIn: true });
-
-    const dataQuery = Backendless.DataQueryBuilder.create().setWhereClause(
-      `ownerId = '${ctx.getState().currentUser.objectId}'`
-    );
-
-    Backendless.Data.of('Websites')
-      .find(dataQuery)
-      .then((success: IConfiguration[]) => {
-        ctx.patchState({ configuration: success[0] });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    ctx.patchState({
+      currentUser: { ...user },
+      isLoggedIn: true,
+      configuration: website
+    });
   }
 
   @Action(UserNotLoggedIn)
@@ -107,7 +109,11 @@ export class AdminState {
   logOut(ctx: StateContext<IAdminState>): void {
     Backendless.UserService.logout()
       .then(() => {
-        ctx.patchState({ currentUser: null, isLoggedIn: false });
+        ctx.patchState({
+          currentUser: null,
+          isLoggedIn: false,
+          configuration: null
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -164,10 +170,14 @@ export class AdminState {
     ctx: StateContext<IAdminState>,
     { configuration }: SaveConfiguration
   ): void {
+    if (ctx.getState().configuration) {
+      configuration.objectId = ctx.getState().configuration.objectId;
+    }
+
     Backendless.Data.of('Websites')
       .save(configuration)
       .then((success) => {
-        console.log(success);
+        ctx.patchState({ configuration: success });
       })
       .catch((error) => {
         console.log(error);

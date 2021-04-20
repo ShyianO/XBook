@@ -29,3 +29,21 @@ app-profile,
 app-configuration {
   height: 100%;
 }
+
+.snackbar--success {
+  background-color: white;
+  color: #4bb543;
+
+  & button {
+    color: #4bb543;
+  }
+}
+
+.snackbar--error {
+  background-color: white;
+  color: #f44336;
+
+  & button {
+    color: #f44336;
+  }
+}

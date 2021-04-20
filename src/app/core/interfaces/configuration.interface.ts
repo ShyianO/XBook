@@ -3,4 +3,5 @@ export interface IConfiguration {
   phoneNumber: string;
   address: string;
   description?: string;
+  objectId?: string;
 }

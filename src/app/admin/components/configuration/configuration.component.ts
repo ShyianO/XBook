@@ -5,10 +5,19 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
-import { Select, Store } from '@ngxs/store';
-import { Observable } from 'rxjs';
-import { SaveConfiguration } from '../../../store/admin.action';
+import {
+  Actions,
+  ofActionCompleted,
+  ofActionErrored,
+  Select,
+  Store
+} from '@ngxs/store';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 import { IConfiguration } from '../../../core/interfaces/configuration.interface';
+import { SaveConfiguration } from '../../../store/admin.action';
 
 @Component({
   selector: 'app-configuration',
@@ -17,8 +26,13 @@ import { IConfiguration } from '../../../core/interfaces/configuration.interface
 })
 export class ConfigurationComponent implements OnInit {
   configurationForm: FormGroup;
+  subject = new Subject();
 
-  constructor(private store: Store) {}
+  constructor(
+    private store: Store,
+    private actions$: Actions,
+    private snackBar: MatSnackBar
+  ) {}
 
   @Select((state) => state.adminState.loading)
   loading$: Observable<boolean>;
@@ -28,19 +42,56 @@ export class ConfigurationComponent implements OnInit {
 
   ngOnInit(): void {
     this.configuration$.subscribe((configuration) => {
-      // const { title, phoneNumber, address, description } = configuration;
-      console.log(configuration);
+      let website = {
+        title: '',
+        phoneNumber: '',
+        address: '',
+        description: ''
+      };
+
+      if (configuration) {
+        website = {
+          title: configuration.title,
+          phoneNumber: configuration.phoneNumber,
+          address: configuration.address,
+          description: configuration.description
+        };
+      }
+
+      const { title, phoneNumber, address, description } = website;
 
       this.configurationForm = new FormGroup({
-        title: new FormControl('', [
+        title: new FormControl(title, [
           Validators.required,
           Validators.pattern('^[a-zA-Z0-9_.-]*$')
         ]),
-        phoneNumber: new FormControl('', [Validators.required]),
-        address: new FormControl('', [Validators.required]),
-        description: new FormControl('')
+        phoneNumber: new FormControl(phoneNumber, [Validators.required]),
+        address: new FormControl(address, [Validators.required]),
+        description: new FormControl(description)
       });
     });
+
+    this.actions$
+      .pipe(ofActionCompleted(SaveConfiguration), takeUntil(this.subject))
+      .subscribe(() => {
+        this.snackBar.open('Success', 'OK', {
+          duration: 1000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['snackbar--success']
+        });
+      });
+
+    this.actions$
+      .pipe(ofActionErrored(SaveConfiguration), takeUntil(this.subject))
+      .subscribe(() => {
+        this.snackBar.open('Error', 'OK', {
+          duration: 1000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['snackbar--error']
+        });
+      });
   }
 
   get title(): AbstractControl {
