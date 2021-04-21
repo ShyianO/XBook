@@ -76,9 +76,31 @@
       <mat-hint>Description (html)</mat-hint>
     </mat-form-field>
 
-    <!--    <mat-error class="configuration__form-error">-->
-    <!--      <div>Something is wrong</div>-->
-    <!--    </mat-error>-->
+    <label for="singleFile">Upload file</label>
+    <input id="singleFile" type="file" [fileUploadInputFor]="fileUploadQueue" />
+    <br />
+
+    <mat-file-upload-queue
+      #fileUploadQueue
+      [fileAlias]="'file'"
+      [httpUrl]="
+        'https://eu.backendlessappcontent.com/96FB9625-D188-0F5C-FF1F-D2B1F1B4D200/CA55825C-2422-42B7-9E25-F6A1699C9C90/files/images/test-img-name.png'
+      "
+    >
+      <mat-file-upload
+        [file]="file"
+        [id]="i"
+        *ngFor="let file of fileUploadQueue.files; let i = index"
+      ></mat-file-upload>
+
+      <div style="width: 200px; height: 200px">
+        <img
+          style="width: 100%; height: auto"
+          src="https://eu.backendlessappcontent.com/96FB9625-D188-0F5C-FF1F-D2B1F1B4D200/CA55825C-2422-42B7-9E25-F6A1699C9C90/files/images/test-img.jpg"
+          alt="Test img"
+        />
+      </div>
+    </mat-file-upload-queue>
 
     <mat-spinner
       *ngIf="loading$ | async"

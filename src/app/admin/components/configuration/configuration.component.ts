@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -24,7 +24,7 @@ import { SaveConfiguration } from '../../../store/admin.action';
   templateUrl: './configuration.component.html',
   styleUrls: ['./configuration.component.scss']
 })
-export class ConfigurationComponent implements OnInit {
+export class ConfigurationComponent implements OnInit, OnDestroy {
   configurationForm: FormGroup;
   subject = new Subject();
 
@@ -112,5 +112,10 @@ export class ConfigurationComponent implements OnInit {
 
   onSave(configuration: FormGroup): void {
     this.store.dispatch(new SaveConfiguration(configuration.value));
+  }
+
+  ngOnDestroy(): void {
+    this.subject.next();
+    this.subject.complete();
   }
 }
