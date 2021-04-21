@@ -169,18 +169,18 @@ export class AdminState {
   saveConfiguration(
     ctx: StateContext<IAdminState>,
     { configuration }: SaveConfiguration
-  ): void {
+  ): Promise<void> {
     if (ctx.getState().configuration) {
       configuration.objectId = ctx.getState().configuration.objectId;
     }
 
-    Backendless.Data.of('Websites')
+    return Backendless.Data.of('Websites')
       .save(configuration)
-      .then((success) => {
-        ctx.patchState({ configuration: success });
+      .then((website) => {
+        ctx.patchState({ configuration: website });
       })
       .catch((error) => {
-        console.log(error);
+        throw new Error(error);
       });
   }
 }

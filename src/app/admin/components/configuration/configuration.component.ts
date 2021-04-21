@@ -7,8 +7,8 @@ import {
 } from '@angular/forms';
 import {
   Actions,
-  ofActionCompleted,
   ofActionErrored,
+  ofActionSuccessful,
   Select,
   Store
 } from '@ngxs/store';
@@ -72,7 +72,7 @@ export class ConfigurationComponent implements OnInit {
     });
 
     this.actions$
-      .pipe(ofActionCompleted(SaveConfiguration), takeUntil(this.subject))
+      .pipe(ofActionSuccessful(SaveConfiguration), takeUntil(this.subject))
       .subscribe(() => {
         this.snackBar.open('Success', 'OK', {
           duration: 1000,
