@@ -18,7 +18,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 import { IConfiguration } from '../../../core/interfaces/configuration.interface';
-import { SaveConfiguration } from '../../../store/admin.action';
+import {
+  PublishConfiguration,
+  SaveConfiguration
+} from '../../../store/admin.action';
 
 @Component({
   selector: 'app-configuration',
@@ -39,17 +42,17 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
   @Select((state) => state.adminState.loading)
   loading$: Observable<boolean>;
 
-  @Select((state) => state.adminState.configuration)
-  configuration$: Observable<IConfiguration>;
+  @Select((state) => state.adminState.configurationDraft)
+  configurationDraft$: Observable<IConfiguration>;
 
   ngOnInit(): void {
-    this.configuration$.subscribe((configuration) => {
+    this.configurationDraft$.subscribe((configuration) => {
       let website = {
         name: '',
         title: '',
         description: '',
         phoneNumber: '',
-        email: '',
+        country: '',
         address: '',
         city: '',
         state: '',
@@ -62,7 +65,7 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
           title: configuration.title,
           description: configuration.description,
           phoneNumber: configuration.phoneNumber,
-          email: configuration.email,
+          country: configuration.country,
           address: configuration.address,
           city: configuration.city,
           state: configuration.state,
@@ -75,7 +78,7 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
         title,
         description,
         phoneNumber,
-        email,
+        country,
         address,
         city,
         state,
@@ -93,7 +96,7 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
         ]),
         description: new FormControl(description),
         phoneNumber: new FormControl(phoneNumber, [Validators.required]),
-        email: new FormControl(email, [Validators.email]),
+        country: new FormControl(country, [Validators.required]),
         address: new FormControl(address, [Validators.required]),
         city: new FormControl(city, [Validators.required]),
         state: new FormControl(state),
@@ -140,8 +143,8 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     return this.configurationForm.get('phoneNumber');
   }
 
-  get email(): AbstractControl {
-    return this.configurationForm.get('email');
+  get country(): AbstractControl {
+    return this.configurationForm.get('country');
   }
 
   get address(): AbstractControl {
@@ -162,6 +165,11 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
 
   onSave(configuration: FormGroup): void {
     this.store.dispatch(new SaveConfiguration(configuration.value));
+  }
+
+  onPublish(configuration: FormGroup): void {
+    this.store.dispatch(new SaveConfiguration(configuration.value));
+    this.store.dispatch(new PublishConfiguration(configuration.value));
   }
 
   ngOnDestroy(): void {

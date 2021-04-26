@@ -52,6 +52,11 @@ export class SaveConfiguration {
   constructor(public configuration: IConfiguration) {}
 }
 
+export class PublishConfiguration {
+  static readonly type = '[Configuration] Publish';
+  constructor(public configuration: IConfiguration) {}
+}
+
 export class LoadConfiguration {
   static readonly type = '[Configuration] Load';
 }

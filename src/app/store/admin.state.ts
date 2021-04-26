@@ -15,6 +15,7 @@ import {
   UpdateUserSuccess,
   UpdateUserError,
   SaveConfiguration,
+  PublishConfiguration,
   LoadConfiguration
 } from './admin.action';
 import { IAdminState } from '../core/interfaces/admin.interface';
@@ -27,7 +28,8 @@ import { IConfiguration } from '../core/interfaces/configuration.interface';
     isLoggedIn: false,
     loading: false,
     isUserDataIncorrect: false,
-    configuration: null
+    configurationDraft: null,
+    configurationPublished: null
   }
 })
 @Injectable()
@@ -103,7 +105,7 @@ export class AdminState {
         ctx.patchState({
           currentUser: null,
           isLoggedIn: false,
-          configuration: null
+          configurationDraft: null
         });
       })
       .catch((error) => {
@@ -161,14 +163,39 @@ export class AdminState {
     ctx: StateContext<IAdminState>,
     { configuration }: SaveConfiguration
   ): Promise<void> {
-    if (ctx.getState().configuration) {
-      configuration.objectId = ctx.getState().configuration.objectId;
+    if (ctx.getState().configurationDraft) {
+      configuration.objectId = ctx.getState().configurationDraft.objectId;
+    } else {
+      configuration.draft = true;
     }
 
     return Backendless.Data.of('Websites')
       .save(configuration)
       .then((website) => {
-        ctx.patchState({ configuration: website });
+        ctx.patchState({ configurationDraft: website });
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
+  }
+
+  @Action(PublishConfiguration)
+  publishConfiguration(
+    ctx: StateContext<IAdminState>,
+    { configuration }: PublishConfiguration
+  ): Promise<void> {
+    configuration.name = `${configuration.name}(published)`;
+
+    if (ctx.getState().configurationPublished) {
+      configuration.objectId = ctx.getState().configurationPublished.objectId;
+    } else {
+      configuration.published = true;
+    }
+
+    return Backendless.Data.of('Websites')
+      .save(configuration)
+      .then((website) => {
+        ctx.patchState({ configurationPublished: website });
       })
       .catch((error) => {
         throw new Error(error);
@@ -184,7 +211,10 @@ export class AdminState {
     Backendless.Data.of('Websites')
       .find(dataQuery)
       .then((website: IConfiguration[]) => {
-        ctx.patchState({ configuration: website[0] });
+        ctx.patchState({
+          configurationDraft: website[0],
+          configurationPublished: website[1]
+        });
       })
       .catch((error) => {
         console.log(error);

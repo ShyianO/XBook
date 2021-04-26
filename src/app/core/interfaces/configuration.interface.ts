@@ -3,10 +3,12 @@ export interface IConfiguration {
   title: string;
   description?: string;
   phoneNumber: string;
-  email?: string;
+  country: string;
   address: string;
   city: string;
   state?: string;
   postalCode: string;
   objectId?: string;
+  draft?: boolean;
+  published?: boolean;
 }

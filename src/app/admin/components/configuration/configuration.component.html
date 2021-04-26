@@ -47,13 +47,33 @@
         </mat-form-field>
       </div>
 
-      <ckeditor [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>
+      <ckeditor
+        [editor]="Editor"
+        data="<p>Hello, world!</p>"
+        config="width = 790"
+      ></ckeditor>
     </fieldset>
 
     <fieldset class="configuration__form-fieldset">
       <legend>Contacts</legend>
 
       <div>
+        <mat-form-field class="configuration__form-field" appearance="outline">
+          <mat-label>Country</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="country"
+            autocomplete="off"
+            required
+          />
+          <mat-hint>Country</mat-hint>
+
+          <mat-error *ngIf="country.invalid">
+            <div *ngIf="country.errors.required">Country</div>
+          </mat-error>
+        </mat-form-field>
+
         <mat-form-field class="configuration__form-field" appearance="outline">
           <mat-label>Phone number</mat-label>
           <input
@@ -83,21 +103,6 @@
 
           <mat-error *ngIf="address.invalid">
             <div *ngIf="address.errors.required">Required</div>
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field class="configuration__form-field" appearance="outline">
-          <mat-label>Email</mat-label>
-          <input
-            matInput
-            type="text"
-            formControlName="email"
-            autocomplete="off"
-          />
-          <mat-hint>Email</mat-hint>
-
-          <mat-error *ngIf="email.invalid">
-            <div *ngIf="email.errors.email">Not valid email</div>
           </mat-error>
         </mat-form-field>
       </div>
@@ -197,6 +202,7 @@
         class="configuration__form-submit mat-spinner"
         mat-raised-button
         color="accent"
+        (click)="onPublish(configurationForm)"
       >
         Publish
       </button>
