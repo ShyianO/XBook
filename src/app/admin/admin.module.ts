@@ -15,6 +15,7 @@ import { ConfigurationComponent } from './components/configuration/configuration
 import { BookingsComponent } from './components/bookings/bookings.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { StatisticComponent } from './components/statistic/statistic.component';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { StatisticComponent } from './components/statistic/statistic.component';
     ReactiveFormsModule,
     AdminRoutingModule,
     RouterModule,
-    TranslateModule
+    TranslateModule,
+    CKEditorModule
   ]
 })
 export class AdminModule {}

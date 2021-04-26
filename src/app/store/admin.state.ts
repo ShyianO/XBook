@@ -14,7 +14,8 @@ import {
   UpdateUser,
   UpdateUserSuccess,
   UpdateUserError,
-  SaveConfiguration
+  SaveConfiguration,
+  LoadConfiguration
 } from './admin.action';
 import { IAdminState } from '../core/interfaces/admin.interface';
 import { IConfiguration } from '../core/interfaces/configuration.interface';
@@ -70,18 +71,7 @@ export class AdminState {
   userLoggedIn(): void {
     Backendless.UserService.getCurrentUser()
       .then((user) => {
-        const dataQuery = Backendless.DataQueryBuilder.create().setWhereClause(
-          `ownerId = '${user.objectId}'`
-        );
-
-        Backendless.Data.of('Websites')
-          .find(dataQuery)
-          .then((website: IConfiguration[]) => {
-            this.store.dispatch(new UserLoggedInSuccess(user, website[0]));
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        this.store.dispatch(new UserLoggedInSuccess(user));
       })
       .catch(() => {
         this.store.dispatch(new UserNotLoggedIn());
@@ -91,13 +81,14 @@ export class AdminState {
   @Action(UserLoggedInSuccess)
   userLoggedInSuccess(
     ctx: StateContext<IAdminState>,
-    { user, website }: UserLoggedInSuccess
+    { user }: UserLoggedInSuccess
   ): void {
     ctx.patchState({
       currentUser: { ...user },
-      isLoggedIn: true,
-      configuration: website
+      isLoggedIn: true
     });
+
+    this.store.dispatch(new LoadConfiguration());
   }
 
   @Action(UserNotLoggedIn)
@@ -181,6 +172,22 @@ export class AdminState {
       })
       .catch((error) => {
         throw new Error(error);
+      });
+  }
+
+  @Action(LoadConfiguration)
+  loadConfiguration(ctx: StateContext<IAdminState>): void {
+    const dataQuery = Backendless.DataQueryBuilder.create().setWhereClause(
+      `ownerId = '${ctx.getState().currentUser.objectId}'`
+    );
+
+    Backendless.Data.of('Websites')
+      .find(dataQuery)
+      .then((website: IConfiguration[]) => {
+        ctx.patchState({ configuration: website[0] });
+      })
+      .catch((error) => {
+        console.log(error);
       });
   }
 }

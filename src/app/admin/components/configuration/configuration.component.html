@@ -9,72 +9,144 @@
     [formGroup]="configurationForm"
     *ngIf="configurationForm"
   >
-    <div>
-      <mat-form-field class="configuration__form-field" appearance="outline">
-        <mat-label>Title</mat-label>
-        <input
-          matInput
-          type="text"
-          formControlName="title"
-          required
-          autocomplete="off"
-        />
-        <mat-hint>Title</mat-hint>
+    <fieldset class="configuration__form-fieldset">
+      <legend>General</legend>
+      <div class="configuration__form-fieldset-general">
+        <mat-form-field class="configuration__form-field" appearance="outline">
+          <mat-label>Name</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="name"
+            required
+            autocomplete="off"
+          />
+          <mat-hint>Name</mat-hint>
 
-        <mat-error *ngIf="title.invalid">
-          <div *ngIf="title.errors.required">Required</div>
-          <div *ngIf="title.errors.pattern">Pattern</div>
-        </mat-error>
-      </mat-form-field>
+          <mat-error *ngIf="name.invalid">
+            <div *ngIf="name.errors.required">Required</div>
+            <div *ngIf="name.errors.pattern">Pattern</div>
+          </mat-error>
+        </mat-form-field>
 
-      <mat-form-field class="configuration__form-field" appearance="outline">
-        <mat-label>Phone number</mat-label>
-        <input
-          matInput
-          type="number"
-          formControlName="phoneNumber"
-          required
-          autocomplete="off"
-        />
-        <mat-hint>Phone number</mat-hint>
+        <mat-form-field class="configuration__form-field" appearance="outline">
+          <mat-label>Title</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="title"
+            required
+            autocomplete="off"
+          />
+          <mat-hint>Title</mat-hint>
 
-        <mat-error *ngIf="phoneNumber.invalid">
-          <div *ngIf="phoneNumber.errors.required">Required</div>
-        </mat-error>
-      </mat-form-field>
-    </div>
+          <mat-error *ngIf="title.invalid">
+            <div *ngIf="title.errors.required">Required</div>
+            <div *ngIf="title.errors.pattern">Pattern</div>
+          </mat-error>
+        </mat-form-field>
+      </div>
 
-    <mat-form-field
-      class="configuration__form-field configuration__form-field--lg"
-      appearance="outline"
-    >
-      <mat-label>Address</mat-label>
-      <input
-        matInput
-        type="text"
-        formControlName="address"
-        required
-        autocomplete="off"
-      />
-      <mat-hint>Address</mat-hint>
+      <ckeditor [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>
+    </fieldset>
 
-      <mat-error *ngIf="address.invalid">
-        <div *ngIf="address.errors.required">Required</div>
-      </mat-error>
-    </mat-form-field>
+    <fieldset class="configuration__form-fieldset">
+      <legend>Contacts</legend>
 
-    <mat-form-field
-      class="configuration__form-field configuration__form-field--lg"
-      appearance="outline"
-    >
-      <mat-label>Description (html)</mat-label>
-      <textarea
-        class="configuration__form-field-textarea"
-        matInput
-        formControlName="description"
-      ></textarea>
-      <mat-hint>Description (html)</mat-hint>
-    </mat-form-field>
+      <div>
+        <mat-form-field class="configuration__form-field" appearance="outline">
+          <mat-label>Phone number</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="phoneNumber"
+            required
+            autocomplete="off"
+          />
+          <mat-hint>Phone number</mat-hint>
+
+          <mat-error *ngIf="phoneNumber.invalid">
+            <div *ngIf="phoneNumber.errors.required">Required</div>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="configuration__form-field" appearance="outline">
+          <mat-label>Address</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="address"
+            required
+            autocomplete="off"
+          />
+          <mat-hint>Address</mat-hint>
+
+          <mat-error *ngIf="address.invalid">
+            <div *ngIf="address.errors.required">Required</div>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="configuration__form-field" appearance="outline">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="email"
+            autocomplete="off"
+          />
+          <mat-hint>Email</mat-hint>
+
+          <mat-error *ngIf="email.invalid">
+            <div *ngIf="email.errors.email">Not valid email</div>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <mat-form-field class="configuration__form-field" appearance="outline">
+          <mat-label>City</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="city"
+            required
+            autocomplete="off"
+          />
+          <mat-hint>City</mat-hint>
+
+          <mat-error *ngIf="city.invalid">
+            <div *ngIf="city.errors.required">Required</div>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="configuration__form-field" appearance="outline">
+          <mat-label>State</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="state"
+            autocomplete="off"
+          />
+          <mat-hint>State</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="configuration__form-field" appearance="outline">
+          <mat-label>Postal Code</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="postalCode"
+            required
+            autocomplete="off"
+          />
+          <mat-hint>Postal Code</mat-hint>
+
+          <mat-error *ngIf="postalCode.invalid">
+            <div *ngIf="postalCode.errors.required">Required</div>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </fieldset>
 
     <label for="singleFile">Upload file</label>
     <input id="singleFile" type="file" [fileUploadInputFor]="fileUploadQueue" />

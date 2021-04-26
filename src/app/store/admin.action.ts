@@ -22,7 +22,7 @@ export class UserLoggedIn {
 
 export class UserLoggedInSuccess {
   static readonly type = '[User] LoggedInSuccess';
-  constructor(public user: Backendless.User, public website: IConfiguration) {}
+  constructor(public user: Backendless.User) {}
 }
 
 export class UserNotLoggedIn {
@@ -50,4 +50,8 @@ export class UpdateUserError {
 export class SaveConfiguration {
   static readonly type = '[Configuration] Save';
   constructor(public configuration: IConfiguration) {}
+}
+
+export class LoadConfiguration {
+  static readonly type = '[Configuration] Load';
 }
