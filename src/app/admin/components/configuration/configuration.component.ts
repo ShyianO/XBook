@@ -22,6 +22,8 @@ import {
   PublishConfiguration,
   SaveConfiguration
 } from '../../../store/admin.action';
+import { CKEditor5 } from '@ckeditor/ckeditor5-angular';
+import Editor = CKEditor5.Editor;
 
 @Component({
   selector: 'app-configuration',
@@ -46,6 +48,32 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
   configurationDraft$: Observable<IConfiguration>;
 
   ngOnInit(): void {
+    this.formWithState();
+
+    this.actions$
+      .pipe(ofActionSuccessful(SaveConfiguration), takeUntil(this.subject))
+      .subscribe(() => {
+        this.snackBar.open('Success', 'OK', {
+          duration: 1000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['snackbar--success']
+        });
+      });
+
+    this.actions$
+      .pipe(ofActionErrored(SaveConfiguration), takeUntil(this.subject))
+      .subscribe(() => {
+        this.snackBar.open('Error', 'OK', {
+          duration: 1000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['snackbar--error']
+        });
+      });
+  }
+
+  formWithState(): void {
     this.configurationDraft$.subscribe((configuration) => {
       let website = {
         name: '',
@@ -103,28 +131,6 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
         postalCode: new FormControl(postalCode, [Validators.required])
       });
     });
-
-    this.actions$
-      .pipe(ofActionSuccessful(SaveConfiguration), takeUntil(this.subject))
-      .subscribe(() => {
-        this.snackBar.open('Success', 'OK', {
-          duration: 1000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-          panelClass: ['snackbar--success']
-        });
-      });
-
-    this.actions$
-      .pipe(ofActionErrored(SaveConfiguration), takeUntil(this.subject))
-      .subscribe(() => {
-        this.snackBar.open('Error', 'OK', {
-          duration: 1000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-          panelClass: ['snackbar--error']
-        });
-      });
   }
 
   get name(): AbstractControl {
@@ -163,13 +169,22 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     return this.configurationForm.get('postalCode');
   }
 
-  onSave(configuration: FormGroup): void {
+  onSave(configuration: FormGroup, editor: any): void {
+    console.log(editor);
+    configuration.value.description = editor.data;
+
     this.store.dispatch(new SaveConfiguration(configuration.value));
   }
 
-  onPublish(configuration: FormGroup): void {
+  onPublish(configuration: FormGroup, editor: any): void {
+    configuration.value.description = editor.data;
+
     this.store.dispatch(new SaveConfiguration(configuration.value));
     this.store.dispatch(new PublishConfiguration(configuration.value));
+  }
+
+  onReset(): void {
+    this.formWithState();
   }
 
   ngOnDestroy(): void {

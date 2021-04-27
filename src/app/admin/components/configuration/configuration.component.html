@@ -13,7 +13,7 @@
       <legend>General</legend>
       <div class="configuration__form-fieldset-general">
         <mat-form-field class="configuration__form-field" appearance="outline">
-          <mat-label>Name</mat-label>
+          <mat-label>Website name</mat-label>
           <input
             matInput
             type="text"
@@ -21,11 +21,11 @@
             required
             autocomplete="off"
           />
-          <mat-hint>Name</mat-hint>
+          <mat-hint>Enter your website name</mat-hint>
 
           <mat-error *ngIf="name.invalid">
-            <div *ngIf="name.errors.required">Required</div>
-            <div *ngIf="name.errors.pattern">Pattern</div>
+            <div *ngIf="name.errors.required">Website name is required</div>
+            <div *ngIf="name.errors.pattern">Enter only words or numbers</div>
           </mat-error>
         </mat-form-field>
 
@@ -38,19 +38,19 @@
             required
             autocomplete="off"
           />
-          <mat-hint>Title</mat-hint>
+          <mat-hint>Enter your website title</mat-hint>
 
           <mat-error *ngIf="title.invalid">
-            <div *ngIf="title.errors.required">Required</div>
-            <div *ngIf="title.errors.pattern">Pattern</div>
+            <div *ngIf="title.errors.required">Title is required</div>
+            <div *ngIf="title.errors.pattern">Enter only words or numbers</div>
           </mat-error>
         </mat-form-field>
       </div>
 
       <ckeditor
+        #ckeditor
         [editor]="Editor"
         data="<p>Hello, world!</p>"
-        config="width = 790"
       ></ckeditor>
     </fieldset>
 
@@ -67,10 +67,10 @@
             autocomplete="off"
             required
           />
-          <mat-hint>Country</mat-hint>
+          <mat-hint>Enter your country</mat-hint>
 
           <mat-error *ngIf="country.invalid">
-            <div *ngIf="country.errors.required">Country</div>
+            <div *ngIf="country.errors.required">Country is required</div>
           </mat-error>
         </mat-form-field>
 
@@ -83,10 +83,10 @@
             required
             autocomplete="off"
           />
-          <mat-hint>Phone number</mat-hint>
+          <mat-hint>Enter your phone number</mat-hint>
 
           <mat-error *ngIf="phoneNumber.invalid">
-            <div *ngIf="phoneNumber.errors.required">Required</div>
+            <div *ngIf="phoneNumber.errors.required">Phone number is required</div>
           </mat-error>
         </mat-form-field>
 
@@ -99,10 +99,10 @@
             required
             autocomplete="off"
           />
-          <mat-hint>Address</mat-hint>
+          <mat-hint>Enter your address</mat-hint>
 
           <mat-error *ngIf="address.invalid">
-            <div *ngIf="address.errors.required">Required</div>
+            <div *ngIf="address.errors.required">Address is required</div>
           </mat-error>
         </mat-form-field>
       </div>
@@ -117,10 +117,10 @@
             required
             autocomplete="off"
           />
-          <mat-hint>City</mat-hint>
+          <mat-hint>Enter your city</mat-hint>
 
           <mat-error *ngIf="city.invalid">
-            <div *ngIf="city.errors.required">Required</div>
+            <div *ngIf="city.errors.required">City is required</div>
           </mat-error>
         </mat-form-field>
 
@@ -132,11 +132,11 @@
             formControlName="state"
             autocomplete="off"
           />
-          <mat-hint>State</mat-hint>
+          <mat-hint>Enter your state</mat-hint>
         </mat-form-field>
 
         <mat-form-field class="configuration__form-field" appearance="outline">
-          <mat-label>Postal Code</mat-label>
+          <mat-label>Postal code</mat-label>
           <input
             matInput
             type="text"
@@ -144,40 +144,48 @@
             required
             autocomplete="off"
           />
-          <mat-hint>Postal Code</mat-hint>
+          <mat-hint>Enter your postal Code</mat-hint>
 
           <mat-error *ngIf="postalCode.invalid">
-            <div *ngIf="postalCode.errors.required">Required</div>
+            <div *ngIf="postalCode.errors.required">Postal code is required</div>
           </mat-error>
         </mat-form-field>
       </div>
     </fieldset>
 
-    <label for="singleFile">Upload file</label>
-    <input id="singleFile" type="file" [fileUploadInputFor]="fileUploadQueue" />
-    <br />
+    <fieldset class="configuration__form-fieldset">
+      <legend>Appearence</legend>
 
-    <mat-file-upload-queue
-      #fileUploadQueue
-      [fileAlias]="'file'"
-      [httpUrl]="
-        'https://eu.backendlessappcontent.com/96FB9625-D188-0F5C-FF1F-D2B1F1B4D200/CA55825C-2422-42B7-9E25-F6A1699C9C90/files/images/test-img-name.png'
-      "
-    >
-      <mat-file-upload
-        [file]="file"
-        [id]="i"
-        *ngFor="let file of fileUploadQueue.files; let i = index"
-      ></mat-file-upload>
+      <label for="singleFile">Upload file</label>
+      <input
+        id="singleFile"
+        type="file"
+        [fileUploadInputFor]="fileUploadQueue"
+      />
+      <br />
 
-      <div style="width: 200px; height: 200px">
-        <img
-          style="width: 100%; height: auto"
-          src="https://eu.backendlessappcontent.com/96FB9625-D188-0F5C-FF1F-D2B1F1B4D200/CA55825C-2422-42B7-9E25-F6A1699C9C90/files/images/test-img.jpg"
-          alt="Test img"
-        />
-      </div>
-    </mat-file-upload-queue>
+      <mat-file-upload-queue
+        #fileUploadQueue
+        [fileAlias]="'file'"
+        [httpUrl]="
+          'https://eu.backendlessappcontent.com/96FB9625-D188-0F5C-FF1F-D2B1F1B4D200/CA55825C-2422-42B7-9E25-F6A1699C9C90/files/images/test-img-name.png'
+        "
+      >
+        <mat-file-upload
+          [file]="file"
+          [id]="i"
+          *ngFor="let file of fileUploadQueue.files; let i = index"
+        ></mat-file-upload>
+
+        <div style="width: 150px;">
+          <img
+            style="width: 100%; height: auto"
+            src="https://eu.backendlessappcontent.com/96FB9625-D188-0F5C-FF1F-D2B1F1B4D200/CA55825C-2422-42B7-9E25-F6A1699C9C90/files/images/test-img.jpg"
+            alt="Test img"
+          />
+        </div>
+      </mat-file-upload-queue>
+    </fieldset>
 
     <mat-spinner
       *ngIf="loading$ | async"
@@ -193,7 +201,7 @@
         class="configuration__form-submit mat-spinner"
         mat-raised-button
         color="accent"
-        (click)="onSave(configurationForm)"
+        (click)="onSave(configurationForm, ckeditor)"
       >
         Save
       </button>
@@ -202,7 +210,8 @@
         class="configuration__form-submit mat-spinner"
         mat-raised-button
         color="accent"
-        (click)="onPublish(configurationForm)"
+        [disabled]="configurationForm.invalid"
+        (click)="onPublish(configurationForm, ckeditor)"
       >
         Publish
       </button>
@@ -211,6 +220,7 @@
         class="configuration__form-submit mat-spinner"
         mat-raised-button
         color="accent"
+        (click)="onReset()"
       >
         Reset
       </button>
