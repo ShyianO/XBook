@@ -22,8 +22,6 @@ import {
   PublishConfiguration,
   SaveConfiguration
 } from '../../../store/admin.action';
-import { CKEditor5 } from '@ckeditor/ckeditor5-angular';
-import Editor = CKEditor5.Editor;
 
 @Component({
   selector: 'app-configuration',
@@ -79,6 +77,9 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
         name: '',
         title: '',
         description: '',
+        firstName: '',
+        lastName: '',
+        email: '',
         phoneNumber: '',
         country: '',
         address: '',
@@ -92,6 +93,9 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
           name: configuration.name,
           title: configuration.title,
           description: configuration.description,
+          firstName: configuration.firstName,
+          lastName: configuration.lastName,
+          email: configuration.email,
           phoneNumber: configuration.phoneNumber,
           country: configuration.country,
           address: configuration.address,
@@ -105,6 +109,9 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
         name,
         title,
         description,
+        firstName,
+        lastName,
+        email,
         phoneNumber,
         country,
         address,
@@ -123,6 +130,9 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
           Validators.pattern('^[a-zA-Z0-9_.-]*$')
         ]),
         description: new FormControl(description),
+        firstName: new FormControl(firstName, [Validators.required]),
+        lastName: new FormControl(lastName, [Validators.required]),
+        email: new FormControl(email, [Validators.required, Validators.email]),
         phoneNumber: new FormControl(phoneNumber, [Validators.required]),
         country: new FormControl(country, [Validators.required]),
         address: new FormControl(address, [Validators.required]),
@@ -143,6 +153,18 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
 
   get description(): AbstractControl {
     return this.configurationForm.get('description');
+  }
+
+  get firstName(): AbstractControl {
+    return this.configurationForm.get('firstName');
+  }
+
+  get lastName(): AbstractControl {
+    return this.configurationForm.get('lastName');
+  }
+
+  get email(): AbstractControl {
+    return this.configurationForm.get('email');
   }
 
   get phoneNumber(): AbstractControl {
@@ -169,15 +191,16 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     return this.configurationForm.get('postalCode');
   }
 
-  onSave(configuration: FormGroup, editor: any): void {
+  onSave(configuration: FormGroup, editor): void {
+    // testing
     console.log(editor);
-    configuration.value.description = editor.data;
+    configuration.value.description = editor.editorWatchdog._data.main;
 
     this.store.dispatch(new SaveConfiguration(configuration.value));
   }
 
-  onPublish(configuration: FormGroup, editor: any): void {
-    configuration.value.description = editor.data;
+  onPublish(configuration: FormGroup, editor): void {
+    configuration.value.description = editor.editorWatchdog._data.main;
 
     this.store.dispatch(new SaveConfiguration(configuration.value));
     this.store.dispatch(new PublishConfiguration(configuration.value));

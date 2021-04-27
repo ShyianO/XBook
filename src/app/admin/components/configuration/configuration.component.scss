@@ -34,7 +34,12 @@
 
     &-field {
       width: 250px;
-      margin: 0 10px;
+      margin: 5px 10px;
+
+      &-name,
+      &-title {
+        width: 385px;
+      }
 
       &--lg {
         width: 790px;
@@ -47,12 +52,16 @@
 
     &-submit {
       font-size: 20px;
+
+      &-save {
+        margin-right: 10px;
+      }
     }
 
     &-buttons {
-      width: 350px;
+      width: 835px;
       display: flex;
-      justify-content: space-evenly;
+      justify-content: space-between;
     }
   }
 
@@ -74,4 +83,6 @@
   margin: 0 10px;
 }
 
-
+::ng-deep.ck.ck-content {
+  min-height: 110px;
+}

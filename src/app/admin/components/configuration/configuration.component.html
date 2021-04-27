@@ -12,7 +12,10 @@
     <fieldset class="configuration__form-fieldset">
       <legend>General</legend>
       <div class="configuration__form-fieldset-general">
-        <mat-form-field class="configuration__form-field" appearance="outline">
+        <mat-form-field
+          class="configuration__form-field configuration__form-field-name"
+          appearance="outline"
+        >
           <mat-label>Website name</mat-label>
           <input
             matInput
@@ -21,7 +24,7 @@
             required
             autocomplete="off"
           />
-          <mat-hint>Enter your website name</mat-hint>
+          <mat-hint>Website name must be unique</mat-hint>
 
           <mat-error *ngIf="name.invalid">
             <div *ngIf="name.errors.required">Website name is required</div>
@@ -29,7 +32,10 @@
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field class="configuration__form-field" appearance="outline">
+        <mat-form-field
+          class="configuration__form-field configuration__form-field-title"
+          appearance="outline"
+        >
           <mat-label>Title</mat-label>
           <input
             matInput
@@ -47,15 +53,62 @@
         </mat-form-field>
       </div>
 
-      <ckeditor
-        #ckeditor
-        [editor]="Editor"
-        data="<p>Hello, world!</p>"
-      ></ckeditor>
+      <ckeditor #ckeditor [editor]="Editor"></ckeditor>
     </fieldset>
 
     <fieldset class="configuration__form-fieldset">
       <legend>Contacts</legend>
+
+      <div>
+        <mat-form-field class="configuration__form-field" appearance="outline">
+          <mat-label>First name</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="firstName"
+            autocomplete="off"
+            required
+          />
+          <mat-hint>Enter your first name</mat-hint>
+
+          <mat-error *ngIf="firstName.invalid">
+            <div *ngIf="firstName.errors.required">First name is required</div>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="configuration__form-field" appearance="outline">
+          <mat-label>Last name</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="lastName"
+            required
+            autocomplete="off"
+          />
+          <mat-hint>Enter your last name</mat-hint>
+
+          <mat-error *ngIf="lastName.invalid">
+            <div *ngIf="lastName.errors.required">Last name is required</div>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="configuration__form-field" appearance="outline">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="email"
+            required
+            autocomplete="off"
+          />
+          <mat-hint>Enter your email</mat-hint>
+
+          <mat-error *ngIf="email.invalid">
+            <div *ngIf="email.errors.required">Email is required</div>
+            <div *ngIf="email.errors.email">Email is incorrect</div>
+          </mat-error>
+        </mat-form-field>
+      </div>
 
       <div>
         <mat-form-field class="configuration__form-field" appearance="outline">
@@ -86,7 +139,9 @@
           <mat-hint>Enter your phone number</mat-hint>
 
           <mat-error *ngIf="phoneNumber.invalid">
-            <div *ngIf="phoneNumber.errors.required">Phone number is required</div>
+            <div *ngIf="phoneNumber.errors.required">
+              Phone number is required
+            </div>
           </mat-error>
         </mat-form-field>
 
@@ -144,10 +199,12 @@
             required
             autocomplete="off"
           />
-          <mat-hint>Enter your postal Code</mat-hint>
+          <mat-hint>Enter your postal code</mat-hint>
 
           <mat-error *ngIf="postalCode.invalid">
-            <div *ngIf="postalCode.errors.required">Postal code is required</div>
+            <div *ngIf="postalCode.errors.required">
+              Postal code is required
+            </div>
           </mat-error>
         </mat-form-field>
       </div>
@@ -177,7 +234,7 @@
           *ngFor="let file of fileUploadQueue.files; let i = index"
         ></mat-file-upload>
 
-        <div style="width: 150px;">
+        <div style="width: 150px">
           <img
             style="width: 100%; height: auto"
             src="https://eu.backendlessappcontent.com/96FB9625-D188-0F5C-FF1F-D2B1F1B4D200/CA55825C-2422-42B7-9E25-F6A1699C9C90/files/images/test-img.jpg"
@@ -200,30 +257,33 @@
       <button
         class="configuration__form-submit mat-spinner"
         mat-raised-button
-        color="accent"
-        (click)="onSave(configurationForm, ckeditor)"
-      >
-        Save
-      </button>
-
-      <button
-        class="configuration__form-submit mat-spinner"
-        mat-raised-button
-        color="accent"
-        [disabled]="configurationForm.invalid"
-        (click)="onPublish(configurationForm, ckeditor)"
-      >
-        Publish
-      </button>
-
-      <button
-        class="configuration__form-submit mat-spinner"
-        mat-raised-button
-        color="accent"
+        color="warn"
         (click)="onReset()"
       >
         Reset
       </button>
+
+      <div>
+        <button
+          class="configuration__form-submit configuration__form-submit-save mat-spinner"
+          mat-raised-button
+          color="primary"
+          [disabled]="name.invalid || title.invalid"
+          (click)="onSave(configurationForm, ckeditor)"
+        >
+          Save
+        </button>
+
+        <button
+          class="configuration__form-submit mat-spinner"
+          mat-raised-button
+          color="primary"
+          [disabled]="configurationForm.invalid"
+          (click)="onPublish(configurationForm, ckeditor)"
+        >
+          Publish
+        </button>
+      </div>
     </div>
   </form>
 </section>

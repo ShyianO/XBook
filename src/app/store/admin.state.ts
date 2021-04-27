@@ -166,7 +166,7 @@ export class AdminState {
     if (ctx.getState().configurationDraft) {
       configuration.objectId = ctx.getState().configurationDraft.objectId;
     } else {
-      configuration.draft = true;
+      configuration.status = 'draft';
     }
 
     return Backendless.Data.of('Websites')
@@ -184,12 +184,10 @@ export class AdminState {
     ctx: StateContext<IAdminState>,
     { configuration }: PublishConfiguration
   ): Promise<void> {
-    configuration.name = `${configuration.name}(published)`;
-
     if (ctx.getState().configurationPublished) {
       configuration.objectId = ctx.getState().configurationPublished.objectId;
     } else {
-      configuration.published = true;
+      configuration.status = 'published';
     }
 
     return Backendless.Data.of('Websites')

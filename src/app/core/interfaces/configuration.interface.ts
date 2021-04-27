@@ -2,6 +2,9 @@ export interface IConfiguration {
   name: string;
   title: string;
   description?: string;
+  firstName: string;
+  lastName: string;
+  email: string;
   phoneNumber: string;
   country: string;
   address: string;
@@ -9,6 +12,5 @@ export interface IConfiguration {
   state?: string;
   postalCode: string;
   objectId?: string;
-  draft?: boolean;
-  published?: boolean;
+  status: string;
 }
