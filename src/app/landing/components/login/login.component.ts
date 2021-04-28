@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit, DoCheck, OnDestroy {
 
     this.actions$
       .pipe(ofActionDispatched(LoginUserSuccess), takeUntil(this.subject))
-      .subscribe(() => this.router.navigate(['/admin/profile']));
+      .subscribe(() => this.router.navigate(['/admin/dashboard']));
   }
 
   ngDoCheck(): void {

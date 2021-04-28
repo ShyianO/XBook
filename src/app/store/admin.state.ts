@@ -89,8 +89,6 @@ export class AdminState {
       currentUser: { ...user },
       isLoggedIn: true
     });
-
-    this.store.dispatch(new LoadConfiguration());
   }
 
   @Action(UserNotLoggedIn)

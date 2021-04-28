@@ -3,8 +3,10 @@ import { Injectable } from '@angular/core';
 import { TranslationService } from './translation.service';
 import { BackendlessService } from './backendless.service';
 
-export function initializeApp(startupInitService: StartupService): any {
-  return (): Promise<void> => {
+export function initializeApp(
+  startupInitService: StartupService
+): () => Promise<void> {
+  return () => {
     return startupInitService.init();
   };
 }

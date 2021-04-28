@@ -30,6 +30,15 @@
         display: flex;
         justify-content: space-evenly;
       }
+
+      &-appearance {
+        display: flex;
+        justify-content: space-evenly;
+      }
+
+      &-logo {
+        margin-bottom: 10px;
+      }
     }
 
     &-field {

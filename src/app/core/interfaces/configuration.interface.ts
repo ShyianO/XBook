@@ -11,6 +11,7 @@ export interface IConfiguration {
   city: string;
   state?: string;
   postalCode: string;
+  logo?: string;
   objectId?: string;
   status: string;
 }

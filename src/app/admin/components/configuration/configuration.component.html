@@ -6,6 +6,7 @@
   <form
     class="configuration__form"
     novalidate
+    (change)="isSaved = false"
     [formGroup]="configurationForm"
     *ngIf="configurationForm"
   >
@@ -53,7 +54,11 @@
         </mat-form-field>
       </div>
 
-      <ckeditor #ckeditor [editor]="Editor"></ckeditor>
+      <ckeditor
+        #ckeditor
+        [editor]="Editor"
+        formControlName="description"
+      ></ckeditor>
     </fieldset>
 
     <fieldset class="configuration__form-fieldset">
@@ -113,13 +118,12 @@
       <div>
         <mat-form-field class="configuration__form-field" appearance="outline">
           <mat-label>Country</mat-label>
-          <input
-            matInput
-            type="text"
-            formControlName="country"
-            autocomplete="off"
-            required
-          />
+          <mat-select formControlName="country" required>
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let country of countries" [value]="country">{{
+              country
+            }}</mat-option>
+          </mat-select>
           <mat-hint>Enter your country</mat-hint>
 
           <mat-error *ngIf="country.invalid">
@@ -181,12 +185,12 @@
 
         <mat-form-field class="configuration__form-field" appearance="outline">
           <mat-label>State</mat-label>
-          <input
-            matInput
-            type="text"
-            formControlName="state"
-            autocomplete="off"
-          />
+          <mat-select formControlName="state">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let state of states" [value]="state">{{
+              state
+            }}</mat-option>
+          </mat-select>
           <mat-hint>Enter your state</mat-hint>
         </mat-form-field>
 
@@ -211,37 +215,341 @@
     </fieldset>
 
     <fieldset class="configuration__form-fieldset">
-      <legend>Appearence</legend>
+      <legend>Appearance</legend>
 
-      <label for="singleFile">Upload file</label>
-      <input
-        id="singleFile"
-        type="file"
-        [fileUploadInputFor]="fileUploadQueue"
-      />
-      <br />
+      <div class="configuration__form-fieldset-appearance">
+        <div>
+          <div class="configuration__form-fieldset-logo">
+            <input matInput hidden />
 
-      <mat-file-upload-queue
-        #fileUploadQueue
-        [fileAlias]="'file'"
-        [httpUrl]="
-          'https://eu.backendlessappcontent.com/96FB9625-D188-0F5C-FF1F-D2B1F1B4D200/CA55825C-2422-42B7-9E25-F6A1699C9C90/files/images/test-img-name.png'
-        "
-      >
-        <mat-file-upload
-          [file]="file"
-          [id]="i"
-          *ngFor="let file of fileUploadQueue.files; let i = index"
-        ></mat-file-upload>
+            <button mat-flat-button color="primary" (click)="fileInput.click()">
+              Browse logo
+            </button>
 
-        <div style="width: 150px">
-          <img
-            style="width: 100%; height: auto"
-            src="https://eu.backendlessappcontent.com/96FB9625-D188-0F5C-FF1F-D2B1F1B4D200/CA55825C-2422-42B7-9E25-F6A1699C9C90/files/images/test-img.jpg"
-            alt="Test img"
-          />
+            <input
+              hidden
+              type="file"
+              #fileInput
+              id="uploadFile"
+              (change)="uploadFileEvt($event)"
+              name="uploadFile"
+              multiple="multiple"
+              accept="image/*"
+            />
+          </div>
+
+          <div>
+            <img src="{{ dataimage }}" width="150px" />
+          </div>
         </div>
-      </mat-file-upload-queue>
+
+        <div>
+          <div style="position: static">
+            <div tabindex="-1" role="menu" style="transform-origin: right top">
+              <div class="mat-menu-content ng-tns-c37-1">
+                <button
+                  mat-menu-item=""
+                  class="mat-focus-indicator mat-menu-item ng-tns-c37-1 ng-star-inserted"
+                  role="menuitem"
+                  tabindex="0"
+                  aria-disabled="false"
+                  style=""
+                >
+                  <mat-icon
+                    role="img"
+                    class="mat-icon notranslate material-icons mat-icon-no-color"
+                    aria-hidden="true"
+                    data-mat-icon-type="font"
+                  >
+                    radio_button_unchecked </mat-icon
+                  ><span>Deep Purple &amp; Amber</span
+                ><mat-icon
+                  role="img"
+                  svgicon="theme-example"
+                  class="mat-icon notranslate deeppurple-amber theme-example-icon mat-icon-no-color"
+                  aria-hidden="true"
+                  data-mat-icon-type="svg"
+                  data-mat-icon-name="theme-example"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  width="100%"
+                  height="100%"
+                  viewBox="0 0 80 80"
+                  fit=""
+                  preserveAspectRatio="xMidYMid meet"
+                  focusable="false"
+                >
+                  <defs>
+                    <path
+                      d="M77.87 0C79.05 0 80 .95 80 2.13v75.74c0 1.17-.95 2.13-2.13 2.13H2.13C.96 80 0 79.04 0 77.87V2.13C0 .95.96 0 2.13 0h75.74z"
+                      id="a"
+                    ></path>
+                    <path
+                      d="M54 40c3.32 0 6 2.69 6 6 0 1.2 0-1.2 0 0 0 3.31-2.68 6-6 6H26c-3.31 0-6-2.69-6-6 0-1.2 0 1.2 0 0 0-3.31 2.69-6 6-6h28z"
+                      id="b"
+                    ></path>
+                    <path d="M0 0h80v17.24H0V0z" id="c"></path>
+                  </defs>
+                  <use
+                    xlink:href="#a"
+                    fill="#fff"
+                    class="docs-theme-icon-background"
+                  ></use>
+                  <use
+                    xlink:href="#b"
+                    fill="#ff4081"
+                    class="docs-theme-icon-button"
+                  ></use>
+                  <use
+                    xlink:href="#c"
+                    fill="#3f51b5"
+                    class="docs-theme-icon-toolbar"
+                  ></use></svg
+                ></mat-icon>
+                  <div
+                    matripple=""
+                    class="mat-ripple mat-menu-ripple"
+                  ></div></button
+                ><button
+                mat-menu-item=""
+                class="mat-focus-indicator mat-menu-item ng-tns-c37-1 ng-star-inserted"
+                role="menuitem"
+                tabindex="0"
+                aria-disabled="false"
+                style=""
+              >
+                <mat-icon
+                  role="img"
+                  class="mat-icon notranslate mat-accent material-icons docs-theme-selected-icon"
+                  aria-hidden="true"
+                  data-mat-icon-type="font"
+                >
+                  radio_button_checked </mat-icon
+                ><span>Indigo &amp; Pink</span
+              ><mat-icon
+                role="img"
+                svgicon="theme-example"
+                class="mat-icon notranslate indigo-pink theme-example-icon mat-icon-no-color"
+                aria-hidden="true"
+                data-mat-icon-type="svg"
+                data-mat-icon-name="theme-example"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                width="100%"
+                height="100%"
+                viewBox="0 0 80 80"
+                fit=""
+                preserveAspectRatio="xMidYMid meet"
+                focusable="false"
+              >
+                <defs>
+                  <path
+                    d="M77.87 0C79.05 0 80 .95 80 2.13v75.74c0 1.17-.95 2.13-2.13 2.13H2.13C.96 80 0 79.04 0 77.87V2.13C0 .95.96 0 2.13 0h75.74z"
+                    id="a"
+                  ></path>
+                  <path
+                    d="M54 40c3.32 0 6 2.69 6 6 0 1.2 0-1.2 0 0 0 3.31-2.68 6-6 6H26c-3.31 0-6-2.69-6-6 0-1.2 0 1.2 0 0 0-3.31 2.69-6 6-6h28z"
+                    id="b"
+                  ></path>
+                  <path d="M0 0h80v17.24H0V0z" id="c"></path>
+                </defs>
+                <use
+                  xlink:href="#a"
+                  fill="#fff"
+                  class="docs-theme-icon-background"
+                ></use>
+                <use
+                  xlink:href="#b"
+                  fill="#ff4081"
+                  class="docs-theme-icon-button"
+                ></use>
+                <use
+                  xlink:href="#c"
+                  fill="#3f51b5"
+                  class="docs-theme-icon-toolbar"
+                ></use></svg
+              ></mat-icon>
+                <div
+                  matripple=""
+                  class="mat-ripple mat-menu-ripple"
+                ></div></button
+              ><button
+                mat-menu-item=""
+                class="mat-focus-indicator mat-menu-item ng-tns-c37-1 ng-star-inserted"
+                role="menuitem"
+                tabindex="0"
+                aria-disabled="false"
+                style=""
+              >
+                <mat-icon
+                  role="img"
+                  class="mat-icon notranslate material-icons mat-icon-no-color"
+                  aria-hidden="true"
+                  data-mat-icon-type="font"
+                >
+                  radio_button_unchecked </mat-icon
+                ><span>Pink &amp; Blue-grey</span
+              ><mat-icon
+                role="img"
+                svgicon="theme-example"
+                class="mat-icon notranslate pink-bluegrey theme-example-icon mat-icon-no-color"
+                aria-hidden="true"
+                data-mat-icon-type="svg"
+                data-mat-icon-name="theme-example"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                width="100%"
+                height="100%"
+                viewBox="0 0 80 80"
+                fit=""
+                preserveAspectRatio="xMidYMid meet"
+                focusable="false"
+              >
+                <defs>
+                  <path
+                    d="M77.87 0C79.05 0 80 .95 80 2.13v75.74c0 1.17-.95 2.13-2.13 2.13H2.13C.96 80 0 79.04 0 77.87V2.13C0 .95.96 0 2.13 0h75.74z"
+                    id="a"
+                  ></path>
+                  <path
+                    d="M54 40c3.32 0 6 2.69 6 6 0 1.2 0-1.2 0 0 0 3.31-2.68 6-6 6H26c-3.31 0-6-2.69-6-6 0-1.2 0 1.2 0 0 0-3.31 2.69-6 6-6h28z"
+                    id="b"
+                  ></path>
+                  <path d="M0 0h80v17.24H0V0z" id="c"></path>
+                </defs>
+                <use
+                  xlink:href="#a"
+                  fill="#fff"
+                  class="docs-theme-icon-background"
+                ></use>
+                <use
+                  xlink:href="#b"
+                  fill="#ff4081"
+                  class="docs-theme-icon-button"
+                ></use>
+                <use
+                  xlink:href="#c"
+                  fill="#3f51b5"
+                  class="docs-theme-icon-toolbar"
+                ></use></svg
+              ></mat-icon>
+                <div
+                  matripple=""
+                  class="mat-ripple mat-menu-ripple"
+                ></div></button
+              ><button
+                mat-menu-item=""
+                class="mat-focus-indicator mat-menu-item ng-tns-c37-1 ng-star-inserted"
+                role="menuitem"
+                tabindex="0"
+                aria-disabled="false"
+                style=""
+              >
+                <mat-icon
+                  role="img"
+                  class="mat-icon notranslate material-icons mat-icon-no-color"
+                  aria-hidden="true"
+                  data-mat-icon-type="font"
+                >
+                  radio_button_unchecked </mat-icon
+                ><span>Purple &amp; Green</span
+              ><mat-icon
+                role="img"
+                svgicon="theme-example"
+                class="mat-icon notranslate purple-green theme-example-icon mat-icon-no-color"
+                aria-hidden="true"
+                data-mat-icon-type="svg"
+                data-mat-icon-name="theme-example"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                width="100%"
+                height="100%"
+                viewBox="0 0 80 80"
+                fit=""
+                preserveAspectRatio="xMidYMid meet"
+                focusable="false"
+              >
+                <defs>
+                  <path
+                    d="M77.87 0C79.05 0 80 .95 80 2.13v75.74c0 1.17-.95 2.13-2.13 2.13H2.13C.96 80 0 79.04 0 77.87V2.13C0 .95.96 0 2.13 0h75.74z"
+                    id="a"
+                  ></path>
+                  <path
+                    d="M54 40c3.32 0 6 2.69 6 6 0 1.2 0-1.2 0 0 0 3.31-2.68 6-6 6H26c-3.31 0-6-2.69-6-6 0-1.2 0 1.2 0 0 0-3.31 2.69-6 6-6h28z"
+                    id="b"
+                  ></path>
+                  <path d="M0 0h80v17.24H0V0z" id="c"></path>
+                </defs>
+                <use
+                  xlink:href="#a"
+                  fill="#fff"
+                  class="docs-theme-icon-background"
+                ></use>
+                <use
+                  xlink:href="#b"
+                  fill="#ff4081"
+                  class="docs-theme-icon-button"
+                ></use>
+                <use
+                  xlink:href="#c"
+                  fill="#3f51b5"
+                  class="docs-theme-icon-toolbar"
+                ></use></svg
+              ></mat-icon>
+                <div
+                  matripple=""
+                  class="mat-ripple mat-menu-ripple"
+                ></div></button
+              ><!---->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!--      <mat-form-field class="configuration__form-field" appearance="outline">-->
+      <!--          <mat-label>Color-scheme</mat-label>-->
+      <!--        <mat-select formControlName="colorSchema">-->
+      <!--          <mat-option *ngFor="let color of colors" [value]="color">{{-->
+      <!--            color-->
+      <!--            }}</mat-option>-->
+      <!--        </mat-select>-->
+      <!--        <mat-hint>Enter color-scheme</mat-hint>-->
+      <!--      </mat-form-field>-->
+
+      <!--      <label for="singleFile">Upload file</label>-->
+      <!--      <input-->
+      <!--        id="singleFile"-->
+      <!--        type="file"-->
+      <!--        [fileUploadInputFor]="fileUploadQueue"-->
+      <!--      />-->
+      <!--      <br />-->
+
+      <!--      <mat-file-upload-queue-->
+      <!--        #fileUploadQueue-->
+      <!--        [fileAlias]="'file'"-->
+      <!--        [httpUrl]="-->
+      <!--          'https://eu.backendlessappcontent.com/96FB9625-D188-0F5C-FF1F-D2B1F1B4D200/CA55825C-2422-42B7-9E25-F6A1699C9C90/files/images/test-img-name.png'-->
+      <!--        "-->
+      <!--      >-->
+      <!--        <mat-file-upload-->
+      <!--          [file]="file"-->
+      <!--          [id]="i"-->
+      <!--          *ngFor="let file of fileUploadQueue.files; let i = index"-->
+      <!--        ></mat-file-upload>-->
+
+      <!--        <div style="width: 150px">-->
+      <!--          <img-->
+      <!--            style="width: 100%; height: auto"-->
+      <!--            src="https://eu.backendlessappcontent.com/96FB9625-D188-0F5C-FF1F-D2B1F1B4D200/CA55825C-2422-42B7-9E25-F6A1699C9C90/files/images/test-img.jpg"-->
+      <!--            alt="Test img"-->
+      <!--          />-->
+      <!--        </div>-->
+      <!--      </mat-file-upload-queue>-->
     </fieldset>
 
     <mat-spinner
@@ -278,7 +586,7 @@
           class="configuration__form-submit mat-spinner"
           mat-raised-button
           color="primary"
-          [disabled]="configurationForm.invalid"
+          [disabled]="configurationForm.invalid || !isSaved"
           (click)="onPublish(configurationForm, ckeditor)"
         >
           Publish
