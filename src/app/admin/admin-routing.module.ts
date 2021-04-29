@@ -9,7 +9,6 @@ import { ConfigurationComponent } from './components/configuration/configuration
 import { BookingsComponent } from './components/bookings/bookings.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { StatisticComponent } from './components/statistic/statistic.component';
-import { ConfigurationGuard } from './configuration.guard';
 
 const routes: Routes = [
   {
@@ -23,8 +22,7 @@ const routes: Routes = [
       {
         path: 'configuration',
         component: ConfigurationComponent,
-        resolve: { data: ProfileResolver },
-        canActivate: [ConfigurationGuard]
+        resolve: { data: ProfileResolver }
       },
       {
         path: 'bookings',

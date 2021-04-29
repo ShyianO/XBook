@@ -120,9 +120,12 @@
           <mat-label>Country</mat-label>
           <mat-select formControlName="country" required>
             <mat-option>None</mat-option>
-            <mat-option *ngFor="let country of countries" [value]="country">{{
-              country
-            }}</mat-option>
+            <mat-option
+              *ngFor="let country of countries"
+              [value]="country"
+              (click)="countryStates = country"
+              >{{ country }}</mat-option
+            >
           </mat-select>
           <mat-hint>Enter your country</mat-hint>
 
@@ -187,9 +190,11 @@
           <mat-label>State</mat-label>
           <mat-select formControlName="state">
             <mat-option>None</mat-option>
-            <mat-option *ngFor="let state of states" [value]="state">{{
-              state
-            }}</mat-option>
+            <mat-option
+              *ngFor="let state of states[countryStates]"
+              [value]="state"
+              >{{ state }}</mat-option
+            >
           </mat-select>
           <mat-hint>Enter your state</mat-hint>
         </mat-form-field>
@@ -222,294 +227,221 @@
           <div class="configuration__form-fieldset-logo">
             <input matInput hidden />
 
-            <button mat-flat-button color="primary" (click)="fileInput.click()">
-              Browse logo
-            </button>
-
             <input
               hidden
               type="file"
               #fileInput
               id="uploadFile"
               (change)="uploadFileEvt($event)"
-              name="uploadFile"
+              name="file"
               multiple="multiple"
               accept="image/*"
             />
           </div>
 
           <div>
-            <img src="{{ dataimage }}" width="150px" />
+            <div class="configuration__form-logo">
+              <button
+                class="configuration__form-logo-input"
+                mat-flat-button
+                (click)="fileInput.click()"
+              >
+                <span class="configuration__form-logo-span"
+                  >Drop files here</span
+                >
+                <img
+                  class="configuration__form-logo-img"
+                  src="{{ dataimage }}"
+                  width="150px"
+                />
+              </button>
+            </div>
           </div>
         </div>
 
         <div>
-          <div style="position: static">
-            <div tabindex="-1" role="menu" style="transform-origin: right top">
-              <div class="mat-menu-content ng-tns-c37-1">
-                <button
-                  mat-menu-item=""
-                  class="mat-focus-indicator mat-menu-item ng-tns-c37-1 ng-star-inserted"
-                  role="menuitem"
-                  tabindex="0"
-                  aria-disabled="false"
-                  style=""
-                >
-                  <mat-icon
-                    role="img"
-                    class="mat-icon notranslate material-icons mat-icon-no-color"
-                    aria-hidden="true"
-                    data-mat-icon-type="font"
-                  >
-                    radio_button_unchecked </mat-icon
-                  ><span>Deep Purple &amp; Amber</span
-                ><mat-icon
+          <mat-menu class="configuration__scheme-menu" #schemeMenu>
+            <mat-radio-group>
+              <mat-radio-button
+                class="configuration__scheme-button"
+                role="menuitem"
+                aria-disabled="false"
+                value="1"
+              >
+                <span>Deep Purple &amp; Amber</span>
+
+                <mat-icon
                   role="img"
-                  svgicon="theme-example"
-                  class="mat-icon notranslate deeppurple-amber theme-example-icon mat-icon-no-color"
+                  class="configuration__scheme-icon"
                   aria-hidden="true"
                   data-mat-icon-type="svg"
                   data-mat-icon-name="theme-example"
-                ><svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                  width="100%"
-                  height="100%"
-                  viewBox="0 0 80 80"
-                  fit=""
-                  preserveAspectRatio="xMidYMid meet"
-                  focusable="false"
                 >
-                  <defs>
-                    <path
-                      d="M77.87 0C79.05 0 80 .95 80 2.13v75.74c0 1.17-.95 2.13-2.13 2.13H2.13C.96 80 0 79.04 0 77.87V2.13C0 .95.96 0 2.13 0h75.74z"
-                      id="a"
-                    ></path>
-                    <path
-                      d="M54 40c3.32 0 6 2.69 6 6 0 1.2 0-1.2 0 0 0 3.31-2.68 6-6 6H26c-3.31 0-6-2.69-6-6 0-1.2 0 1.2 0 0 0-3.31 2.69-6 6-6h28z"
-                      id="b"
-                    ></path>
-                    <path d="M0 0h80v17.24H0V0z" id="c"></path>
-                  </defs>
-                  <use
-                    xlink:href="#a"
-                    fill="#fff"
-                    class="docs-theme-icon-background"
-                  ></use>
-                  <use
-                    xlink:href="#b"
-                    fill="#ff4081"
-                    class="docs-theme-icon-button"
-                  ></use>
-                  <use
-                    xlink:href="#c"
-                    fill="#3f51b5"
-                    class="docs-theme-icon-toolbar"
-                  ></use></svg
-                ></mat-icon>
-                  <div
-                    matripple=""
-                    class="mat-ripple mat-menu-ripple"
-                  ></div></button
-                ><button
-                mat-menu-item=""
-                class="mat-focus-indicator mat-menu-item ng-tns-c37-1 ng-star-inserted"
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    width="100%"
+                    height="100%"
+                    viewBox="0 0 80 80"
+                    preserveAspectRatio="xMidYMid meet"
+                    focusable="false"
+                  >
+                    <defs>
+                      <path
+                        d="M77.87 0C79.05 0 80 .95 80 2.13v75.74c0 1.17-.95 2.13-2.13 2.13H2.13C.96 80 0 79.04 0 77.87V2.13C0 .95.96 0 2.13 0h75.74z"
+                        id="a"
+                      ></path>
+                      <path
+                        d="M54 40c3.32 0 6 2.69 6 6 0 1.2 0-1.2 0 0 0 3.31-2.68 6-6 6H26c-3.31 0-6-2.69-6-6 0-1.2 0 1.2 0 0 0-3.31 2.69-6 6-6h28z"
+                        id="b"
+                      ></path>
+                      <path d="M0 0h80v17.24H0V0z" id="c"></path>
+                    </defs>
+                    <use xlink:href="#a" fill="#fafafa"></use>
+                    <use xlink:href="#b" fill="#ffc107"></use>
+                    <use xlink:href="#c" fill="#673ab7"></use>
+                  </svg>
+                </mat-icon>
+              </mat-radio-button>
+
+              <mat-radio-button
+                class="configuration__scheme-button"
                 role="menuitem"
-                tabindex="0"
                 aria-disabled="false"
-                style=""
+                [value]="2"
               >
+                <span>Indigo &amp; Pink</span>
+
                 <mat-icon
                   role="img"
-                  class="mat-icon notranslate mat-accent material-icons docs-theme-selected-icon"
+                  class="configuration__scheme-icon"
                   aria-hidden="true"
-                  data-mat-icon-type="font"
+                  data-mat-icon-type="svg"
+                  data-mat-icon-name="theme-example"
                 >
-                  radio_button_checked </mat-icon
-                ><span>Indigo &amp; Pink</span
-              ><mat-icon
-                role="img"
-                svgicon="theme-example"
-                class="mat-icon notranslate indigo-pink theme-example-icon mat-icon-no-color"
-                aria-hidden="true"
-                data-mat-icon-type="svg"
-                data-mat-icon-name="theme-example"
-              ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                width="100%"
-                height="100%"
-                viewBox="0 0 80 80"
-                fit=""
-                preserveAspectRatio="xMidYMid meet"
-                focusable="false"
-              >
-                <defs>
-                  <path
-                    d="M77.87 0C79.05 0 80 .95 80 2.13v75.74c0 1.17-.95 2.13-2.13 2.13H2.13C.96 80 0 79.04 0 77.87V2.13C0 .95.96 0 2.13 0h75.74z"
-                    id="a"
-                  ></path>
-                  <path
-                    d="M54 40c3.32 0 6 2.69 6 6 0 1.2 0-1.2 0 0 0 3.31-2.68 6-6 6H26c-3.31 0-6-2.69-6-6 0-1.2 0 1.2 0 0 0-3.31 2.69-6 6-6h28z"
-                    id="b"
-                  ></path>
-                  <path d="M0 0h80v17.24H0V0z" id="c"></path>
-                </defs>
-                <use
-                  xlink:href="#a"
-                  fill="#fff"
-                  class="docs-theme-icon-background"
-                ></use>
-                <use
-                  xlink:href="#b"
-                  fill="#ff4081"
-                  class="docs-theme-icon-button"
-                ></use>
-                <use
-                  xlink:href="#c"
-                  fill="#3f51b5"
-                  class="docs-theme-icon-toolbar"
-                ></use></svg
-              ></mat-icon>
-                <div
-                  matripple=""
-                  class="mat-ripple mat-menu-ripple"
-                ></div></button
-              ><button
-                mat-menu-item=""
-                class="mat-focus-indicator mat-menu-item ng-tns-c37-1 ng-star-inserted"
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    width="100%"
+                    height="100%"
+                    viewBox="0 0 80 80"
+                    preserveAspectRatio="xMidYMid meet"
+                    focusable="false"
+                  >
+                    <defs>
+                      <path
+                        d="M77.87 0C79.05 0 80 .95 80 2.13v75.74c0 1.17-.95 2.13-2.13 2.13H2.13C.96 80 0 79.04 0 77.87V2.13C0 .95.96 0 2.13 0h75.74z"
+                        id="a"
+                      ></path>
+                      <path
+                        d="M54 40c3.32 0 6 2.69 6 6 0 1.2 0-1.2 0 0 0 3.31-2.68 6-6 6H26c-3.31 0-6-2.69-6-6 0-1.2 0 1.2 0 0 0-3.31 2.69-6 6-6h28z"
+                        id="b"
+                      ></path>
+                      <path d="M0 0h80v17.24H0V0z" id="c"></path>
+                    </defs>
+                    <use xlink:href="#a" fill="#fafafa"></use>
+                    <use xlink:href="#b" fill="#e91e63"></use>
+                    <use xlink:href="#c" fill="#3f51b5"></use>
+                  </svg>
+                </mat-icon>
+              </mat-radio-button>
+
+              <mat-radio-button
+                class="configuration__scheme-button"
                 role="menuitem"
-                tabindex="0"
                 aria-disabled="false"
-                style=""
+                [value]="3"
               >
+                <span>Pink &amp; Blue-grey</span>
+
                 <mat-icon
                   role="img"
-                  class="mat-icon notranslate material-icons mat-icon-no-color"
+                  class="configuration__scheme-icon"
                   aria-hidden="true"
-                  data-mat-icon-type="font"
+                  data-mat-icon-type="svg"
+                  data-mat-icon-name="theme-example"
                 >
-                  radio_button_unchecked </mat-icon
-                ><span>Pink &amp; Blue-grey</span
-              ><mat-icon
-                role="img"
-                svgicon="theme-example"
-                class="mat-icon notranslate pink-bluegrey theme-example-icon mat-icon-no-color"
-                aria-hidden="true"
-                data-mat-icon-type="svg"
-                data-mat-icon-name="theme-example"
-              ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                width="100%"
-                height="100%"
-                viewBox="0 0 80 80"
-                fit=""
-                preserveAspectRatio="xMidYMid meet"
-                focusable="false"
-              >
-                <defs>
-                  <path
-                    d="M77.87 0C79.05 0 80 .95 80 2.13v75.74c0 1.17-.95 2.13-2.13 2.13H2.13C.96 80 0 79.04 0 77.87V2.13C0 .95.96 0 2.13 0h75.74z"
-                    id="a"
-                  ></path>
-                  <path
-                    d="M54 40c3.32 0 6 2.69 6 6 0 1.2 0-1.2 0 0 0 3.31-2.68 6-6 6H26c-3.31 0-6-2.69-6-6 0-1.2 0 1.2 0 0 0-3.31 2.69-6 6-6h28z"
-                    id="b"
-                  ></path>
-                  <path d="M0 0h80v17.24H0V0z" id="c"></path>
-                </defs>
-                <use
-                  xlink:href="#a"
-                  fill="#fff"
-                  class="docs-theme-icon-background"
-                ></use>
-                <use
-                  xlink:href="#b"
-                  fill="#ff4081"
-                  class="docs-theme-icon-button"
-                ></use>
-                <use
-                  xlink:href="#c"
-                  fill="#3f51b5"
-                  class="docs-theme-icon-toolbar"
-                ></use></svg
-              ></mat-icon>
-                <div
-                  matripple=""
-                  class="mat-ripple mat-menu-ripple"
-                ></div></button
-              ><button
-                mat-menu-item=""
-                class="mat-focus-indicator mat-menu-item ng-tns-c37-1 ng-star-inserted"
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    width="100%"
+                    height="100%"
+                    viewBox="0 0 80 80"
+                    preserveAspectRatio="xMidYMid meet"
+                    focusable="false"
+                  >
+                    <defs>
+                      <path
+                        d="M77.87 0C79.05 0 80 .95 80 2.13v75.74c0 1.17-.95 2.13-2.13 2.13H2.13C.96 80 0 79.04 0 77.87V2.13C0 .95.96 0 2.13 0h75.74z"
+                        id="a"
+                      ></path>
+                      <path
+                        d="M54 40c3.32 0 6 2.69 6 6 0 1.2 0-1.2 0 0 0 3.31-2.68 6-6 6H26c-3.31 0-6-2.69-6-6 0-1.2 0 1.2 0 0 0-3.31 2.69-6 6-6h28z"
+                        id="b"
+                      ></path>
+                      <path d="M0 0h80v17.24H0V0z" id="c"></path>
+                    </defs>
+                    <use xlink:href="#a" fill="#303030"></use>
+                    <use xlink:href="#b" fill="#607d8b"></use>
+                    <use xlink:href="#c" fill="#e91e63"></use>
+                  </svg>
+                </mat-icon>
+              </mat-radio-button>
+
+              <mat-radio-button
+                class="configuration__scheme-button"
                 role="menuitem"
-                tabindex="0"
                 aria-disabled="false"
-                style=""
+                [value]="4"
               >
+                <span>Purple &amp; Green</span>
+
                 <mat-icon
                   role="img"
-                  class="mat-icon notranslate material-icons mat-icon-no-color"
+                  class="configuration__scheme-icon"
                   aria-hidden="true"
-                  data-mat-icon-type="font"
+                  data-mat-icon-type="svg"
+                  data-mat-icon-name="theme-example"
                 >
-                  radio_button_unchecked </mat-icon
-                ><span>Purple &amp; Green</span
-              ><mat-icon
-                role="img"
-                svgicon="theme-example"
-                class="mat-icon notranslate purple-green theme-example-icon mat-icon-no-color"
-                aria-hidden="true"
-                data-mat-icon-type="svg"
-                data-mat-icon-name="theme-example"
-              ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                width="100%"
-                height="100%"
-                viewBox="0 0 80 80"
-                fit=""
-                preserveAspectRatio="xMidYMid meet"
-                focusable="false"
-              >
-                <defs>
-                  <path
-                    d="M77.87 0C79.05 0 80 .95 80 2.13v75.74c0 1.17-.95 2.13-2.13 2.13H2.13C.96 80 0 79.04 0 77.87V2.13C0 .95.96 0 2.13 0h75.74z"
-                    id="a"
-                  ></path>
-                  <path
-                    d="M54 40c3.32 0 6 2.69 6 6 0 1.2 0-1.2 0 0 0 3.31-2.68 6-6 6H26c-3.31 0-6-2.69-6-6 0-1.2 0 1.2 0 0 0-3.31 2.69-6 6-6h28z"
-                    id="b"
-                  ></path>
-                  <path d="M0 0h80v17.24H0V0z" id="c"></path>
-                </defs>
-                <use
-                  xlink:href="#a"
-                  fill="#fff"
-                  class="docs-theme-icon-background"
-                ></use>
-                <use
-                  xlink:href="#b"
-                  fill="#ff4081"
-                  class="docs-theme-icon-button"
-                ></use>
-                <use
-                  xlink:href="#c"
-                  fill="#3f51b5"
-                  class="docs-theme-icon-toolbar"
-                ></use></svg
-              ></mat-icon>
-                <div
-                  matripple=""
-                  class="mat-ripple mat-menu-ripple"
-                ></div></button
-              ><!---->
-              </div>
-            </div>
-          </div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    width="100%"
+                    height="100%"
+                    viewBox="0 0 80 80"
+                    preserveAspectRatio="xMidYMid meet"
+                    focusable="false"
+                  >
+                    <defs>
+                      <path
+                        d="M77.87 0C79.05 0 80 .95 80 2.13v75.74c0 1.17-.95 2.13-2.13 2.13H2.13C.96 80 0 79.04 0 77.87V2.13C0 .95.96 0 2.13 0h75.74z"
+                        id="a"
+                      ></path>
+                      <path
+                        d="M54 40c3.32 0 6 2.69 6 6 0 1.2 0-1.2 0 0 0 3.31-2.68 6-6 6H26c-3.31 0-6-2.69-6-6 0-1.2 0 1.2 0 0 0-3.31 2.69-6 6-6h28z"
+                        id="b"
+                      ></path>
+                      <path d="M0 0h80v17.24H0V0z" id="c"></path>
+                    </defs>
+                    <use xlink:href="#a" fill="#303030"></use>
+                    <use xlink:href="#b" fill="#4caf50"></use>
+                    <use xlink:href="#c" fill="#9c27b0"></use>
+                  </svg>
+                </mat-icon>
+              </mat-radio-button>
+            </mat-radio-group>
+          </mat-menu>
+
+          <button
+            class="configuration__scheme-toggle"
+            mat-raised-button
+            color="primary"
+            [mat-menu-trigger-for]="schemeMenu"
+          >
+            Scheme-color
+          </button>
         </div>
       </div>
-
 
       <!--      <mat-form-field class="configuration__form-field" appearance="outline">-->
       <!--          <mat-label>Color-scheme</mat-label>-->

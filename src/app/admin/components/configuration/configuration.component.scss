@@ -41,6 +41,31 @@
       }
     }
 
+    &-logo {
+      &-input {
+        width: 150px;
+        padding: 0;
+        border: 2px dashed #bbb;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        text-align: center;
+      }
+
+      &-span {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+      }
+
+      &-img {
+        width: 100%;
+        height: auto;
+        position: relative;
+        z-index: 1;
+      }
+    }
+
     &-field {
       width: 250px;
       margin: 5px 10px;
@@ -85,6 +110,24 @@
       font-size: 60px;
     }
   }
+
+  &__scheme {
+    ::ng-deep &-menu {
+      width: 195px;
+      padding: 0 10px;
+    }
+
+    &-button {
+      width: 100%;
+      padding: 5px 0;
+    }
+
+    &-icon {
+      float: right;
+      margin-right: 0;
+      margin-left: 8px;
+    }
+  }
 }
 
 ::ng-deep.ck.ck-editor {
@@ -94,4 +137,8 @@
 
 ::ng-deep.ck.ck-content {
   min-height: 110px;
+}
+
+::ng-deep.mat-radio-label-content {
+  width: 100%;
 }

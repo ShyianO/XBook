@@ -16,6 +16,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatFileUploadModule } from 'angular-material-fileupload';
+import { MatRadioModule } from '@angular/material/radio';
 
 const materialModules = [
   MatSliderModule,
@@ -33,7 +34,8 @@ const materialModules = [
   MatProgressSpinnerModule,
   MatDialogModule,
   MatSnackBarModule,
-  MatFileUploadModule
+  MatFileUploadModule,
+  MatRadioModule
 ];
 
 @NgModule({
