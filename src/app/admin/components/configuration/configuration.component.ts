@@ -29,6 +29,7 @@ import {
   PublishConfiguration,
   SaveConfiguration
 } from '../../../store/admin.action';
+import { CountrystatesService } from '../../../shared/countrystates.service';
 
 @Component({
   selector: 'app-configuration',
@@ -42,198 +43,13 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
   dataimage: string;
   public Editor = ClassicEditor;
 
-  countries: string[] = ['Ukraine', 'United States', 'United Kingdom'];
-  states: {
-    Ukraine: string[];
-    'United States': string[];
-    'United Kingdom': string[];
-  } = {
-    Ukraine: [
-      'Autonomous Republic of Crimea',
-      'Cherkasy Oblast',
-      'Chernihiv Oblast',
-      'Chernivtsi Oblast',
-      'Dnipropetrovsk Oblast',
-      'Donetsk Oblast',
-      'Ivano-Frankivsk Oblast',
-      'Kharkiv Oblast',
-      'Kherson Oblast',
-      'Khmelnytskyi Oblast',
-      'Kyiv Oblast',
-      'Kirovohrad Oblast',
-      'Luhansk Oblast',
-      'Lviv Oblast',
-      'Mykolaiv Oblast',
-      'Odessa Oblast',
-      'Poltava Oblast',
-      'Rivne Oblast',
-      'Sumy Oblast',
-      'Ternopil Oblast',
-      'Vinnytsia Oblast',
-      'Volyn Oblast',
-      'Zakarpattia Oblast',
-      'Zaporizhzhia Oblast',
-      'Zhytomyr Oblast'
-    ],
-    'United States': [
-      'Alabama',
-      'Alaska',
-      'Arizona',
-      'Arkansas',
-      'California',
-      'Colorado',
-      'Connecticut',
-      'Delaware',
-      'Florida',
-      'Georgia',
-      'Hawaii',
-      'Idaho',
-      'Illinois',
-      'Indiana',
-      'Iowa',
-      'Kansas',
-      'Kentucky',
-      'Louisiana',
-      'Maine',
-      'Maryland',
-      'Massachusetts',
-      'Michigan',
-      'Minnesota',
-      'Mississippi',
-      'Missouri',
-      'Montana',
-      'Nebraska',
-      'Nevada',
-      'New Hampshire',
-      'New Jersey',
-      'New Mexico',
-      'New York',
-      'North Carolina',
-      'North Dakota',
-      'Ohio',
-      'Oklahoma',
-      'Oregon',
-      'Pennsylvania',
-      'Rhode Island',
-      'South Carolina',
-      'South Dakota',
-      'Tennessee',
-      'Texas',
-      'Utah',
-      'Vermont',
-      'Virginia',
-      'Washington',
-      'West Virginia',
-      'Wisconsin',
-      'Wyoming'
-    ],
-    'United Kingdom': [
-      'Avon',
-      'Bedfordshire',
-      'Berkshire',
-      'Buckinghamshire',
-      'Cambridgeshire',
-      'Cheshire',
-      'Cleveland',
-      'Cornwall',
-      'Cumbria',
-      'Derbyshire',
-      'Devon',
-      'Dorset',
-      'Durham',
-      'East Sussex',
-      'Essex',
-      'Gloucestershire',
-      'Hampshire',
-      'Herefordshire',
-      'Hertfordshire',
-      'Isle of Wight',
-      'Kent',
-      'Lancashire',
-      'Leicestershire',
-      'Lincolnshire',
-      'London',
-      'Merseyside',
-      'Middlesex',
-      'Norfolk',
-      'Northamptonshire',
-      'Northumberland',
-      'North Humberside',
-      'North Yorkshire',
-      'Nottinghamshire',
-      'Oxfordshire',
-      'Rutland',
-      'Shropshire',
-      'Somerset',
-      'South Humberside',
-      'South Yorkshire',
-      'Staffordshire',
-      'Suffolk',
-      'Surrey',
-      'Tyne and Wear',
-      'Warwickshire',
-      'West Midlands',
-      'West Sussex',
-      'West Yorkshire',
-      'Wiltshire',
-      'Worcestershire',
-      'Clwyd',
-      'Dyfed',
-      'Gwent',
-      'Gwynedd',
-      'Mid Glamorgan',
-      'Powys',
-      'South Glamorgan',
-      'West Glamorgan',
-      'Aberdeenshire',
-      'Angus',
-      'Argyll',
-      'Ayrshire',
-      'Banffshire',
-      'Berwickshire',
-      'Bute',
-      'Caithness',
-      'Clackmannanshire',
-      'Dumfriesshire',
-      'Dunbartonshire',
-      'East Lothian',
-      'Fife',
-      'Inverness-shire',
-      'Kincardineshire',
-      'Kinross-shire',
-      'Kirkcudbrightshire',
-      'Lanarkshire',
-      'Midlothian',
-      'Moray',
-      'Nairnshire',
-      'Orkney',
-      'Peeblesshire',
-      'Perthshire',
-      'Renfrewshire',
-      'Ross-shire',
-      'Roxburghshire',
-      'Selkirkshire',
-      'Shetland',
-      'Stirlingshire',
-      'Sutherland',
-      'West Lothian',
-      'Wigtownshire',
-      'Antrim',
-      'Armagh',
-      'Down',
-      'Fermanagh',
-      'Londonderry',
-      'Tyrone'
-    ]
-  };
-  countryStates: string;
-
   @ViewChild('fileInput') fileInput: ElementRef;
 
   constructor(
     private store: Store,
     private actions$: Actions,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    public countrystatesService: CountrystatesService
   ) {}
 
   @Select((state) => state.adminState.loading)
@@ -327,8 +143,7 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
           address: new FormControl(conf.address, [Validators.required]),
           city: new FormControl(conf.city, [Validators.required]),
           state: new FormControl(conf.state),
-          postalCode: new FormControl(conf.postalCode, [Validators.required]),
-          ckeditor: new FormControl('123')
+          postalCode: new FormControl(conf.postalCode, [Validators.required])
         });
       });
   }
@@ -381,37 +196,26 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     return this.configurationForm.get('postalCode');
   }
 
-  // selectCountry(country): void {
-  //   if (country)
-  // }
-
   uploadFileEvt(imgFile: any): void {
     const reader = new FileReader();
 
     reader.onload = (e: any) => {
-      console.log(e.target.result);
       this.dataimage = e.target.result;
     };
 
     reader.readAsDataURL(imgFile.target.files[0]);
-
-    // Reset if duplicate image uploaded again
-    // this.fileInput.nativeElement.value = '';
   }
 
-  onSave(configuration: FormGroup, editor): void {
-    // testing
-    console.log(editor);
-    configuration.value.description = editor.editorWatchdog._data.main;
-    configuration.value.logo = this.dataimage;
+  onSave(formGroup: FormGroup): void {
+    formGroup.value.logo = this.dataimage;
 
-    this.store.dispatch(new SaveConfiguration(configuration.value));
+    this.store.dispatch(new SaveConfiguration(formGroup.value));
   }
 
-  onPublish(configuration: FormGroup, editor): void {
-    configuration.value.description = editor.editorWatchdog._data.main;
+  onPublish(formGroup: FormGroup): void {
+    formGroup.value.logo = this.dataimage;
 
-    this.store.dispatch(new PublishConfiguration(configuration.value));
+    this.store.dispatch(new PublishConfiguration(formGroup.value));
   }
 
   onReset(): void {

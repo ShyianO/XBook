@@ -1,3 +1,8 @@
+export enum Status {
+  draft,
+  published
+}
+
 export interface IConfiguration {
   name: string;
   title: string;
@@ -13,5 +18,5 @@ export interface IConfiguration {
   postalCode: string;
   logo?: string;
   objectId?: string;
-  status: string;
+  status: Status;
 }

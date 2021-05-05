@@ -4,22 +4,25 @@ import { Action, State, StateContext, Store } from '@ngxs/store';
 import { Router } from '@angular/router';
 
 import {
+  LoadConfiguration,
   LoginUser,
   LoginUserError,
   LoginUserSuccess,
+  LogoutUser,
+  PublishConfiguration,
+  SaveConfiguration,
+  UpdateUser,
+  UpdateUserError,
+  UpdateUserSuccess,
   UserLoggedIn,
   UserLoggedInSuccess,
-  UserNotLoggedIn,
-  LogoutUser,
-  UpdateUser,
-  UpdateUserSuccess,
-  UpdateUserError,
-  SaveConfiguration,
-  PublishConfiguration,
-  LoadConfiguration
+  UserNotLoggedIn
 } from './admin.action';
 import { IAdminState } from '../core/interfaces/admin.interface';
-import { IConfiguration } from '../core/interfaces/configuration.interface';
+import {
+  IConfiguration,
+  Status
+} from '../core/interfaces/configuration.interface';
 
 @State<IAdminState>({
   name: 'adminState',
@@ -164,7 +167,7 @@ export class AdminState {
     if (ctx.getState().configurationDraft) {
       configuration.objectId = ctx.getState().configurationDraft.objectId;
     } else {
-      configuration.status = 'draft';
+      configuration.status = Status.draft;
     }
 
     return Backendless.Data.of('Websites')
@@ -185,7 +188,7 @@ export class AdminState {
     if (ctx.getState().configurationPublished) {
       configuration.objectId = ctx.getState().configurationPublished.objectId;
     } else {
-      configuration.status = 'published';
+      configuration.status = Status.published;
     }
 
     return Backendless.Data.of('Websites')

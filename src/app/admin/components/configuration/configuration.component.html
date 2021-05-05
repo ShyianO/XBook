@@ -54,11 +54,7 @@
         </mat-form-field>
       </div>
 
-      <ckeditor
-        #ckeditor
-        [editor]="Editor"
-        formControlName="description"
-      ></ckeditor>
+      <ckeditor [editor]="Editor" formControlName="description"></ckeditor>
     </fieldset>
 
     <fieldset class="configuration__form-fieldset">
@@ -121,9 +117,9 @@
           <mat-select formControlName="country" required>
             <mat-option>None</mat-option>
             <mat-option
-              *ngFor="let country of countries"
+              *ngFor="let country of countrystatesService.countries"
               [value]="country"
-              (click)="countryStates = country"
+              (click)="countrystatesService.countryStates = country"
               >{{ country }}</mat-option
             >
           </mat-select>
@@ -191,7 +187,11 @@
           <mat-select formControlName="state">
             <mat-option>None</mat-option>
             <mat-option
-              *ngFor="let state of states[countryStates]"
+              *ngFor="
+                let state of countrystatesService.states[
+                  countrystatesService.countryStates
+                ]
+              "
               [value]="state"
               >{{ state }}</mat-option
             >
@@ -223,12 +223,14 @@
       <legend>Appearance</legend>
 
       <div class="configuration__form-fieldset-appearance">
-        <div>
+        <fieldset class="configuration__form-fieldset-appearance-container">
+          <legend>Website logo</legend>
+
           <div class="configuration__form-fieldset-logo">
             <input matInput hidden />
 
             <input
-              hidden
+              class="configuration__form-fieldset-appearance-logo"
               type="file"
               #fileInput
               id="uploadFile"
@@ -239,27 +241,27 @@
             />
           </div>
 
-          <div>
-            <div class="configuration__form-logo">
-              <button
-                class="configuration__form-logo-input"
-                mat-flat-button
-                (click)="fileInput.click()"
-              >
-                <span class="configuration__form-logo-span"
-                  >Drop files here</span
-                >
-                <img
-                  class="configuration__form-logo-img"
-                  src="{{ dataimage }}"
-                  width="150px"
-                />
-              </button>
-            </div>
+          <div class="configuration__form-logo">
+            <button
+              class="configuration__form-logo-input"
+              mat-flat-button
+              (click)="fileInput.click()"
+            >
+              <span class="configuration__form-logo-span">Drop files here</span>
+              <img
+                class="configuration__form-logo-img"
+                src="{{ dataimage }}"
+                width="150px"
+              />
+            </button>
           </div>
-        </div>
+        </fieldset>
 
-        <div>
+        <fieldset
+          class="configuration__form-fieldset-appearance-container configuration__form-fieldset-appearance-container--flex"
+        >
+          <legend>Color-schema</legend>
+
           <mat-menu class="configuration__scheme-menu" #schemeMenu>
             <mat-radio-group>
               <mat-radio-button
@@ -438,50 +440,46 @@
             color="primary"
             [mat-menu-trigger-for]="schemeMenu"
           >
-            Scheme-color
+            Select scheme-color
           </button>
-        </div>
+        </fieldset>
       </div>
 
-      <!--      <mat-form-field class="configuration__form-field" appearance="outline">-->
-      <!--          <mat-label>Color-scheme</mat-label>-->
-      <!--        <mat-select formControlName="colorSchema">-->
-      <!--          <mat-option *ngFor="let color of colors" [value]="color">{{-->
-      <!--            color-->
-      <!--            }}</mat-option>-->
-      <!--        </mat-select>-->
-      <!--        <mat-hint>Enter color-scheme</mat-hint>-->
-      <!--      </mat-form-field>-->
+      <div>
+        <fieldset>
+          <legend>Image gallery</legend>
 
-      <!--      <label for="singleFile">Upload file</label>-->
-      <!--      <input-->
-      <!--        id="singleFile"-->
-      <!--        type="file"-->
-      <!--        [fileUploadInputFor]="fileUploadQueue"-->
-      <!--      />-->
-      <!--      <br />-->
+          <label for="singleFile">Upload file</label>
+          <input
+            id="singleFile"
+            type="file"
+            [fileUploadInputFor]="fileUploadQueue"
+          />
+          <br />
 
-      <!--      <mat-file-upload-queue-->
-      <!--        #fileUploadQueue-->
-      <!--        [fileAlias]="'file'"-->
-      <!--        [httpUrl]="-->
-      <!--          'https://eu.backendlessappcontent.com/96FB9625-D188-0F5C-FF1F-D2B1F1B4D200/CA55825C-2422-42B7-9E25-F6A1699C9C90/files/images/test-img-name.png'-->
-      <!--        "-->
-      <!--      >-->
-      <!--        <mat-file-upload-->
-      <!--          [file]="file"-->
-      <!--          [id]="i"-->
-      <!--          *ngFor="let file of fileUploadQueue.files; let i = index"-->
-      <!--        ></mat-file-upload>-->
+          <mat-file-upload-queue
+            #fileUploadQueue
+            [fileAlias]="'file'"
+            [httpUrl]="
+              'https://eu.backendlessappcontent.com/96FB9625-D188-0F5C-FF1F-D2B1F1B4D200/CA55825C-2422-42B7-9E25-F6A1699C9C90/files/images/test-img-name.png'
+            "
+          >
+            <mat-file-upload
+              [file]="file"
+              [id]="i"
+              *ngFor="let file of fileUploadQueue.files; let i = index"
+            ></mat-file-upload>
 
-      <!--        <div style="width: 150px">-->
-      <!--          <img-->
-      <!--            style="width: 100%; height: auto"-->
-      <!--            src="https://eu.backendlessappcontent.com/96FB9625-D188-0F5C-FF1F-D2B1F1B4D200/CA55825C-2422-42B7-9E25-F6A1699C9C90/files/images/test-img.jpg"-->
-      <!--            alt="Test img"-->
-      <!--          />-->
-      <!--        </div>-->
-      <!--      </mat-file-upload-queue>-->
+            <div style="width: 150px">
+              <img
+                style="width: 100%; height: auto"
+                src="https://eu.backendlessappcontent.com/96FB9625-D188-0F5C-FF1F-D2B1F1B4D200/CA55825C-2422-42B7-9E25-F6A1699C9C90/files/images/test-img.jpg"
+                alt="Test img"
+              />
+            </div>
+          </mat-file-upload-queue>
+        </fieldset>
+      </div>
     </fieldset>
 
     <mat-spinner
@@ -509,7 +507,7 @@
           mat-raised-button
           color="primary"
           [disabled]="name.invalid || title.invalid"
-          (click)="onSave(configurationForm, ckeditor)"
+          (click)="onSave(configurationForm)"
         >
           Save
         </button>
@@ -519,7 +517,7 @@
           mat-raised-button
           color="primary"
           [disabled]="configurationForm.invalid || !isSaved"
-          (click)="onPublish(configurationForm, ckeditor)"
+          (click)="onPublish(configurationForm)"
         >
           Publish
         </button>
