@@ -21,7 +21,7 @@ import {
 import { IAdminState } from '../core/interfaces/admin.interface';
 import {
   IConfiguration,
-  Status
+  ConfigurationStatus
 } from '../core/interfaces/configuration.interface';
 
 @State<IAdminState>({
@@ -167,16 +167,13 @@ export class AdminState {
     if (ctx.getState().configurationDraft) {
       configuration.objectId = ctx.getState().configurationDraft.objectId;
     } else {
-      configuration.status = Status.draft;
+      configuration.status = ConfigurationStatus.draft;
     }
 
     return Backendless.Data.of('Websites')
       .save(configuration)
       .then((website) => {
         ctx.patchState({ configurationDraft: website });
-      })
-      .catch((error) => {
-        throw new Error(error);
       });
   }
 
@@ -188,16 +185,13 @@ export class AdminState {
     if (ctx.getState().configurationPublished) {
       configuration.objectId = ctx.getState().configurationPublished.objectId;
     } else {
-      configuration.status = Status.published;
+      configuration.status = ConfigurationStatus.published;
     }
 
     return Backendless.Data.of('Websites')
       .save(configuration)
       .then((website) => {
         ctx.patchState({ configurationPublished: website });
-      })
-      .catch((error) => {
-        throw new Error(error);
       });
   }
 

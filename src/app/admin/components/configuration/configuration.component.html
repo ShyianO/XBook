@@ -119,7 +119,7 @@
             <mat-option
               *ngFor="let country of countrystatesService.countries"
               [value]="country"
-              (click)="countrystatesService.countryStates = country"
+              (click)="countryStates = country"
               >{{ country }}</mat-option
             >
           </mat-select>
@@ -187,11 +187,7 @@
           <mat-select formControlName="state">
             <mat-option>None</mat-option>
             <mat-option
-              *ngFor="
-                let state of countrystatesService.states[
-                  countrystatesService.countryStates
-                ]
-              "
+              *ngFor="let state of countrystatesService.states[countryStates]"
               [value]="state"
               >{{ state }}</mat-option
             >

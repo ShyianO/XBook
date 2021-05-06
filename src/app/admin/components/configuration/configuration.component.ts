@@ -41,6 +41,7 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
   subject = new Subject();
   isSaved = false;
   dataimage: string;
+  countryStates: string;
   public Editor = ClassicEditor;
 
   @ViewChild('fileInput') fileInput: ElementRef;
@@ -120,6 +121,7 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
       .subscribe((configuration: IConfiguration | null) => {
         const conf = configuration || ({} as IConfiguration);
 
+        this.countryStates = conf.country;
         this.dataimage = conf.logo;
 
         this.configurationForm = new FormGroup({

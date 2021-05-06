@@ -188,5 +188,4 @@ export class CountrystatesService {
       'Tyrone'
     ]
   };
-  countryStates: string;
 }
