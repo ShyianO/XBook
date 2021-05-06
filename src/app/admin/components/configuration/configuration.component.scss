@@ -1,0 +1,168 @@
+.configuration {
+  &__nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+
+    background: #3f51b5;
+
+    &-title {
+      font-weight: 400;
+      margin: 0;
+      padding: 28px 8px;
+      font-size: 24px;
+    }
+  }
+
+  &__form {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &-fieldset {
+      width: 810px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+
+      &-general {
+        display: flex;
+        justify-content: space-evenly;
+      }
+
+      &-appearance {
+        display: flex;
+        justify-content: space-evenly;
+
+        &-container {
+          position: relative;
+          margin-bottom: 20px;
+
+          &--flex {
+            display: flex;
+            align-items: center;
+          }
+        }
+
+        &-logo {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          opacity: 0;
+          z-index: 1;
+        }
+      }
+    }
+
+    &-logo {
+      position: relative;
+      z-index: 0;
+      margin: 30px;
+
+      &-input {
+        width: 200px;
+        padding: 0;
+        border: 2px dashed #bbb;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        text-align: center;
+      }
+
+      &-span {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+      }
+
+      &-img {
+        width: 100%;
+        height: auto;
+        position: relative;
+        z-index: 1;
+      }
+    }
+
+    &-field {
+      width: 250px;
+      margin: 5px 10px;
+
+      &-name,
+      &-title {
+        width: 385px;
+      }
+
+      &--lg {
+        width: 790px;
+      }
+    }
+
+    &-error {
+      margin-bottom: 10px;
+    }
+
+    &-submit {
+      font-size: 20px;
+
+      &-save {
+        margin-right: 10px;
+      }
+    }
+
+    &-buttons {
+      width: 835px;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+  &__profile {
+    display: flex;
+    justify-content: center;
+
+    &-title {
+      margin-top: 200px;
+
+      color: #3f51b5;
+      font-size: 60px;
+    }
+  }
+
+  &__scheme {
+    ::ng-deep &-menu {
+      width: 195px;
+      padding: 0 10px;
+    }
+
+    &-toggle {
+      margin: 30px;
+    }
+
+    &-button {
+      width: 100%;
+      padding: 5px 0;
+    }
+
+    &-icon {
+      float: right;
+      margin-right: 0;
+      margin-left: 8px;
+    }
+  }
+}
+
+::ng-deep.ck.ck-editor {
+  width: 790px;
+  margin: 0 10px;
+}
+
+::ng-deep.ck.ck-content {
+  min-height: 110px;
+}
+
+::ng-deep.mat-radio-label-content {
+  width: 100%;
+}

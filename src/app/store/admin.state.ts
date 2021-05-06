@@ -4,18 +4,25 @@ import { Action, State, StateContext, Store } from '@ngxs/store';
 import { Router } from '@angular/router';
 
 import {
+  LoadConfiguration,
   LoginUser,
   LoginUserError,
   LoginUserSuccess,
+  LogoutUser,
+  PublishConfiguration,
+  SaveConfiguration,
+  UpdateUser,
+  UpdateUserError,
+  UpdateUserSuccess,
   UserLoggedIn,
   UserLoggedInSuccess,
-  UserNotLoggedIn,
-  LogoutUser,
-  UpdateUser,
-  UpdateUserSuccess,
-  UpdateUserError
+  UserNotLoggedIn
 } from './admin.action';
 import { IAdminState } from '../core/interfaces/admin.interface';
+import {
+  IConfiguration,
+  ConfigurationStatus
+} from '../core/interfaces/configuration.interface';
 
 @State<IAdminState>({
   name: 'adminState',
@@ -23,7 +30,9 @@ import { IAdminState } from '../core/interfaces/admin.interface';
     currentUser: null,
     isLoggedIn: false,
     loading: false,
-    isUserDataIncorrect: false
+    isUserDataIncorrect: false,
+    configurationDraft: null,
+    configurationPublished: null
   }
 })
 @Injectable()
@@ -79,7 +88,10 @@ export class AdminState {
     ctx: StateContext<IAdminState>,
     { user }: UserLoggedInSuccess
   ): void {
-    ctx.patchState({ currentUser: { ...user }, isLoggedIn: true });
+    ctx.patchState({
+      currentUser: { ...user },
+      isLoggedIn: true
+    });
   }
 
   @Action(UserNotLoggedIn)
@@ -91,7 +103,11 @@ export class AdminState {
   logOut(ctx: StateContext<IAdminState>): void {
     Backendless.UserService.logout()
       .then(() => {
-        ctx.patchState({ currentUser: null, isLoggedIn: false });
+        ctx.patchState({
+          currentUser: null,
+          isLoggedIn: false,
+          configurationDraft: null
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -141,5 +157,60 @@ export class AdminState {
   @Action(UpdateUserError)
   updateUserError(ctx: StateContext<IAdminState>): void {
     ctx.patchState({ loading: false });
+  }
+
+  @Action(SaveConfiguration)
+  saveConfiguration(
+    ctx: StateContext<IAdminState>,
+    { configuration }: SaveConfiguration
+  ): Promise<void> {
+    if (ctx.getState().configurationDraft) {
+      configuration.objectId = ctx.getState().configurationDraft.objectId;
+    } else {
+      configuration.status = ConfigurationStatus.draft;
+    }
+
+    return Backendless.Data.of('Websites')
+      .save(configuration)
+      .then((website) => {
+        ctx.patchState({ configurationDraft: website });
+      });
+  }
+
+  @Action(PublishConfiguration)
+  publishConfiguration(
+    ctx: StateContext<IAdminState>,
+    { configuration }: PublishConfiguration
+  ): Promise<void> {
+    if (ctx.getState().configurationPublished) {
+      configuration.objectId = ctx.getState().configurationPublished.objectId;
+    } else {
+      configuration.status = ConfigurationStatus.published;
+    }
+
+    return Backendless.Data.of('Websites')
+      .save(configuration)
+      .then((website) => {
+        ctx.patchState({ configurationPublished: website });
+      });
+  }
+
+  @Action(LoadConfiguration)
+  loadConfiguration(ctx: StateContext<IAdminState>): void {
+    const dataQuery = Backendless.DataQueryBuilder.create().setWhereClause(
+      `ownerId = '${ctx.getState().currentUser.objectId}'`
+    );
+
+    Backendless.Data.of('Websites')
+      .find(dataQuery)
+      .then((website: IConfiguration[]) => {
+        ctx.patchState({
+          configurationDraft: website[0],
+          configurationPublished: website[1]
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 }
