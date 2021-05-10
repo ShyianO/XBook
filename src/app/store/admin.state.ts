@@ -197,6 +197,10 @@ export class AdminState {
 
   @Action(LoadConfiguration)
   loadConfiguration(ctx: StateContext<IAdminState>): void {
+    if (!ctx.getState().currentUser.objectId) {
+      return;
+    }
+
     const dataQuery = Backendless.DataQueryBuilder.create().setWhereClause(
       `ownerId = '${ctx.getState().currentUser.objectId}'`
     );

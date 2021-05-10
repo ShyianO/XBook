@@ -54,8 +54,7 @@ import { TestService } from './core/services/test.service';
       useFactory: initializeApp,
       deps: [StartupService],
       multi: true
-    },
-    { provide: HTTP_INTERCEPTORS, useClass: TestService, multi: true }
+    }
   ],
   bootstrap: [AppComponent]
 })

@@ -19,13 +19,18 @@ export function initializeApp(
 export class StartupService {
   constructor(
     private translateService: TranslationService,
-    private backendlessService: BackendlessService
+    private backendlessService: BackendlessService,
+    private testService: TestService
   ) {}
 
   init(): Promise<void> {
     return new Promise((resolve) => {
       this.translateService.init();
       this.backendlessService.init();
+
+      if (environment.test) {
+        this.testService.init();
+      }
 
       resolve();
     });
