@@ -197,9 +197,9 @@ export class AdminState {
 
   @Action(LoadConfiguration)
   loadConfiguration(ctx: StateContext<IAdminState>): void {
-    if (!ctx.getState().currentUser.objectId) {
-      return;
-    }
+    // if (!ctx.getState().currentUser.objectId) {
+    //   return;
+    // }
 
     const dataQuery = Backendless.DataQueryBuilder.create().setWhereClause(
       `ownerId = '${ctx.getState().currentUser.objectId}'`
@@ -208,10 +208,17 @@ export class AdminState {
     Backendless.Data.of('Websites')
       .find(dataQuery)
       .then((website: IConfiguration[]) => {
-        ctx.patchState({
-          configurationDraft: website[0],
-          configurationPublished: website[1]
-        });
+        if (website[0].status) {
+          ctx.patchState({
+            configurationDraft: website[1],
+            configurationPublished: website[0]
+          });
+        } else {
+          ctx.patchState({
+            configurationDraft: website[0],
+            configurationPublished: website[1]
+          });
+        }
       })
       .catch((error) => {
         console.log(error);
