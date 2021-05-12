@@ -117,7 +117,7 @@
           <mat-select formControlName="country" required>
             <mat-option>None</mat-option>
             <mat-option
-              *ngFor="let country of countrystatesService.countries"
+              *ngFor="let country of countryStatesService.countries"
               [value]="country"
               (click)="countryStates = country"
               >{{ country }}</mat-option
@@ -187,7 +187,7 @@
           <mat-select formControlName="state">
             <mat-option>None</mat-option>
             <mat-option
-              *ngFor="let state of countrystatesService.states[countryStates]"
+              *ngFor="let state of countryStatesService.states[countryStates]"
               [value]="state"
               >{{ state }}</mat-option
             >
@@ -230,7 +230,7 @@
               type="file"
               #fileInput
               id="uploadFile"
-              (change)="uploadFileEvt($event)"
+              (change)="uploadFileEvt($event, 'logo')"
               name="file"
               multiple="multiple"
               accept="image/*"
@@ -246,7 +246,7 @@
               <span class="configuration__form-logo-span">Drop files here</span>
               <img
                 class="configuration__form-logo-img"
-                src="{{ dataimage }}"
+                src="{{ logoImage }}"
                 width="150px"
               />
             </button>
@@ -441,6 +441,49 @@
         </fieldset>
       </div>
 
+      <fieldset class="configuration__form-fieldset-appearance-container">
+        <legend>Image gallery</legend>
+
+        <div class="configuration__form-fieldset-gallery">
+          <input matInput hidden />
+
+          <input
+            class="configuration__form-fieldset-appearance-gallery"
+            type="file"
+            #imgGalleryInput
+            (change)="uploadFileEvt($event, 'gallery')"
+            name="file"
+            multiple="multiple"
+            accept="image/*"
+          />
+        </div>
+
+        <div class="configuration__form-gallery">
+          <button
+            class="configuration__form-gallery-input"
+            mat-flat-button
+            (click)="imgGalleryInput.click()"
+          >
+            <span class="configuration__form-gallery-span"
+              >Drop files here</span
+            >
+          </button>
+        </div>
+
+        <div class="configuration__form-gallery-img">
+          <div
+            style="width: 150px; margin: 0 10px"
+            *ngFor="let image of galleryImages"
+          >
+            <img
+              style="width: 100%; height: auto"
+              src="{{ image }}"
+              alt="Test img"
+            />
+          </div>
+        </div>
+      </fieldset>
+
       <div>
         <fieldset>
           <legend>Image gallery</legend>
@@ -456,9 +499,7 @@
           <mat-file-upload-queue
             #fileUploadQueue
             [fileAlias]="'file'"
-            [httpUrl]="
-              'https://eu.backendlessappcontent.com/96FB9625-D188-0F5C-FF1F-D2B1F1B4D200/CA55825C-2422-42B7-9E25-F6A1699C9C90/files/images/test-img-name.png'
-            "
+            (click)="test(fileUploadQueue.files)"
           >
             <mat-file-upload
               [file]="file"
@@ -466,12 +507,14 @@
               *ngFor="let file of fileUploadQueue.files; let i = index"
             ></mat-file-upload>
 
-            <div style="width: 150px">
-              <img
-                style="width: 100%; height: auto"
-                src="https://eu.backendlessappcontent.com/96FB9625-D188-0F5C-FF1F-D2B1F1B4D200/CA55825C-2422-42B7-9E25-F6A1699C9C90/files/images/test-img.jpg"
-                alt="Test img"
-              />
+            <div>
+              <div style="width: 150px" *ngFor="let image of galleryImages">
+                <img
+                  style="width: 100%; height: auto"
+                  src="{{ image }}"
+                  alt="Test img"
+                />
+              </div>
             </div>
           </mat-file-upload-queue>
         </fieldset>

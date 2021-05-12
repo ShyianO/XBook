@@ -170,6 +170,16 @@ export class AdminState {
       configuration.status = ConfigurationStatus.draft;
     }
 
+    console.log(configuration.gallery);
+
+    Backendless.Files.upload(configuration.gallery[0], 'images')
+      .then(function (fileURLs) {
+        console.log(fileURLs);
+      })
+      .catch(function (error) {
+        console.log('error - ' + error.message);
+      });
+
     return Backendless.Data.of('Websites')
       .save(configuration)
       .then((website) => {

@@ -17,6 +17,7 @@ export interface IConfiguration {
   state?: string;
   postalCode: string;
   logo?: string;
+  gallery?: any;
   objectId?: string;
   status: ConfigurationStatus;
 }

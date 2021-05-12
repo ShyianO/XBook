@@ -40,7 +40,8 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
   configurationForm: FormGroup;
   subject = new Subject();
   isSaved = false;
-  dataimage: string;
+  logoImage: string;
+  galleryImages = [];
   countryStates: string;
   public Editor = ClassicEditor;
 
@@ -50,7 +51,7 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     private store: Store,
     private actions$: Actions,
     private snackBar: MatSnackBar,
-    public countrystatesService: CountrystatesService
+    public countryStatesService: CountrystatesService
   ) {}
 
   @Select((state) => state.adminState.loading)
@@ -122,7 +123,7 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
         const conf = configuration || ({} as IConfiguration);
 
         this.countryStates = conf.country;
-        this.dataimage = conf.logo;
+        this.logoImage = conf.logo;
 
         this.configurationForm = new FormGroup({
           name: new FormControl(conf.name, [
@@ -198,24 +199,38 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     return this.configurationForm.get('postalCode');
   }
 
-  uploadFileEvt(imgFile: any): void {
+  uploadFileEvt(imgFile: any, type): void {
     const reader = new FileReader();
 
-    reader.onload = (e: any) => {
-      this.dataimage = e.target.result;
-    };
+    if (type === 'logo') {
+      reader.onload = (e: any) => {
+        this.logoImage = e.target.result;
+      };
+    }
+
+    if (type === 'gallery') {
+      reader.onload = (e: any) => {
+        this.galleryImages.push(e.target.result);
+        console.log(this.galleryImages);
+      };
+    }
 
     reader.readAsDataURL(imgFile.target.files[0]);
   }
 
+  test(q): void {
+    this.galleryImages[0] = q;
+  }
+
   onSave(formGroup: FormGroup): void {
-    formGroup.value.logo = this.dataimage;
+    formGroup.value.logo = this.logoImage;
+    formGroup.value.gallery = this.galleryImages[0];
 
     this.store.dispatch(new SaveConfiguration(formGroup.value));
   }
 
   onPublish(formGroup: FormGroup): void {
-    formGroup.value.logo = this.dataimage;
+    formGroup.value.logo = this.logoImage;
 
     this.store.dispatch(new PublishConfiguration(formGroup.value));
   }

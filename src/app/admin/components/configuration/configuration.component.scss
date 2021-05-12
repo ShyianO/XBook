@@ -54,6 +54,16 @@
           opacity: 0;
           z-index: 1;
         }
+
+        &-gallery {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          opacity: 0;
+          z-index: 1;
+        }
       }
     }
 
@@ -85,6 +95,29 @@
         z-index: 1;
       }
     }
+
+    &-gallery {
+      position: relative;
+      z-index: 0;
+      margin: 30px;
+
+      &-input {
+        width: 100%;
+        height: 80px;
+        padding: 0;
+        border: 2px dashed #bbb;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        text-align: center;
+      }
+
+      &-img {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+
 
     &-field {
       width: 250px;
