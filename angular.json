@@ -53,6 +53,14 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "test": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.test.ts"
+                }
+              ]
             }
           }
         },
@@ -64,6 +72,9 @@
           "configurations": {
             "production": {
               "browserTarget": "xbook:build:production"
+            },
+            "test": {
+              "browserTarget": "xbook:build:test"
             }
           }
         },
