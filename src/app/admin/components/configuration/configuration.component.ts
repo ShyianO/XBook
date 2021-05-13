@@ -42,6 +42,7 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
   isSaved = false;
   logoImage: string;
   galleryImages = [];
+  fakeGalleryImages = [];
   countryStates: string;
   public Editor = ClassicEditor;
 
@@ -199,32 +200,36 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     return this.configurationForm.get('postalCode');
   }
 
-  uploadFileEvt(imgFile: any, type): void {
-    const reader = new FileReader();
-
+  uploadFileEvt(event: any, type: string): void {
     if (type === 'logo') {
+      const reader = new FileReader();
+
       reader.onload = (e: any) => {
         this.logoImage = e.target.result;
       };
+
+      reader.readAsDataURL(event.target.files[0]);
     }
 
     if (type === 'gallery') {
-      reader.onload = (e: any) => {
-        this.galleryImages.push(e.target.result);
-        console.log(this.galleryImages);
-      };
+      for (const file of event.target.files) {
+        file.status = 'Without URL';
+        this.galleryImages.push(file);
+
+        const reader = new FileReader();
+
+        reader.onload = (e: any) => {
+          this.fakeGalleryImages.push(e.target.result);
+        };
+
+        reader.readAsDataURL(file);
+      }
     }
-
-    reader.readAsDataURL(imgFile.target.files[0]);
-  }
-
-  test(q): void {
-    this.galleryImages[0] = q;
   }
 
   onSave(formGroup: FormGroup): void {
     formGroup.value.logo = this.logoImage;
-    formGroup.value.gallery = this.galleryImages[0];
+    formGroup.value.gallery = this.galleryImages;
 
     this.store.dispatch(new SaveConfiguration(formGroup.value));
   }

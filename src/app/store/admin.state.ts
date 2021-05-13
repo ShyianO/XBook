@@ -11,6 +11,7 @@ import {
   LogoutUser,
   PublishConfiguration,
   SaveConfiguration,
+  SaveImages,
   UpdateUser,
   UpdateUserError,
   UpdateUserSuccess,
@@ -23,6 +24,7 @@ import {
   IConfiguration,
   ConfigurationStatus
 } from '../core/interfaces/configuration.interface';
+import { ImagesService } from '../core/services/images.service';
 
 @State<IAdminState>({
   name: 'adminState',
@@ -37,7 +39,11 @@ import {
 })
 @Injectable()
 export class AdminState {
-  constructor(private router: Router, private store: Store) {}
+  constructor(
+    private router: Router,
+    private store: Store,
+    private imagesService: ImagesService
+  ) {}
 
   @Action(LoginUser)
   loginUser(ctx: StateContext<IAdminState>, { user }: LoginUser): void {
@@ -164,27 +170,26 @@ export class AdminState {
     ctx: StateContext<IAdminState>,
     { configuration }: SaveConfiguration
   ): Promise<void> {
+    ctx.patchState({ loading: true });
+
+    this.store.dispatch(new SaveImages(configuration.gallery));
+
     if (ctx.getState().configurationDraft) {
       configuration.objectId = ctx.getState().configurationDraft.objectId;
     } else {
       configuration.status = ConfigurationStatus.draft;
     }
 
-    console.log(configuration.gallery);
-
-    Backendless.Files.upload(configuration.gallery[0], 'images')
-      .then(function (fileURLs) {
-        console.log(fileURLs);
-      })
-      .catch(function (error) {
-        console.log('error - ' + error.message);
-      });
-
     return Backendless.Data.of('Websites')
       .save(configuration)
       .then((website) => {
-        ctx.patchState({ configurationDraft: website });
+        ctx.patchState({ configurationDraft: website, loading: false });
       });
+  }
+
+  @Action(SaveImages)
+  saveImages(ctx: StateContext<IAdminState>, { images }: SaveImages): void {
+    this.imagesService.saveImages(images);
   }
 
   @Action(PublishConfiguration)
@@ -192,6 +197,8 @@ export class AdminState {
     ctx: StateContext<IAdminState>,
     { configuration }: PublishConfiguration
   ): Promise<void> {
+    ctx.patchState({ loading: true });
+
     if (ctx.getState().configurationPublished) {
       configuration.objectId = ctx.getState().configurationPublished.objectId;
     } else {
@@ -201,15 +208,15 @@ export class AdminState {
     return Backendless.Data.of('Websites')
       .save(configuration)
       .then((website) => {
-        ctx.patchState({ configurationPublished: website });
+        ctx.patchState({ configurationPublished: website, loading: false });
       });
   }
 
   @Action(LoadConfiguration)
   loadConfiguration(ctx: StateContext<IAdminState>): void {
-    // if (!ctx.getState().currentUser.objectId) {
-    //   return;
-    // }
+    if (!ctx.getState().currentUser.objectId) {
+      return;
+    }
 
     const dataQuery = Backendless.DataQueryBuilder.create().setWhereClause(
       `ownerId = '${ctx.getState().currentUser.objectId}'`

@@ -450,6 +450,7 @@
           <input
             class="configuration__form-fieldset-appearance-gallery"
             type="file"
+            title=""
             #imgGalleryInput
             (change)="uploadFileEvt($event, 'gallery')"
             name="file"
@@ -471,66 +472,33 @@
         </div>
 
         <div class="configuration__form-gallery-img">
-          <div
+          <ng-container
             style="width: 150px; margin: 0 10px"
             *ngFor="let image of galleryImages"
           >
             <img
+              *ngIf="image.status === 'With URL'"
               style="width: 100%; height: auto"
               src="{{ image }}"
-              alt="Test img"
+              alt="New image"
+            />
+          </ng-container>
+          <div
+            style="width: 150px; margin: 0 10px"
+            *ngFor="let fakeImage of fakeGalleryImages"
+          >
+            <img
+              *ngIf="fakeImage"
+              style="width: 100%; height: auto"
+              [src]="fakeImage"
+              alt="New image"
             />
           </div>
         </div>
       </fieldset>
-
-      <div>
-        <fieldset>
-          <legend>Image gallery</legend>
-
-          <label for="singleFile">Upload file</label>
-          <input
-            id="singleFile"
-            type="file"
-            [fileUploadInputFor]="fileUploadQueue"
-          />
-          <br />
-
-          <mat-file-upload-queue
-            #fileUploadQueue
-            [fileAlias]="'file'"
-            (click)="test(fileUploadQueue.files)"
-          >
-            <mat-file-upload
-              [file]="file"
-              [id]="i"
-              *ngFor="let file of fileUploadQueue.files; let i = index"
-            ></mat-file-upload>
-
-            <div>
-              <div style="width: 150px" *ngFor="let image of galleryImages">
-                <img
-                  style="width: 100%; height: auto"
-                  src="{{ image }}"
-                  alt="Test img"
-                />
-              </div>
-            </div>
-          </mat-file-upload-queue>
-        </fieldset>
-      </div>
     </fieldset>
 
-    <mat-spinner
-      *ngIf="loading$ | async"
-      diameter="25"
-      color="primary"
-    ></mat-spinner>
-
-    <div
-      class="configuration__form-buttons"
-      *ngIf="(loading$ | async) === false"
-    >
+    <div class="configuration__form-buttons">
       <button
         class="configuration__form-submit mat-spinner"
         mat-raised-button
@@ -540,8 +508,9 @@
         Reset
       </button>
 
-      <div>
+      <div class="configuration__form-buttons-submit">
         <button
+          *ngIf="(loading$ | async) === false"
           class="configuration__form-submit configuration__form-submit-save mat-spinner"
           mat-raised-button
           color="primary"
@@ -551,7 +520,14 @@
           Save
         </button>
 
+        <mat-spinner
+          *ngIf="loading$ | async"
+          diameter="25"
+          color="primary"
+        ></mat-spinner>
+
         <button
+          *ngIf="(loading$ | async) === false"
           class="configuration__form-submit mat-spinner"
           mat-raised-button
           color="primary"
