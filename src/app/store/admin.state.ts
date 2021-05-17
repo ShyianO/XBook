@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 
 import {
   LoadConfiguration,
+  LoadImages,
   LoginUser,
   LoginUserError,
   LoginUserSuccess,
@@ -25,6 +26,7 @@ import {
   ConfigurationStatus
 } from '../core/interfaces/configuration.interface';
 import { ImagesService } from '../core/services/images.service';
+import { IImage } from '../core/interfaces/image.interface';
 
 @State<IAdminState>({
   name: 'adminState',
@@ -34,7 +36,8 @@ import { ImagesService } from '../core/services/images.service';
     loading: false,
     isUserDataIncorrect: false,
     configurationDraft: null,
-    configurationPublished: null
+    configurationPublished: null,
+    images: []
   }
 })
 @Injectable()
@@ -172,7 +175,9 @@ export class AdminState {
   ): Promise<void> {
     ctx.patchState({ loading: true });
 
-    this.store.dispatch(new SaveImages(configuration.gallery));
+    if (configuration.gallery.length > 0) {
+      this.store.dispatch(new SaveImages(configuration.gallery));
+    }
 
     if (ctx.getState().configurationDraft) {
       configuration.objectId = ctx.getState().configurationDraft.objectId;
@@ -218,6 +223,8 @@ export class AdminState {
       return;
     }
 
+    this.store.dispatch(new LoadImages());
+
     const dataQuery = Backendless.DataQueryBuilder.create().setWhereClause(
       `ownerId = '${ctx.getState().currentUser.objectId}'`
     );
@@ -225,17 +232,38 @@ export class AdminState {
     Backendless.Data.of('Websites')
       .find(dataQuery)
       .then((website: IConfiguration[]) => {
+        if (website.length === 0) {
+          return;
+        }
+
         if (website[0].status === ConfigurationStatus.draft) {
           ctx.patchState({
             configurationDraft: website[0],
             configurationPublished: website[1]
           });
-        } else {
+        } else if (website[0].status === ConfigurationStatus.published) {
           ctx.patchState({
             configurationDraft: website[1],
             configurationPublished: website[0]
           });
         }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  @Action(LoadImages)
+  loadImages(ctx: StateContext<IAdminState>): void {
+    const dataQuery = Backendless.DataQueryBuilder.create().setWhereClause(
+      `ownerId = '${ctx.getState().currentUser.objectId}'`
+    );
+
+    Backendless.Data.of('Images')
+      .find(dataQuery)
+      .then((q: IImage[]) => {
+        ctx.patchState({ images: q });
+        console.log(ctx.getState());
       })
       .catch((error) => {
         console.log(error);

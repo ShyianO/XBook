@@ -54,7 +54,7 @@ export class SaveConfiguration {
 
 export class SaveImages {
   static readonly type = '[Images] Save';
-  constructor(public images: any) {}
+  constructor(public images: File[]) {}
 }
 
 export class PublishConfiguration {
@@ -64,4 +64,8 @@ export class PublishConfiguration {
 
 export class LoadConfiguration {
   static readonly type = '[Configuration] Load';
+}
+
+export class LoadImages {
+  static readonly type = '[Images] Load';
 }

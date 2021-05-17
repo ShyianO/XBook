@@ -30,6 +30,7 @@ import {
   SaveConfiguration
 } from '../../../store/admin.action';
 import { CountrystatesService } from '../../../shared/countrystates.service';
+import { IImage } from '../../../core/interfaces/image.interface';
 
 @Component({
   selector: 'app-configuration',
@@ -67,9 +68,13 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
   @Select((state) => state.adminState.configurationPublished)
   configurationPublished$: Observable<IConfiguration>;
 
+  @Select((state) => state.adminState.images)
+  images$: Observable<IImage[]>;
+
   ngOnInit(): void {
     this.store.dispatch(new LoadConfiguration());
     this.formWithState(this.configurationDraft$);
+    this.imagesWithState();
 
     this.actions$
       .pipe(ofActionSuccessful(SaveConfiguration), takeUntil(this.subject))
@@ -152,6 +157,14 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
       });
   }
 
+  imagesWithState(): void {
+    this.images$.pipe(takeUntil(this.subject)).subscribe((images) => {
+      if (images.length) {
+        this.galleryImages = images;
+      }
+    });
+  }
+
   get name(): AbstractControl {
     return this.configurationForm.get('name');
   }
@@ -214,7 +227,8 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     if (type === 'gallery') {
       for (const file of event.target.files) {
         file.status = 'Without URL';
-        this.galleryImages.push(file);
+
+        this.galleryImages = [...this.galleryImages, Object.assign(file, file)];
 
         const reader = new FileReader();
 

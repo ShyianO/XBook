@@ -478,8 +478,8 @@
           >
             <img
               *ngIf="image.status === 'With URL'"
-              style="width: 100%; height: auto"
-              src="{{ image }}"
+              style="width: 150px; height: 150px; margin: 0 10px 10px 10px"
+              src="{{ image.fileURL }}"
               alt="New image"
             />
           </ng-container>
@@ -489,7 +489,7 @@
           >
             <img
               *ngIf="fakeImage"
-              style="width: 100%; height: auto"
+              style="width: 150px; height: 150px"
               [src]="fakeImage"
               alt="New image"
             />
