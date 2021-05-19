@@ -471,29 +471,48 @@
           </button>
         </div>
 
-        <div class="configuration__form-gallery-img">
-          <ng-container
-            style="width: 150px; margin: 0 10px"
-            *ngFor="let image of galleryImages"
-          >
-            <img
-              *ngIf="image.status === 'With URL'"
-              style="width: 150px; height: 150px; margin: 0 10px 10px 10px"
-              src="{{ image.fileURL }}"
-              alt="New image"
-            />
+        <div class="configuration__form-gallery-images">
+          <ng-container *ngFor="let image of galleryImages">
+            <div
+              #imageBox
+              style="position: relative"
+              (click)="imageBox.remove(); deleteImage($event)"
+            >
+              <div class="configuration__form-gallery-image">
+                <img
+                  *ngIf="image.objectId"
+                  style="
+                    max-width: 150px;
+                    height: auto;
+                    margin: 0 10px 10px 10px;
+                  "
+                  src="{{ image.fileURL }}"
+                  alt="New image"
+                />
+              </div>
+            </div>
           </ng-container>
-          <div
-            style="width: 150px; margin: 0 10px"
-            *ngFor="let fakeImage of fakeGalleryImages"
-          >
-            <img
-              *ngIf="fakeImage"
-              style="width: 150px; height: 150px"
-              [src]="fakeImage"
-              alt="New image"
-            />
-          </div>
+
+          <ng-container *ngFor="let fakeImage of fakeGalleryImages">
+            <div
+              #fakeImageBox
+              style="position: relative"
+              (click)="fakeImageBox.remove(); deleteImage($event)"
+            >
+              <div class="configuration__form-gallery-image">
+                <img
+                  *ngIf="fakeImage"
+                  style="
+                    max-width: 150px;
+                    height: auto;
+                    margin: 0 10px 10px 10px;
+                  "
+                  [src]="fakeImage"
+                  alt="New image"
+                />
+              </div>
+            </div>
+          </ng-container>
         </div>
       </fieldset>
     </fieldset>

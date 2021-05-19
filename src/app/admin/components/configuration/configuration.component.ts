@@ -42,8 +42,8 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
   subject = new Subject();
   isSaved = false;
   logoImage: string;
-  galleryImages = [];
-  fakeGalleryImages = [];
+  galleryImages: IImage[] = [];
+  fakeGalleryImages: File[] = [];
   countryStates: string;
   public Editor = ClassicEditor;
 
@@ -160,7 +160,8 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
   imagesWithState(): void {
     this.images$.pipe(takeUntil(this.subject)).subscribe((images) => {
       if (images.length) {
-        this.galleryImages = images;
+        this.galleryImages = images.map((image) => ({ ...image }));
+        this.fakeGalleryImages = [];
       }
     });
   }
@@ -226,8 +227,6 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
 
     if (type === 'gallery') {
       for (const file of event.target.files) {
-        file.status = 'Without URL';
-
         this.galleryImages = [...this.galleryImages, Object.assign(file, file)];
 
         const reader = new FileReader();
@@ -239,6 +238,28 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
         reader.readAsDataURL(file);
       }
     }
+  }
+
+  deleteImage(event: any): void {
+    const deletedImage = event.target.children[0].currentSrc;
+
+    this.galleryImages.filter((image, index) => {
+      if (!image.objectId) {
+        const reader = new FileReader();
+
+        reader.onload = (e: any) => {
+          if (deletedImage === e.target.result) {
+            this.galleryImages[index].deleted = true;
+          }
+        };
+
+        reader.readAsDataURL(image);
+      }
+
+      if (image.fileURL === deletedImage) {
+        this.galleryImages[index].deleted = true;
+      }
+    });
   }
 
   onSave(formGroup: FormGroup): void {

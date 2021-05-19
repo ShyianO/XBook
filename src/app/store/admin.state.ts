@@ -263,7 +263,6 @@ export class AdminState {
       .find(dataQuery)
       .then((q: IImage[]) => {
         ctx.patchState({ images: q });
-        console.log(ctx.getState());
       })
       .catch((error) => {
         console.log(error);
