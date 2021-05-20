@@ -70,3 +70,7 @@ export class LoadConfiguration {
 export class LoadImages {
   static readonly type = '[Images] Load';
 }
+
+export class SetLoader {
+  static readonly type = '[Loader] Set';
+}

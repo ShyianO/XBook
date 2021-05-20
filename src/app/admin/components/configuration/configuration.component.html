@@ -472,42 +472,17 @@
         </div>
 
         <div class="configuration__form-gallery-images">
-          <ng-container *ngFor="let image of galleryImages">
-            <div
-              #imageBox
-              style="position: relative"
-              (click)="imageBox.remove(); deleteImage($event)"
-            >
+          <ng-container *ngFor="let image of galleryImages; index as i">
+            <div style="position: relative" (click)="deleteImage(i)">
               <div class="configuration__form-gallery-image">
                 <img
-                  *ngIf="image.objectId"
+                  *ngIf="image.fileURL && image.deleted !== true"
                   style="
                     max-width: 150px;
-                    height: auto;
+                    max-height: 150px;
                     margin: 0 10px 10px 10px;
                   "
                   src="{{ image.fileURL }}"
-                  alt="New image"
-                />
-              </div>
-            </div>
-          </ng-container>
-
-          <ng-container *ngFor="let fakeImage of fakeGalleryImages">
-            <div
-              #fakeImageBox
-              style="position: relative"
-              (click)="fakeImageBox.remove(); deleteImage($event)"
-            >
-              <div class="configuration__form-gallery-image">
-                <img
-                  *ngIf="fakeImage"
-                  style="
-                    max-width: 150px;
-                    height: auto;
-                    margin: 0 10px 10px 10px;
-                  "
-                  [src]="fakeImage"
                   alt="New image"
                 />
               </div>

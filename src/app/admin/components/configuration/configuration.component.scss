@@ -119,18 +119,16 @@
       &-image::after {
         content: '+';
         position: absolute;
-        top: 10px;
-        right: 10px;
+        top: -7px;
+        right: 2px;
+        padding: 5px;
         transform: rotate(45deg);
-        opacity: 0;
         transition: all 0.5s linear;
         cursor: pointer;
-        font-size: 67px;
-      }
-
-      &-image:hover::after {
-        opacity: 1;
-        transform: rotate(45deg) scale(1.2);
+        font-size: 35px;
+        background-color: #3f51b5;
+        color: white;
+        border-radius: 50%;
       }
     }
 

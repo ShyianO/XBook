@@ -13,6 +13,7 @@ import {
   PublishConfiguration,
   SaveConfiguration,
   SaveImages,
+  SetLoader,
   UpdateUser,
   UpdateUserError,
   UpdateUserSuccess,
@@ -194,6 +195,8 @@ export class AdminState {
 
   @Action(SaveImages)
   saveImages(ctx: StateContext<IAdminState>, { images }: SaveImages): void {
+    ctx.patchState({ loading: true });
+
     this.imagesService.saveImages(images);
   }
 
@@ -267,5 +270,10 @@ export class AdminState {
       .catch((error) => {
         console.log(error);
       });
+  }
+
+  @Action(SetLoader)
+  setLoader(ctx: StateContext<IAdminState>): void {
+    ctx.patchState({ loading: false });
   }
 }
