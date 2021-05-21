@@ -4,6 +4,10 @@ import { IImage } from '../interfaces/image.interface';
 import { Store } from '@ngxs/store';
 import { LoadImages, SetLoader } from '../../store/admin.action';
 
+type FileURL = {
+  fileURL?: string;
+};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -11,11 +15,7 @@ export class ImagesService {
   constructor(private store: Store) {}
 
   saveImages(images: IImage[]): void {
-    type IFiles = {
-      fileURL?: string;
-    };
-
-    const imagesToUpload: IFiles[] = [];
+    const imagesToUpload: FileURL[] = [];
     const imagesToDelete: string[] = [];
     const imagePromises: Promise<unknown>[] = [];
     const urlPromises: Promise<unknown>[] = [];
@@ -55,7 +55,7 @@ export class ImagesService {
 
       Promise.all(urlPromises).then(() => {
         this.store.dispatch(new LoadImages());
-        this.store.dispatch(new SetLoader());
+        this.store.dispatch(new SetLoader(false));
       });
     });
   }

@@ -73,4 +73,5 @@ export class LoadImages {
 
 export class SetLoader {
   static readonly type = '[Loader] Set';
+  constructor(public loader: boolean) {}
 }

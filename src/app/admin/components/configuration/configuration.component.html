@@ -248,6 +248,7 @@
                 class="configuration__form-logo-img"
                 src="{{ logoImage }}"
                 width="150px"
+                alt="Logo"
               />
             </button>
           </div>
@@ -473,15 +474,14 @@
 
         <div class="configuration__form-gallery-images">
           <ng-container *ngFor="let image of galleryImages; index as i">
-            <div style="position: relative" (click)="deleteImage(i)">
-              <div class="configuration__form-gallery-image">
+            <div
+              *ngIf="image.fileURL && !image.deleted"
+              style="position: relative"
+              (click)="deleteImage(i)"
+            >
+              <div class="configuration__form-gallery-image-box">
                 <img
-                  *ngIf="image.fileURL && image.deleted !== true"
-                  style="
-                    max-width: 150px;
-                    max-height: 150px;
-                    margin: 0 10px 10px 10px;
-                  "
+                  class="configuration__form-gallery-image"
                   src="{{ image.fileURL }}"
                   alt="New image"
                 />

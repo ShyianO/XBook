@@ -195,7 +195,7 @@ export class AdminState {
 
   @Action(SaveImages)
   saveImages(ctx: StateContext<IAdminState>, { images }: SaveImages): void {
-    ctx.patchState({ loading: true });
+    this.store.dispatch(new SetLoader(true));
 
     this.imagesService.saveImages(images);
   }
@@ -273,7 +273,7 @@ export class AdminState {
   }
 
   @Action(SetLoader)
-  setLoader(ctx: StateContext<IAdminState>): void {
-    ctx.patchState({ loading: false });
+  setLoader(ctx: StateContext<IAdminState>, { loader }: SetLoader): void {
+    ctx.patchState({ loading: loader });
   }
 }
