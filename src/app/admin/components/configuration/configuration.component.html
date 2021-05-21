@@ -117,7 +117,7 @@
           <mat-select formControlName="country" required>
             <mat-option>None</mat-option>
             <mat-option
-              *ngFor="let country of countrystatesService.countries"
+              *ngFor="let country of countryStatesService.countries"
               [value]="country"
               (click)="countryStates = country"
               >{{ country }}</mat-option
@@ -187,7 +187,7 @@
           <mat-select formControlName="state">
             <mat-option>None</mat-option>
             <mat-option
-              *ngFor="let state of countrystatesService.states[countryStates]"
+              *ngFor="let state of countryStatesService.states[countryStates]"
               [value]="state"
               >{{ state }}</mat-option
             >
@@ -230,7 +230,7 @@
               type="file"
               #fileInput
               id="uploadFile"
-              (change)="uploadFileEvt($event)"
+              (change)="uploadFileEvt($event, 'logo')"
               name="file"
               multiple="multiple"
               accept="image/*"
@@ -246,8 +246,9 @@
               <span class="configuration__form-logo-span">Drop files here</span>
               <img
                 class="configuration__form-logo-img"
-                src="{{ dataimage }}"
+                src="{{ logoImage }}"
                 width="150px"
+                alt="Logo"
               />
             </button>
           </div>
@@ -441,53 +442,57 @@
         </fieldset>
       </div>
 
-      <div>
-        <fieldset>
-          <legend>Image gallery</legend>
+      <fieldset class="configuration__form-fieldset-appearance-container">
+        <legend>Image gallery</legend>
 
-          <label for="singleFile">Upload file</label>
+        <div class="configuration__form-fieldset-gallery">
+          <input matInput hidden />
+
           <input
-            id="singleFile"
+            class="configuration__form-fieldset-appearance-gallery"
             type="file"
-            [fileUploadInputFor]="fileUploadQueue"
+            title=""
+            #imgGalleryInput
+            (change)="uploadFileEvt($event, 'gallery')"
+            name="file"
+            multiple="multiple"
+            accept="image/*"
           />
-          <br />
+        </div>
 
-          <mat-file-upload-queue
-            #fileUploadQueue
-            [fileAlias]="'file'"
-            [httpUrl]="
-              'https://eu.backendlessappcontent.com/96FB9625-D188-0F5C-FF1F-D2B1F1B4D200/CA55825C-2422-42B7-9E25-F6A1699C9C90/files/images/test-img-name.png'
-            "
+        <div class="configuration__form-gallery">
+          <button
+            class="configuration__form-gallery-input"
+            mat-flat-button
+            (click)="imgGalleryInput.click()"
           >
-            <mat-file-upload
-              [file]="file"
-              [id]="i"
-              *ngFor="let file of fileUploadQueue.files; let i = index"
-            ></mat-file-upload>
+            <span class="configuration__form-gallery-span"
+              >Drop files here</span
+            >
+          </button>
+        </div>
 
-            <div style="width: 150px">
-              <img
-                style="width: 100%; height: auto"
-                src="https://eu.backendlessappcontent.com/96FB9625-D188-0F5C-FF1F-D2B1F1B4D200/CA55825C-2422-42B7-9E25-F6A1699C9C90/files/images/test-img.jpg"
-                alt="Test img"
-              />
+        <div class="configuration__form-gallery-images">
+          <ng-container *ngFor="let image of galleryImages; index as i">
+            <div
+              *ngIf="image.fileURL && !image.deleted"
+              style="position: relative"
+              (click)="deleteImage(i)"
+            >
+              <div class="configuration__form-gallery-image-box">
+                <img
+                  class="configuration__form-gallery-image"
+                  src="{{ image.fileURL }}"
+                  alt="New image"
+                />
+              </div>
             </div>
-          </mat-file-upload-queue>
-        </fieldset>
-      </div>
+          </ng-container>
+        </div>
+      </fieldset>
     </fieldset>
 
-    <mat-spinner
-      *ngIf="loading$ | async"
-      diameter="25"
-      color="primary"
-    ></mat-spinner>
-
-    <div
-      class="configuration__form-buttons"
-      *ngIf="(loading$ | async) === false"
-    >
+    <div class="configuration__form-buttons">
       <button
         class="configuration__form-submit mat-spinner"
         mat-raised-button
@@ -497,8 +502,9 @@
         Reset
       </button>
 
-      <div>
+      <div class="configuration__form-buttons-submit">
         <button
+          *ngIf="(loading$ | async) === false"
           class="configuration__form-submit configuration__form-submit-save mat-spinner"
           mat-raised-button
           color="primary"
@@ -508,7 +514,14 @@
           Save
         </button>
 
+        <mat-spinner
+          *ngIf="loading$ | async"
+          diameter="25"
+          color="primary"
+        ></mat-spinner>
+
         <button
+          *ngIf="(loading$ | async) === false"
           class="configuration__form-submit mat-spinner"
           mat-raised-button
           color="primary"

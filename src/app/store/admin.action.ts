@@ -1,6 +1,7 @@
 import { ILoginRequest } from '../core/interfaces/login.interface';
 import { IUpdateRequest } from '../core/interfaces/update.interface';
 import { IConfiguration } from '../core/interfaces/configuration.interface';
+import { IImage } from '../core/interfaces/image.interface';
 
 export class LoginUser {
   static readonly type = '[User] Login';
@@ -52,6 +53,11 @@ export class SaveConfiguration {
   constructor(public configuration: IConfiguration) {}
 }
 
+export class SaveImages {
+  static readonly type = '[Images] Save';
+  constructor(public images: IImage[]) {}
+}
+
 export class PublishConfiguration {
   static readonly type = '[Configuration] Publish';
   constructor(public configuration: IConfiguration) {}
@@ -59,4 +65,13 @@ export class PublishConfiguration {
 
 export class LoadConfiguration {
   static readonly type = '[Configuration] Load';
+}
+
+export class LoadImages {
+  static readonly type = '[Images] Load';
+}
+
+export class SetLoader {
+  static readonly type = '[Loader] Set';
+  constructor(public loader: boolean) {}
 }

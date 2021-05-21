@@ -30,6 +30,7 @@ import {
   SaveConfiguration
 } from '../../../store/admin.action';
 import { CountrystatesService } from '../../../shared/countrystates.service';
+import { IImage } from '../../../core/interfaces/image.interface';
 
 @Component({
   selector: 'app-configuration',
@@ -40,7 +41,8 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
   configurationForm: FormGroup;
   subject = new Subject();
   isSaved = false;
-  dataimage: string;
+  logoImage: string | ArrayBuffer;
+  galleryImages: IImage[] = [];
   countryStates: string;
   public Editor = ClassicEditor;
 
@@ -50,7 +52,7 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     private store: Store,
     private actions$: Actions,
     private snackBar: MatSnackBar,
-    public countrystatesService: CountrystatesService
+    public countryStatesService: CountrystatesService
   ) {}
 
   @Select((state) => state.adminState.loading)
@@ -65,9 +67,13 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
   @Select((state) => state.adminState.configurationPublished)
   configurationPublished$: Observable<IConfiguration>;
 
+  @Select((state) => state.adminState.images)
+  images$: Observable<IImage[]>;
+
   ngOnInit(): void {
     this.store.dispatch(new LoadConfiguration());
     this.formWithState(this.configurationDraft$);
+    this.imagesWithState();
 
     this.actions$
       .pipe(ofActionSuccessful(SaveConfiguration), takeUntil(this.subject))
@@ -122,7 +128,7 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
         const conf = configuration || ({} as IConfiguration);
 
         this.countryStates = conf.country;
-        this.dataimage = conf.logo;
+        this.logoImage = conf.logo;
 
         this.configurationForm = new FormGroup({
           name: new FormControl(conf.name, [
@@ -148,6 +154,14 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
           postalCode: new FormControl(conf.postalCode, [Validators.required])
         });
       });
+  }
+
+  imagesWithState(): void {
+    this.images$.pipe(takeUntil(this.subject)).subscribe((images) => {
+      if (images.length) {
+        this.galleryImages = images.map((image) => ({ ...image }));
+      }
+    });
   }
 
   get name(): AbstractControl {
@@ -198,24 +212,48 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     return this.configurationForm.get('postalCode');
   }
 
-  uploadFileEvt(imgFile: any): void {
-    const reader = new FileReader();
+  uploadFileEvt(event, type: string): void {
+    if (type === 'logo') {
+      const reader = new FileReader();
 
-    reader.onload = (e: any) => {
-      this.dataimage = e.target.result;
-    };
+      reader.onload = (e) => {
+        this.logoImage = e.target.result;
+      };
 
-    reader.readAsDataURL(imgFile.target.files[0]);
+      reader.readAsDataURL(event.target.files[0]);
+    }
+
+    if (type === 'gallery') {
+      for (const file of event.target.files) {
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+          file.fileURL = e.target.result;
+
+          this.galleryImages = [
+            ...this.galleryImages,
+            Object.assign(file, file)
+          ];
+        };
+
+        reader.readAsDataURL(file);
+      }
+    }
+  }
+
+  deleteImage(index: number): void {
+    this.galleryImages[index].deleted = true;
   }
 
   onSave(formGroup: FormGroup): void {
-    formGroup.value.logo = this.dataimage;
+    formGroup.value.logo = this.logoImage;
+    formGroup.value.gallery = this.galleryImages;
 
     this.store.dispatch(new SaveConfiguration(formGroup.value));
   }
 
   onPublish(formGroup: FormGroup): void {
-    formGroup.value.logo = this.dataimage;
+    formGroup.value.logo = this.logoImage;
 
     this.store.dispatch(new PublishConfiguration(formGroup.value));
   }
