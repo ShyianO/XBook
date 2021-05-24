@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import Backendless from 'backendless';
-import {
-  ConfigurationStatus,
-  IConfiguration
-} from '../../../core/interfaces/configuration.interface';
+import { IConfiguration } from '../../../core/interfaces/configuration.interface';
 
 @Component({
   selector: 'app-main',
@@ -15,25 +12,21 @@ import {
 export class MainComponent implements OnInit {
   data: IConfiguration;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     const dataQuery = Backendless.DataQueryBuilder.create().setWhereClause(
-      `name = '${this.router.url.substring(9)}'`
+      `name = '${this.route.snapshot.params.name}' and status = 1`
     );
 
     Backendless.Data.of('Websites')
       .find(dataQuery)
       .then((website: IConfiguration[]) => {
-        if (website.length === 0) {
+        if (!website.length) {
           this.router.navigate(['/landing']);
         }
 
-        if (website[0].status === ConfigurationStatus.published) {
-          this.data = website[0];
-        } else if (website[1].status === ConfigurationStatus.published) {
-          this.data = website[1];
-        }
+        this.data = website[0];
       })
       .catch(() => {
         this.router.navigate(['/landing']);

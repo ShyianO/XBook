@@ -13,7 +13,7 @@ const routes: Routes = [
       import('./admin/admin.module').then((m) => m.AdminModule)
   },
   {
-    path: 'website',
+    path: 'websites',
     loadChildren: () =>
       import('./website/website.module').then((m) => m.WebsiteModule)
   },
