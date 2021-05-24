@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Select, Store } from '@ngxs/store';
 
-import { LoadConfiguration } from '../../../store/admin.action';
-import { Observable } from 'rxjs';
-import { IUser } from '../../../core/interfaces/user.interface';
-import { filter, take, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import Backendless from 'backendless';
+import {
+  ConfigurationStatus,
+  IConfiguration
+} from '../../../core/interfaces/configuration.interface';
 
 @Component({
   selector: 'app-main',
@@ -13,24 +13,30 @@ import { Router } from '@angular/router';
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit {
-  constructor(private store: Store, private router: Router) {}
+  data: IConfiguration;
 
-  @Select((state) => state.adminState.currentUser)
-  currentUser$: Observable<IUser>;
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
-    this.currentUser$
-      .pipe(
-        filter((user) => user !== null),
-        take(1),
-        tap((value) => {
-          if (!value.firstName || !value.lastName) {
-            this.router.navigate(['/admin/profile']);
-          } else {
-            this.store.dispatch(new LoadConfiguration());
-          }
-        })
-      )
-      .subscribe();
+    const dataQuery = Backendless.DataQueryBuilder.create().setWhereClause(
+      `name = '${this.router.url.substring(9)}'`
+    );
+
+    Backendless.Data.of('Websites')
+      .find(dataQuery)
+      .then((website: IConfiguration[]) => {
+        if (website.length === 0) {
+          this.router.navigate(['/landing']);
+        }
+
+        if (website[0].status === ConfigurationStatus.published) {
+          this.data = website[0];
+        } else if (website[1].status === ConfigurationStatus.published) {
+          this.data = website[1];
+        }
+      })
+      .catch(() => {
+        this.router.navigate(['/landing']);
+      });
   }
 }
