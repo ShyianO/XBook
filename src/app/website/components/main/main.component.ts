@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import Backendless from 'backendless';
-import { IConfiguration } from '../../../core/interfaces/configuration.interface';
+import {
+  ConfigurationStatus,
+  IConfiguration
+} from '../../../core/interfaces/configuration.interface';
 
 @Component({
   selector: 'app-main',
@@ -16,7 +19,7 @@ export class MainComponent implements OnInit {
 
   ngOnInit(): void {
     const dataQuery = Backendless.DataQueryBuilder.create().setWhereClause(
-      `name = '${this.route.snapshot.params.name}' and status = 1`
+      `name = '${this.route.snapshot.params.name}' and status = ${ConfigurationStatus.published}`
     );
 
     Backendless.Data.of('Websites')
