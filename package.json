@@ -25,6 +25,7 @@
     "@ckeditor/ckeditor5-angular": "^2.0.1",
     "@ckeditor/ckeditor5-build-classic": "^27.1.0",
     "@material-ui/icons": "^4.11.2",
+    "@ngbmodule/material-carousel": "^0.7.1",
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
     "@ngxs/devtools-plugin": "^3.7.1",

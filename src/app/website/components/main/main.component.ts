@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import Backendless from 'backendless';
 import {
   ConfigurationStatus,
   IConfiguration
 } from '../../../core/interfaces/configuration.interface';
+import { Title } from '@angular/platform-browser';
+import { IImage } from '../../../core/interfaces/image.interface';
 
 @Component({
   selector: 'app-main',
@@ -13,11 +15,20 @@ import {
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit {
-  data: IConfiguration;
+  configuration: IConfiguration;
+  images = [];
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private titleService: Title
+  ) {}
 
   ngOnInit(): void {
+    this.loadConfiguration();
+  }
+
+  loadConfiguration = () => {
     const dataQuery = Backendless.DataQueryBuilder.create().setWhereClause(
       `name = '${this.route.snapshot.params.name}' and status = ${ConfigurationStatus.published}`
     );
@@ -29,10 +40,29 @@ export class MainComponent implements OnInit {
           this.router.navigate(['/landing']);
         }
 
-        this.data = website[0];
+        this.configuration = website[0];
+        this.titleService.setTitle(this.configuration.title);
+        console.log(this.configuration);
+        this.loadImages();
       })
       .catch(() => {
         this.router.navigate(['/landing']);
       });
-  }
+  };
+
+  loadImages = () => {
+    const dataQuery = Backendless.DataQueryBuilder.create().setWhereClause(
+      `ownerId = '${this.configuration.ownerId}'`
+    );
+
+    Backendless.Data.of('Images')
+      .find(dataQuery)
+      .then((imageGallery: IImage[]) => {
+        this.images = imageGallery;
+        console.log(imageGallery);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 }

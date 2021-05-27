@@ -264,8 +264,8 @@ export class AdminState {
 
     Backendless.Data.of('Images')
       .find(dataQuery)
-      .then((q: IImage[]) => {
-        ctx.patchState({ images: q });
+      .then((imageGallery: IImage[]) => {
+        ctx.patchState({ images: imageGallery });
       })
       .catch((error) => {
         console.log(error);

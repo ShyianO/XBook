@@ -1,3 +1,5 @@
+import { IImage } from './image.interface';
+
 export enum ConfigurationStatus {
   draft,
   published
@@ -17,7 +19,8 @@ export interface IConfiguration {
   state?: string;
   postalCode: string;
   logo?: string;
-  gallery?: any;
+  gallery?: IImage[];
   objectId?: string;
+  ownerId?: string;
   status: ConfigurationStatus;
 }
