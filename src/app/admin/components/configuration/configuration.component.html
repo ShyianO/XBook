@@ -260,12 +260,12 @@
           <legend>Color-schema</legend>
 
           <mat-menu class="configuration__scheme-menu" #schemeMenu>
-            <mat-radio-group>
+            <mat-radio-group formControlName="schema">
               <mat-radio-button
                 class="configuration__scheme-button"
                 role="menuitem"
                 aria-disabled="false"
-                value="1"
+                value="0"
               >
                 <span>Deep Purple &amp; Amber</span>
 
@@ -307,7 +307,7 @@
                 class="configuration__scheme-button"
                 role="menuitem"
                 aria-disabled="false"
-                [value]="2"
+                value="1"
               >
                 <span>Indigo &amp; Pink</span>
 
@@ -349,7 +349,7 @@
                 class="configuration__scheme-button"
                 role="menuitem"
                 aria-disabled="false"
-                [value]="3"
+                value="2"
               >
                 <span>Pink &amp; Blue-grey</span>
 
@@ -391,7 +391,7 @@
                 class="configuration__scheme-button"
                 role="menuitem"
                 aria-disabled="false"
-                [value]="4"
+                value="3"
               >
                 <span>Purple &amp; Green</span>
 
@@ -434,7 +434,7 @@
           <button
             class="configuration__scheme-toggle"
             mat-raised-button
-            color="primary"
+            color="accent"
             [mat-menu-trigger-for]="schemeMenu"
           >
             Select scheme-color

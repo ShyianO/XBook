@@ -71,6 +71,11 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
   images$: Observable<IImage[]>;
 
   ngOnInit(): void {
+    // document.documentElement.style.setProperty(
+    //   '--theme1',
+    //   '$pink-bluegrey-theme'
+    // );
+
     this.store.dispatch(new LoadConfiguration());
     this.formWithState(this.configurationDraft$);
     this.imagesWithState();
@@ -151,7 +156,8 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
           address: new FormControl(conf.address, [Validators.required]),
           city: new FormControl(conf.city, [Validators.required]),
           state: new FormControl(conf.state),
-          postalCode: new FormControl(conf.postalCode, [Validators.required])
+          postalCode: new FormControl(conf.postalCode, [Validators.required]),
+          schema: new FormControl(conf.schema, [Validators.required])
         });
       });
   }
@@ -210,6 +216,10 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
 
   get postalCode(): AbstractControl {
     return this.configurationForm.get('postalCode');
+  }
+
+  get schema(): AbstractControl {
+    return this.configurationForm.get('schema');
   }
 
   uploadFileEvt(event, type: string): void {

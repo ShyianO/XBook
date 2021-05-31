@@ -5,6 +5,13 @@ export enum ConfigurationStatus {
   published
 }
 
+export enum ConfigurationScheme {
+  DeepPurpleAmber,
+  IndigoPink,
+  PinkBlueGrey,
+  PurpleGreen
+}
+
 export interface IConfiguration {
   name: string;
   title: string;
@@ -18,6 +25,7 @@ export interface IConfiguration {
   city: string;
   state?: string;
   postalCode: string;
+  schema: ConfigurationScheme;
   logo?: string;
   gallery?: IImage[];
   objectId?: string;

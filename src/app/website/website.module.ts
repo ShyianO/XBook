@@ -7,6 +7,7 @@ import { SharedModule } from '../shared/shared.module';
 import { WebsiteRoutingModule } from './website-routing.module';
 
 import { MainComponent } from './components/main/main.component';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 @NgModule({
   declarations: [MainComponent],
@@ -16,7 +17,8 @@ import { MainComponent } from './components/main/main.component';
     SharedModule,
     TranslateModule,
     WebsiteRoutingModule,
-    MatCarouselModule.forRoot()
+    MatCarouselModule.forRoot(),
+    GoogleMapsModule
   ]
 })
 export class WebsiteModule {}

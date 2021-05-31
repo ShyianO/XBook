@@ -7,6 +7,7 @@ import {
   IConfiguration
 } from '../../../core/interfaces/configuration.interface';
 import { Title } from '@angular/platform-browser';
+
 import { IImage } from '../../../core/interfaces/image.interface';
 
 @Component({
@@ -17,6 +18,7 @@ import { IImage } from '../../../core/interfaces/image.interface';
 export class MainComponent implements OnInit {
   configuration: IConfiguration;
   images = [];
+  position = { lat: 59.33555, lng: 18.029851 };
 
   constructor(
     private router: Router,

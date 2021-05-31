@@ -12,7 +12,6 @@
   <main class="main">
     <div class="main__container">
       <section class="main__description">
-        <h2 class="main__description-title mat-h2">About Us</h2>
         <div [innerHTML]="configuration.description"></div>
       </section>
 
@@ -46,16 +45,18 @@
 
         <p class="main__address-paragraph">
           {{ configuration.country }}, {{ configuration.state }},
-          {{ configuration.city }}
+          {{ configuration.city }}, {{ configuration.address }},
+          {{ configuration.postalCode }}
         </p>
         <a
           class="main__address-link"
           target="_blank"
           href="https://www.google.com/maps/search/?api=1&query={{
-            configuration.city
-          }}"
+            configuration.address
+          }}+{{ configuration.city }}"
           >Open in Google Maps</a
         >
+        <google-map><map-marker [position]="position"></map-marker></google-map>
       </section>
     </div>
   </main>
