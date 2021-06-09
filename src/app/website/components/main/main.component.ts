@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import Backendless from 'backendless';
 import {
+  ConfigurationScheme,
   ConfigurationStatus,
   IConfiguration
 } from '../../../core/interfaces/configuration.interface';
@@ -30,7 +31,7 @@ export class MainComponent implements OnInit {
     this.loadConfiguration();
   }
 
-  loadConfiguration = () => {
+  loadConfiguration(): void {
     const dataQuery = Backendless.DataQueryBuilder.create().setWhereClause(
       `name = '${this.route.snapshot.params.name}' and status = ${ConfigurationStatus.published}`
     );
@@ -44,15 +45,16 @@ export class MainComponent implements OnInit {
 
         this.configuration = website[0];
         this.titleService.setTitle(this.configuration.title);
-        console.log(this.configuration);
+
+        this.selectSchema(this.configuration.schema);
         this.loadImages();
       })
       .catch(() => {
         this.router.navigate(['/landing']);
       });
-  };
+  }
 
-  loadImages = () => {
+  loadImages(): void {
     const dataQuery = Backendless.DataQueryBuilder.create().setWhereClause(
       `ownerId = '${this.configuration.ownerId}'`
     );
@@ -61,10 +63,29 @@ export class MainComponent implements OnInit {
       .find(dataQuery)
       .then((imageGallery: IImage[]) => {
         this.images = imageGallery;
-        console.log(imageGallery);
       })
       .catch((error) => {
         console.log(error);
       });
-  };
+  }
+
+  selectSchema(schema: number): void {
+    const head = document.getElementsByTagName('HEAD')[0];
+    const link = document.createElement('link');
+
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+
+    if (schema === ConfigurationScheme.DeepPurpleAmber) {
+      link.href = '../../../../assets/themes/deeppurple-amber.css';
+    } else if (schema === ConfigurationScheme.IndigoPink) {
+      link.href = '../../../../assets/themes/indigo-pink.css';
+    } else if (schema === ConfigurationScheme.PinkBlueGrey) {
+      link.href = '../../../../assets/themes/pink-bluegrey.css';
+    } else if (schema === ConfigurationScheme.PurpleGreen) {
+      link.href = '../../../../assets/themes/purple-green.css';
+    }
+
+    head.appendChild(link);
+  }
 }

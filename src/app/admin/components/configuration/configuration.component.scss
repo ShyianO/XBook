@@ -1,22 +1,3 @@
-@import '~@angular/material/theming';
-@include mat-core();
-
-//$indigo-pink-primary: mat-palette($mat-indigo);
-//$indigo-pink-accent:  mat-palette($mat-pink);
-//$indigo-pink-warn:    mat-palette($mat-red);
-//$indigo-pink-theme: mat-light-theme($indigo-pink-primary, $indigo-pink-accent, $indigo-pink-warn);
-//
-//
-//$pink-bluegrey-primary: mat-palette($mat-pink);
-//$pink-bluegrey-accent:  mat-palette($mat-blue-gray);
-//$pink-bluegrey-warn:    mat-palette($mat-red);
-//$pink-bluegrey-theme: mat-light-theme($indigo-pink-primary, $indigo-pink-accent, $indigo-pink-warn);
-//
-//$theme: var(--theme1);
-//
-//@include angular-material-theme($theme);
-
-
 .configuration {
   &__nav {
     display: flex;

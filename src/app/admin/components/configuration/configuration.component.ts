@@ -71,11 +71,6 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
   images$: Observable<IImage[]>;
 
   ngOnInit(): void {
-    // document.documentElement.style.setProperty(
-    //   '--theme1',
-    //   '$pink-bluegrey-theme'
-    // );
-
     this.store.dispatch(new LoadConfiguration());
     this.formWithState(this.configurationDraft$);
     this.imagesWithState();
