@@ -5,6 +5,7 @@ import { MatCarouselModule } from '@ngbmodule/material-carousel';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { WebsiteRoutingModule } from './website-routing.module';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 import { MainComponent } from './components/main/main.component';
 import { GoogleMapsModule } from '@angular/google-maps';
@@ -18,7 +19,8 @@ import { GoogleMapsModule } from '@angular/google-maps';
     TranslateModule,
     WebsiteRoutingModule,
     MatCarouselModule.forRoot(),
-    GoogleMapsModule
+    GoogleMapsModule,
+    LeafletModule
   ]
 })
 export class WebsiteModule {}

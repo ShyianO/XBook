@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 
 import { Router, ActivatedRoute } from '@angular/router';
 import Backendless from 'backendless';
@@ -10,6 +10,7 @@ import {
 import { Title } from '@angular/platform-browser';
 
 import { IImage } from '../../../core/interfaces/image.interface';
+import { tileLayer, latLng } from 'leaflet';
 
 @Component({
   selector: 'app-main',
@@ -19,7 +20,17 @@ import { IImage } from '../../../core/interfaces/image.interface';
 export class MainComponent implements OnInit {
   configuration: IConfiguration;
   images = [];
-  position = { lat: 59.33555, lng: 18.029851 };
+
+  options = {
+    layers: [
+      tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '...'
+      })
+    ],
+    zoom: 5,
+    center: latLng(46.879966, -121.726909)
+  };
 
   constructor(
     private router: Router,

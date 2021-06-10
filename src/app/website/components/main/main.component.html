@@ -56,7 +56,14 @@
           }}+{{ configuration.city }}"
           >Open in Google Maps</a
         >
-        <google-map><map-marker [position]="position"></map-marker></google-map>
+
+        <div
+          style="height: 300px; width: 300px"
+          leaflet
+          [leafletOptions]="options"
+        >
+          >
+        </div>
       </section>
     </div>
   </main>
