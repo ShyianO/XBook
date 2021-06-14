@@ -1,0 +1,98 @@
+<div class="container" *ngIf="configuration">
+  <mat-toolbar color="primary" class="header mat-elevation-z6">
+    <div class="header__nav">
+      <a class="header__nav-logo" routerLink="/landing">
+        <img class="header__nav-img" src="{{ configuration.logo }}" alt="" />
+      </a>
+
+      <a href="#">Contacts</a>
+    </div>
+  </mat-toolbar>
+
+  <main class="main">
+    <div class="main__container">
+      <section class="main__description">
+        <div [innerHTML]="configuration.description"></div>
+      </section>
+
+      <section class="main__carousel" *ngIf="images.length">
+        <mat-carousel
+          timings="250ms ease-in"
+          [autoplay]="true"
+          interval="5000"
+          color="primary"
+          maxWidth="auto"
+          proportion="35"
+          slides="10"
+          [loop]="true"
+          [hideArrows]="false"
+          [hideIndicators]="false"
+          [useKeyboard]="true"
+          [useMouseWheel]="false"
+          orientation="ltr"
+        >
+          <mat-carousel-slide
+            *ngFor="let image of images; let i = index"
+            [image]="image.fileURL"
+            overlayColor="#00000040"
+            [hideOverlay]="false"
+          ></mat-carousel-slide>
+        </mat-carousel>
+      </section>
+
+      <section class="main__address">
+        <div>
+          <p class="main__address-paragraph">
+            {{ configuration.firstName }} {{ configuration.lastName }},
+          </p>
+          <p class="main__address-paragraph">
+            {{ configuration.email }}
+          </p>
+          <p class="main__address-paragraph">
+            {{ configuration.phoneNumber }}
+          </p>
+          <p class="main__address-paragraph">
+            {{ configuration.country }}, {{ configuration.state }},
+            {{ configuration.city }}, {{ configuration.address }},
+            {{ configuration.postalCode }}
+          </p>
+          <a
+            class="main__address-link"
+            target="_blank"
+            href="https://www.google.com/maps/search/?api=1&query={{
+              configuration.address
+            }}+{{ configuration.city }}"
+            >Open in Google Maps</a
+          >
+        </div>
+
+        <div
+          *ngIf="options"
+          style="height: 300px; width: 300px"
+          leaflet
+          [leafletOptions]="options"
+        >
+          >
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <mat-toolbar color="primary" class="footer">
+    <div class="footer__container">
+      <div class="footer__nav">
+        <a href="#" class="footer__link-logo">
+          <img
+            style="width: 100px"
+            src="assets/img/xbook-logo.png"
+            alt="Logo"
+          />
+        </a>
+
+        <div class="footer__copyright mat-caption">
+          ©Copyright. All rights reserved
+        </div>
+      </div>
+    </div>
+  </mat-toolbar>
+</div>

@@ -1,6 +1,15 @@
+import { IImage } from './image.interface';
+
 export enum ConfigurationStatus {
   draft,
   published
+}
+
+export enum ConfigurationScheme {
+  DeepPurpleAmber,
+  IndigoPink,
+  PinkBlueGrey,
+  PurpleGreen
 }
 
 export interface IConfiguration {
@@ -16,8 +25,10 @@ export interface IConfiguration {
   city: string;
   state?: string;
   postalCode: string;
+  schema: ConfigurationScheme;
   logo?: string;
-  gallery?: any;
+  gallery?: IImage[];
   objectId?: string;
+  ownerId?: string;
   status: ConfigurationStatus;
 }
