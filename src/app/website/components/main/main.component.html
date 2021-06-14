@@ -41,23 +41,33 @@
       </section>
 
       <section class="main__address">
-        <h2 class="main__address-title mat-h2">Contacts</h2>
-
-        <p class="main__address-paragraph">
-          {{ configuration.country }}, {{ configuration.state }},
-          {{ configuration.city }}, {{ configuration.address }},
-          {{ configuration.postalCode }}
-        </p>
-        <a
-          class="main__address-link"
-          target="_blank"
-          href="https://www.google.com/maps/search/?api=1&query={{
-            configuration.address
-          }}+{{ configuration.city }}"
-          >Open in Google Maps</a
-        >
+        <div>
+          <p class="main__address-paragraph">
+            {{ configuration.firstName }} {{ configuration.lastName }},
+          </p>
+          <p class="main__address-paragraph">
+            {{ configuration.email }}
+          </p>
+          <p class="main__address-paragraph">
+            {{ configuration.phoneNumber }}
+          </p>
+          <p class="main__address-paragraph">
+            {{ configuration.country }}, {{ configuration.state }},
+            {{ configuration.city }}, {{ configuration.address }},
+            {{ configuration.postalCode }}
+          </p>
+          <a
+            class="main__address-link"
+            target="_blank"
+            href="https://www.google.com/maps/search/?api=1&query={{
+              configuration.address
+            }}+{{ configuration.city }}"
+            >Open in Google Maps</a
+          >
+        </div>
 
         <div
+          *ngIf="options"
           style="height: 300px; width: 300px"
           leaflet
           [leafletOptions]="options"

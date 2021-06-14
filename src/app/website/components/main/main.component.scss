@@ -55,6 +55,8 @@
   }
 
   &__address {
+    display: flex;
+    justify-content: space-between;
     margin-bottom: 50px;
 
     &-title {
@@ -66,6 +68,8 @@
     }
 
     &-paragraph {
+      margin-bottom: 30px;
+
       color: #000;
       font-weight: 500;
       font-size: 22px;

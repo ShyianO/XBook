@@ -11,6 +11,7 @@ import { Title } from '@angular/platform-browser';
 
 import { IImage } from '../../../core/interfaces/image.interface';
 import { tileLayer, latLng } from 'leaflet';
+import { parseJson } from '@angular/cli/utilities/json-file';
 
 @Component({
   selector: 'app-main',
@@ -20,17 +21,10 @@ import { tileLayer, latLng } from 'leaflet';
 export class MainComponent implements OnInit {
   configuration: IConfiguration;
   images = [];
+  latitude: number;
+  longitude: number;
 
-  options = {
-    layers: [
-      tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        attribution: '...'
-      })
-    ],
-    zoom: 5,
-    center: latLng(46.879966, -121.726909)
-  };
+  options;
 
   constructor(
     private router: Router,
@@ -59,6 +53,7 @@ export class MainComponent implements OnInit {
 
         this.selectSchema(this.configuration.schema);
         this.loadImages();
+        this.getCoordinates();
       })
       .catch(() => {
         this.router.navigate(['/landing']);
@@ -98,5 +93,28 @@ export class MainComponent implements OnInit {
     }
 
     head.appendChild(link);
+  }
+
+  getCoordinates(): void {
+    const address = `https://nominatim.openstreetmap.org/search.php?q=${this.configuration.address}%2C+${this.configuration.city}%2C+${this.configuration.country}&format=jsonv2`;
+
+    fetch(address)
+      .then((response) => {
+        return response.json();
+      })
+      .then((coords) => {
+        if (coords.length) {
+          this.options = {
+            layers: [
+              tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: '...'
+              })
+            ],
+            zoom: 18,
+            center: latLng(coords[0].lat, coords[0].lon)
+          };
+        }
+      });
   }
 }
